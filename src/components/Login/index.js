@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link as LinkRouter} from 'react-router-dom'
 
 // Material ui
 import Avatar from '@mui/material/Avatar';
@@ -107,6 +108,7 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                component={LinkRouter} to="/"
               >
                 Entrar
               </Button>
