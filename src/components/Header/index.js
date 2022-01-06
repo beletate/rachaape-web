@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import "./style.css";
 
 import Logo from '../../assets/images/logo_ex.png';
+import AvatarJPG from '../../assets/images/avatar.jpg';
 
 const pages = ['Procurar', 'Match', 'Chat'];
 const settings = ['Perfil', 'Conta', 'Sair'];
@@ -114,7 +115,7 @@ export default function Header() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt="Remy Sharp" src={AvatarJPG} />
                             </IconButton>
                         </Tooltip>
                         <Menu
