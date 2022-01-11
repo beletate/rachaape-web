@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Router } from 'react-router';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,9 +16,10 @@ import "./style.css";
 
 import Logo from '../../assets/images/logo_ex.png';
 import AvatarJPG from '../../assets/images/avatar.jpg';
+import { Link } from '@mui/material';
 
 const pages = ['Procurar', 'Match', 'Chat'];
-const settings = ['Perfil', 'Conta', 'Sair'];
+const settings = ['Perfil', 'Configuração', 'Sair'];
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -30,8 +32,9 @@ export default function Header() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (setting) => {
         setAnchorElNav(null);
+        console.log(setting);
     };
 
     const handleCloseUserMenu = () => {
@@ -48,7 +51,7 @@ export default function Header() {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        <img className="logo-image-web" src={Logo} alt="logo"/>
+                        <img className="logo-image-web" src={Logo} alt="logo" />
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -93,12 +96,12 @@ export default function Header() {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                     >
-                        <img className="logo-image-responsive" src={Logo} alt="logo"/>
+                        <img className="logo-image-responsive" src={Logo} alt="logo" />
                     </Typography>
-                    <Box 
-                    alignItems="center"
-                    justifyContent="center"
-                    sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box
+                        alignItems="center"
+                        justifyContent="center"
+                        sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
                                 key={page}
@@ -135,7 +138,7 @@ export default function Header() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseNavMenu}>
+                                <MenuItem key={setting} onClick={() => handleCloseNavMenu(setting)}>
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}

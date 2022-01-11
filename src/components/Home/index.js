@@ -22,8 +22,9 @@ export default function Home() {
 
     useEffect(() => {
         async function fetchUser() {
-            await getUser().then(res => setUsers(res));
+            await getUser().then(res => console.log(res)).catch(e => console.error(e));
         }
+        fetchUser();
     })
 
     return (
@@ -31,7 +32,7 @@ export default function Home() {
             <Header />
             <h1>Aqui fica os filtros e tals</h1>
             <Container fixed>
-                <Box mt={6} sx={{ bgcolor: '#cfe8fc', height: '20vh' }}>
+                <Box mt={6} sx={{ bgcolor: '', height: '20vh', boxShadow: '0px 5px 5px 0px rgba(0,0,0,0.75)' }}>
                     <List sx={{ width: '100%', height: '20vh' }}>
                         <ListItem alignItems="flex-start">
                             <ListItemAvatar>

@@ -6,8 +6,8 @@ const getUser = async () => {
     try {
         axios.get(`${URL}/auth/register`).then(response => {
             if (response.data.length) {
-                return response;
-            };
+                return response.data;
+            }
         })
     } catch (e) {
         console.log('Ops, tivemos um erro!', e);
