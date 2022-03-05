@@ -123,7 +123,7 @@ export default function PreviousLogin() {
                                         fontWeight: 600,
                                         backgroundColor: '#fff'
                                     }}
-                                    component={LinkRouter} to="/"
+                                    component={LinkRouter} to="/login"
                                 >
                                     ESTOU PROCURANDO UM QUARTO
                                 </Button>
@@ -140,7 +140,7 @@ export default function PreviousLogin() {
                                         background: 'none',
                                         border: '2px solid #FFFFFF'
                                     }}
-                                    component={LinkRouter} to="/"
+                                    component={LinkRouter} to="/login"
                                 >
                                     SOU DONO DE UM QUARTO
                                 </Button>

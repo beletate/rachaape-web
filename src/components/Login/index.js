@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link as LinkRouter} from 'react-router-dom'
+import { Link as LinkRouter } from 'react-router-dom'
 
 // Material ui
 import Avatar from '@mui/material/Avatar';
@@ -18,6 +18,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
+import instagram from '../../assets/images/instagram-icon.png'
+import twitter from '../../assets/images/twitter-icon.png'
+import google from '../../assets/images/google-icon.png'
+import facebook from '../../assets/images/facebook-icon.png'
 
 function Copyright(props) {
   return (
@@ -69,16 +73,18 @@ export default function SignInSide() {
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              textAlign: 'left'
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Entrar
+            <Typography component="h1" variant="h4" sx={{
+              fontWeight: 800
+            }}>
+              Login 👋
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Typography >
+              Entre em uma conta existente ou crie uma.
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 8 }}>
               <TextField
                 margin="normal"
                 required
@@ -88,6 +94,7 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                variant='standard'
               />
               <TextField
                 margin="normal"
@@ -97,6 +104,7 @@ export default function SignInSide() {
                 label="Senha"
                 type="password"
                 id="password"
+                variant='standard'
                 autoComplete="current-password"
               />
               <FormControlLabel
@@ -107,25 +115,106 @@ export default function SignInSide() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  minHeight: '6vh',
+                  fontWeight: 600,
+                  fontSize: 16,
+                  backgroundColor: '#274293'
+                }}
                 component={LinkRouter} to="/"
               >
                 Entrar
               </Button>
-              <Grid container>
+              <Grid container sx={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Esqueceu a senha?
+                  <Link href="#" variant="body2" sx={{
+                    fontSize: 20,
+                    fontWeight: 600,
+                    color: "#274293",
+                    textDecoration: 'none'
+                  }}>
+                    ESQUECEU A SENHA?
                   </Link>
                 </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Não possui uma conta? Registre"}
-                  </Link>
-                </Grid>
+
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
+          </Box>
+          <Box sx={{ mt: 8, width: 1 }}>
+            <Grid container sx={{ flexDirection: 'column', alignItems: 'center', backgroundColor: "#F5F6F9" }}>
+              <Grid item xs mt={4}>
+                <Typography sx={{
+                  fontSize: 20,
+                  fontWeight: 600,
+                  color: "#70747F",
+                  textDecoration: 'none'
+                }}>
+
+                  OU ENTRE COM
+                </Typography>
+              </Grid>
+              <Grid item xs mt={4}>
+                <Box
+                  sx={{
+                    my: 2,
+                    mx: 4,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    textAlign: 'center'
+                  }}
+                >
+                  <Grid mx={2} sx={{
+                    backgroundColor: 'white',
+                    padding: 2,
+                    borderRadius: 25,
+                    maxWidth: '50px',
+                    maxHeight: '50px'
+                  }}>
+                    <img src={instagram} />
+                  </Grid>
+                  <Grid mx={2} sx={{
+                    backgroundColor: 'white',
+                    padding: 2,
+                    borderRadius: 25,
+                    maxWidth: '50px',
+                    maxHeight: '50px'
+                  }}>
+                    <img src={twitter} />
+                  </Grid>
+                  <Grid mx={2} sx={{
+                    backgroundColor: 'white',
+                    padding: 2,
+                    borderRadius: 25,
+                    maxWidth: '50px',
+                    maxHeight: '50px',
+                  }}>
+                    <img src={facebook} />
+                  </Grid>
+                  <Grid mx={2} sx={{
+                    backgroundColor: 'white',
+                    padding: 2,
+                    borderRadius: 25,
+                    maxWidth: '50px',
+                    maxHeight: '50px'
+                  }}>
+                    <img src={google} />
+                  </Grid>
+                </Box>
+              </Grid>
+              <Grid item mt={2} mb={4}>
+                <Link href="#" variant="body2" sx={{
+                  fontSize: 20,
+                  fontWeight: 600,
+                  color: "#274293",
+                  textDecoration: 'none'
+                }}>
+                  {"REGISTRAR UMA CONTA"}
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
       </Grid>
