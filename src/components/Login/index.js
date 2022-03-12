@@ -23,18 +23,6 @@ import twitter from '../../assets/images/twitter-icon.png'
 import google from '../../assets/images/google-icon.png'
 import facebook from '../../assets/images/facebook-icon.png'
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      Rachapê
-      {' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 export default function SignInSide() {
@@ -205,12 +193,16 @@ export default function SignInSide() {
                 </Box>
               </Grid>
               <Grid item mt={2} mb={4}>
-                <Link href="#" variant="body2" sx={{
-                  fontSize: 20,
-                  fontWeight: 600,
-                  color: "#274293",
-                  textDecoration: 'none'
-                }}>
+                <Link
+                  href="#"
+                  variant="body2"
+                  component={LinkRouter} to="/account/register"
+                  sx={{
+                    fontSize: 20,
+                    fontWeight: 600,
+                    color: "#274293",
+                    textDecoration: 'none'
+                  }}>
                   {"REGISTRAR UMA CONTA"}
                 </Link>
               </Grid>
