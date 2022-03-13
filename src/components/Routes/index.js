@@ -5,6 +5,7 @@ import PreviousLogin from '../PreviousLogin';
 import Profile from '../Profile';
 import Login from '../Login';
 import AccountRegister from '../AccountRegister';
+import Questions from '../Questions';
 
 let id;
 
@@ -19,6 +20,7 @@ export default function Routes() {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/account/register" component={AccountRegister} />
+                <Route exact path="/account/register/questions" component={Questions} />
                 <Route exact path="/profile" render={() => (<Profile id={id}/>)} />
             </Switch>
         </Router>
