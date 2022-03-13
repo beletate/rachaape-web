@@ -28,7 +28,7 @@ export default function Song({ setQuestionPosition, questionPosition, setAnswers
 
     useEffect(() => {
 
-    })
+    },[])
 
     const nextQuestion = (choice) => {
         setQuestionPosition(questionPosition + 1);

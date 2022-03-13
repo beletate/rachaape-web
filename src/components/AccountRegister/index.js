@@ -37,7 +37,7 @@ export default function AccountRegister() {
 
     useEffect(() => {
 
-    })
+    },[])
 
     const handleSubmit = (event) => {
         event.preventDefault();

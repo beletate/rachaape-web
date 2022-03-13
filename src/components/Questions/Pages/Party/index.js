@@ -28,7 +28,7 @@ export default function Party({ setQuestionPosition, questionPosition, setAnswer
 
     useEffect(() => {
 
-    })
+    },[])
 
     const nextQuestion = (choice) => {
         setQuestionPosition(questionPosition + 1);

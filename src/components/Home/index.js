@@ -25,7 +25,7 @@ export default function Home() {
             await getUser().then(res => console.log(res)).catch(e => console.error(e));
         }
         fetchUser();
-    })
+    },[])
 
     return (
         <>

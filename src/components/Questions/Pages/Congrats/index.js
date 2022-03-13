@@ -28,7 +28,7 @@ export default function Congrats({ answers }) {
 
     useEffect(() => {
 
-    })
+    },[])
 
     return (
         <>

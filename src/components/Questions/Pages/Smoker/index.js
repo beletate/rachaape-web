@@ -28,7 +28,7 @@ export default function Smoker({ setQuestionPosition, questionPosition, setAnswe
 
     useEffect(() => {
 
-    })
+    },[])
 
     const nextQuestion = (choice) => {
         setQuestionPosition(questionPosition + 1);

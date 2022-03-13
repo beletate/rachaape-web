@@ -5,7 +5,7 @@ export default function Function() {
 
     useEffect(() => {
 
-    })
+    },[])
 
     return (
         <>

@@ -23,7 +23,7 @@ export default function PreviousLogin() {
 
     useEffect(() => {
 
-    })
+    },[])
 
     const theme = createTheme();
 
