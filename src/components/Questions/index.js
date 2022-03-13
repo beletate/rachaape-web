@@ -21,6 +21,7 @@ import comment from '../../assets/images/comment-icon.png'
 
 import './style.css'
 import Song from './Pages/Song';
+import Animal from './Pages/Animal';
 
 const theme = createTheme();
 
@@ -186,7 +187,7 @@ console.log(answers)
             )}
 
             {questionPosition === 1 && <Song setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
-            {questionPosition === 2 && <Song />}
+            {questionPosition === 2 && <Animal />}
             {questionPosition === 3 && <Song />}
             {questionPosition === 4 && <Song />}
 
