@@ -23,6 +23,8 @@ import './style.css'
 import Song from './Pages/Song';
 import Animal from './Pages/Animal';
 import Party from './Pages/Party';
+import Smoker from './Pages/Smoker';
+import Congrats from './Pages/Congrats';
 
 const theme = createTheme();
 
@@ -188,7 +190,8 @@ export default function Questions() {
             {questionPosition === 1 && <Song setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
             {questionPosition === 2 && <Animal setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers}/>}
             {questionPosition === 3 && <Party setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers}/>}
-            {questionPosition === 4 && <Song />}
+            {questionPosition === 4 && <Smoker setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
+            {questionPosition === 5 && <Congrats answers={answers} />}
 
         </>
     )
