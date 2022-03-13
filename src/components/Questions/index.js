@@ -22,6 +22,7 @@ import comment from '../../assets/images/comment-icon.png'
 import './style.css'
 import Song from './Pages/Song';
 import Animal from './Pages/Animal';
+import Party from './Pages/Party';
 
 const theme = createTheme();
 
@@ -30,8 +31,8 @@ export default function Questions() {
     const [answers, setAnswers] = useState({
         song: null,
         animal: null,
-        homyOrNot: null,
-        smokeOrNot: null
+        party: null,
+        smoker: null
     });
 
     useEffect(() => {
@@ -40,8 +41,6 @@ export default function Questions() {
 
     const questionsPages = () => {
     }
-
-console.log(answers)
 
 
     return (
@@ -187,8 +186,8 @@ console.log(answers)
             )}
 
             {questionPosition === 1 && <Song setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
-            {questionPosition === 2 && <Animal />}
-            {questionPosition === 3 && <Song />}
+            {questionPosition === 2 && <Animal setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers}/>}
+            {questionPosition === 3 && <Party setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers}/>}
             {questionPosition === 4 && <Song />}
 
         </>
