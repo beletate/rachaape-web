@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Router } from 'react-router';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,7 +15,6 @@ import "./style.css";
 
 import Logo from '../../assets/images/logo_ex.png';
 import AvatarJPG from '../../assets/images/avatar.jpg';
-import { Link } from '@mui/material';
 
 const pages = ['Procurar', 'Match', 'Chat'];
 const settings = ['Perfil', 'Configuração', 'Sair'];

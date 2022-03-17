@@ -3,7 +3,7 @@ let URL = "http://localhost:3000";
 
 const getUser = async () => {
 
-    /* try {
+    try {
         axios.get(`${URL}/auth/register`).then(response => {
             if (response.data.length) {
                 return response.data;
@@ -12,7 +12,7 @@ const getUser = async () => {
     } catch (e) {
         console.log('Ops, tivemos um erro!', e);
         return e;
-    } */
+    } 
     
 }
 

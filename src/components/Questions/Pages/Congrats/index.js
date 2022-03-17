@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link as LinkRouter } from 'react-router-dom'
-
-import NumberFormat, { NumberFormatProps } from 'react-number-format';
-
-// Formik
-import { Formik } from 'formik';
 
 // Material ui
 import Button from '@mui/material/Button';
@@ -17,14 +12,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // Images
 import loginLeftSide from '../../../../assets/images/login-left-side.jpeg'
-import comment from '../../../../assets/images/comment-icon.png'
 
 import './style.css'
-import { TextField } from '@mui/material';
 
 const theme = createTheme();
 
-export default function Congrats({ answers }) {
+export default function Congrats() {
 
     useEffect(() => {
 

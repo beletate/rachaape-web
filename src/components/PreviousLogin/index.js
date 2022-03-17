@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link as LinkRouter } from 'react-router-dom'
 
 //Material UI
@@ -26,16 +26,6 @@ export default function PreviousLogin() {
     },[])
 
     const theme = createTheme();
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
 
     return (
         <>

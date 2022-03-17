@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Link as LinkRouter } from 'react-router-dom'
 
 // Material ui
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -12,7 +11,6 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -29,7 +27,6 @@ export default function SignInSide() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -161,7 +158,7 @@ export default function SignInSide() {
                     maxWidth: '50px',
                     maxHeight: '50px'
                   }}>
-                    <img src={instagram} />
+                    <img src={instagram} alt="instagram-logo"/>
                   </Grid>
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
@@ -170,7 +167,7 @@ export default function SignInSide() {
                     maxWidth: '50px',
                     maxHeight: '50px'
                   }}>
-                    <img src={twitter} />
+                    <img src={twitter} alt="twitter-logo"/>
                   </Grid>
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
@@ -179,7 +176,7 @@ export default function SignInSide() {
                     maxWidth: '50px',
                     maxHeight: '50px',
                   }}>
-                    <img src={facebook} />
+                    <img src={facebook} alt="facebook-logo"/>
                   </Grid>
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
@@ -188,7 +185,7 @@ export default function SignInSide() {
                     maxWidth: '50px',
                     maxHeight: '50px'
                   }}>
-                    <img src={google} />
+                    <img src={google} alt="google-logo"/>
                   </Grid>
                 </Box>
               </Grid>

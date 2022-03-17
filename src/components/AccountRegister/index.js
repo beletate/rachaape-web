@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link as LinkRouter } from 'react-router-dom'
 
-import NumberFormat, { NumberFormatProps } from 'react-number-format';
-
-// Formik
-import { Formik } from 'formik';
+import NumberFormat from 'react-number-format';
 
 // Material ui
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';

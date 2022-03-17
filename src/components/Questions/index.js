@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link as LinkRouter } from 'react-router-dom'
 
-import NumberFormat, { NumberFormatProps } from 'react-number-format';
-
-// Formik
-import { Formik } from 'formik';
-
 // Material ui
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -140,7 +135,7 @@ export default function Questions() {
                                             maxWidth: '50px',
                                             maxHeight: '50px'
                                         }}>
-                                            <img src={comment} />
+                                            <img src={comment} alt="comment-icon"/>
                                         </Grid>
                                     </Box>
                                 </Box>
