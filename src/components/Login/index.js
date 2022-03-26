@@ -23,7 +23,7 @@ import facebook from '../../assets/images/facebook-icon.png'
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -78,7 +78,6 @@ export default function SignInSide() {
                 label="Email"
                 name="email"
                 autoComplete="email"
-                autoFocus
                 variant='standard'
               />
               <TextField

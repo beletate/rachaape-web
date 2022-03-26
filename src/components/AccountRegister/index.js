@@ -32,7 +32,11 @@ export default function AccountRegister() {
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     useEffect(() => {
-
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
     },[])
 
     const handleSubmit = (event) => {
@@ -174,7 +178,6 @@ export default function AccountRegister() {
                                     label="Nome"
                                     name="name"
                                     autoComplete="name"
-                                    autoFocus
                                     variant='standard'
                                 />
                                 <TextField
@@ -184,7 +187,6 @@ export default function AccountRegister() {
                                     label="Idade"
                                     name="age"
                                     autoComplete="age"
-                                    autoFocus
                                     type="number"
                                     variant='standard'
                                 />
@@ -197,7 +199,6 @@ export default function AccountRegister() {
                                             label="Preço mín."
                                             name="minPrice"
                                             autoComplete="minPrice"
-                                            autoFocus
                                             variant='standard'
                                             InputProps={{
                                                 inputComponent: NumberFormatCustom,
@@ -212,7 +213,6 @@ export default function AccountRegister() {
                                             label="Preço máx."
                                             name="maxPrice"
                                             autoComplete="maxPrice"
-                                            autoFocus
                                             variant='standard'
                                             InputProps={{
                                                 inputComponent: NumberFormatCustom,
@@ -228,7 +228,6 @@ export default function AccountRegister() {
                                     label="Email"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus
                                     variant='standard'
                                 />
                                 <TextField
@@ -237,7 +236,6 @@ export default function AccountRegister() {
                                     id="phone"
                                     name="phone"
                                     autoComplete="phone"
-                                    autoFocus
                                     variant='standard'
                                     InputProps={{
                                         inputComponent: NumberPhoneCustom,

@@ -81,7 +81,6 @@ export default function FindCity() {
                                 mt: 4
                             }}>
                                 <Typography sx={{
-                                    mb: 1,
                                     mb: 12
                                 }}>
                                     Escolha a cidade onde devemos encontrar um espaço perfeito para você!
