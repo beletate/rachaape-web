@@ -171,7 +171,7 @@ export default function Questions() {
                                             background: 'none',
                                             border: '1px solid #274293'
                                         }}
-                                        component={LinkRouter} to="/account/register/questions"
+                                        component={LinkRouter} to="/account/register/city"
                                     >
                                         Mais tarde
                                     </Button>
