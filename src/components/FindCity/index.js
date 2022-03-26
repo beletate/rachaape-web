@@ -29,9 +29,8 @@ export default function FindCity() {
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
-        console.log(cities)
 
-    }, [cities]);
+    }, []);
 
     const handleStatesChange = (e) => {
         searchCitiesOfState(e.sigla);
@@ -44,16 +43,6 @@ export default function FindCity() {
         }
     }
 
-    const convertArrayToHasLabel = async (arr) => {
-        arr.forEach(function (o) {
-            Object.keys(o).forEach(function (k) {
-                if (k !== 'id') {
-                    o.nome = o[k];
-                    delete o[k];
-                }
-            });
-        });
-    }
     return (
         <>
             <ThemeProvider theme={theme}>
