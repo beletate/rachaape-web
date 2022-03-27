@@ -13,6 +13,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
+import ShowerOutlinedIcon from '@mui/icons-material/ShowerOutlined';
+import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
+
 // Mock
 import mock from '../__Mocks__/Aps';
 
@@ -80,54 +84,69 @@ export default function Home() {
                                         textAlign: 'center',
                                         maxHeight: '11vh'
                                     }}>
-                                        <img style={{maxHeight: '100%', minWidth: '100%', borderRadius: '5%'}} src={mock[0].img} alt="room"></img>
+                                        <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={mock[0].img} alt="room"></img>
                                     </Grid>
                                     <Grid xs={8} item={true} container sx={{
                                         display: 'flex',
                                         justifyContent: 'center',
                                         textAlign: 'center',
-
+                                        paddingLeft: '1vh',
                                         backgroundColor: 'white'
                                     }}>
+                                        <Grid xs={8} item={true} container sx={{
+                                            display: 'flex',
+                                            textAlign: 'left',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                            backgroundColor: 'yellowgreen'
+                                        }}>
+                                            <Typography sx={{
+                                                fontWeight: '600'
+                                            }}>
+                                                R${mock[0].value} /mês
+                                            </Typography>
+                                        </Grid>
                                         <Grid xs={4} item={true} container sx={{
                                             display: 'flex',
                                             justifyContent: 'center',
                                             textAlign: 'center',
-
-                                            backgroundColor: 'yellowgreen'
+                                            verticalAlign: 'middle',
+                                            backgroundColor: 'pink',
                                         }}>
-                                            <Typography>A</Typography>
-                                        </Grid>
-                                        <Grid xs={8} item={true} container sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
+                                            <img style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={mock[0].owner}></img>
 
-                                            backgroundColor: 'pink'
-                                        }}>
-                                            <Typography>A</Typography>
                                         </Grid>
                                         <Grid xs={12} item={true} container sx={{
                                             display: 'flex',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-
+                                            textAlign: 'left',
                                             backgroundColor: 'red'
                                         }}>
-                                            <Typography>A</Typography>
+                                            <Typography sx={{
+                                                fontWeight: '600'
+                                            }}>
+                                                {mock[0].street}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid container sx={{
                                     display: 'flex',
-                                    justifyContent: 'center',
-                                    textAlign: 'center',
-
+                                    textAlign: 'left',
+                                    paddingLeft: 1,
                                     mt: 1,
                                     backgroundColor: 'green'
                                 }}>
                                     <Typography>
-                                        AP
+                                        <HotelOutlinedIcon sx={{ color: '#274293' }}>
+                                        </HotelOutlinedIcon>
+                                    </Typography>
+
+                                    <Typography>
+                                        <ShowerOutlinedIcon sx={{ color: '#274293' }}></ShowerOutlinedIcon>
+                                    </Typography>
+
+                                    <Typography>
+                                        <DirectionsCarFilledOutlinedIcon sx={{ color: '#274293' }}></DirectionsCarFilledOutlinedIcon>
                                     </Typography>
                                 </Grid>
 
