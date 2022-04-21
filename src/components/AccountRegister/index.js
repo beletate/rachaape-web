@@ -23,11 +23,26 @@ import './style.css'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
+// Helpers
+import setUser from '../../db/setUser';
+
 const theme = createTheme();
 
 export default function AccountRegister() {
 
     const [showPassword, setShowPassword] = useState(false);
+    const [handleFile, setHandleFile] = useState(undefined);
+    const [imageToShow, setImageToShow] = useState(undefined);
+    const [form, setForm] = useState({
+        photo: "",
+        name: "",
+        age: "",
+        minPrice: "",
+        maxPrice: "",
+        phone: "",
+        email: "",
+        password: ""
+    });
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
@@ -37,17 +52,40 @@ export default function AccountRegister() {
             left: 0,
             behavior: 'smooth'
         });
-    },[])
+    }, [])
 
-    const handleSubmit = (event) => {
+    const handleFileRead = async (e) => {
+        if (e.target.files[0]) {
+            const file = e.target.files[0]
+            //const base64 = await convertBase64(file)
+            setImageToShow(URL.createObjectURL(file));
+            setHandleFile(file);
+        }
+    }
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
+        const tmpObj = {
+            photo: handleFile,
+            name: data.get('name'),
+            age: Number(data.get('age')),
+            minPrice: data.get('minPrice'),
+            maxPrice: data.get('maxPrice'),
             email: data.get('email'),
             password: data.get('password'),
-        });
+            phone: data.get('phone')
+        };
+        setForm(tmpObj);
+        saveCurrentUser(tmpObj);
     };
+
+    const saveCurrentUser = async (formObj) => {
+        const confirm = await setUser(formObj);
+        if (confirm && confirm.statusText === "Created") {
+            console.log("Usuário criado.")
+        }
+    }
 
     const currencyFormatter = (formatted_value) => {
         if (!Number(formatted_value)) return "R$ 0,00";
@@ -136,9 +174,11 @@ export default function AccountRegister() {
                                     }}>
                                     <input
                                         style={{ display: 'none' }}
-                                        id="upload-photo"
-                                        name="upload-photo"
+                                        id="photo"
+                                        name="photo"
                                         type="file"
+                                        accept='image/*'
+                                        onChange={(e) => handleFileRead(e)}
                                     />
 
                                     <AddCircleRoundedIcon sx={{
@@ -159,12 +199,21 @@ export default function AccountRegister() {
                                         lineHeight: '10rem',
 
                                     }}>
-                                        <PersonPinIcon sx={{
-                                            fontSize: '3rem',
-                                            color: 'gray',
-                                            verticalAlign: 'middle'
-                                        }}>
-                                        </PersonPinIcon>
+                                        {
+                                            imageToShow ?
+                                                <>
+                                                    <img src={imageToShow} style={{ borderRadius: '50%', width: '9rem', height: '9rem', verticalAlign: 'middle' }} alt="profile" />
+                                                </>
+                                                :
+                                                <>
+                                                    <PersonPinIcon sx={{
+                                                        fontSize: '3rem',
+                                                        color: 'gray',
+                                                        verticalAlign: 'middle'
+                                                    }}></PersonPinIcon>
+                                                </>
+                                        }
+
                                     </Box>
                                 </Box>
                             </label>
@@ -172,6 +221,7 @@ export default function AccountRegister() {
                             <Box component="form" noValidate onSubmit={handleSubmit}>
 
                                 <TextField
+                                    required
                                     margin="normal"
                                     fullWidth
                                     id="name"
@@ -181,6 +231,7 @@ export default function AccountRegister() {
                                     variant='standard'
                                 />
                                 <TextField
+                                    required
                                     margin="normal"
                                     fullWidth
                                     id="age"
@@ -222,6 +273,7 @@ export default function AccountRegister() {
                                 </Grid>
 
                                 <TextField
+                                    required
                                     margin="normal"
                                     fullWidth
                                     id="email"
@@ -231,6 +283,7 @@ export default function AccountRegister() {
                                     variant='standard'
                                 />
                                 <TextField
+                                    required
                                     margin="normal"
                                     fullWidth
                                     id="phone"
@@ -243,6 +296,7 @@ export default function AccountRegister() {
                                 />
 
                                 <TextField
+                                    required
                                     margin="normal"
                                     fullWidth
                                     name="firstPassword"
@@ -266,6 +320,7 @@ export default function AccountRegister() {
                                     }}
                                 />
                                 <TextField
+                                    required
                                     margin="normal"
                                     fullWidth
                                     name="password"
@@ -287,7 +342,7 @@ export default function AccountRegister() {
                                         fontSize: 16,
                                         backgroundColor: '#274293'
                                     }}
-                                    component={LinkRouter} to="/account/register/questions"
+                                //component={LinkRouter} to="/account/register/questions"
                                 >
                                     Criar
                                 </Button>
