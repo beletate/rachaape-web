@@ -4,7 +4,6 @@ import { Link as LinkRouter, useHistory } from 'react-router-dom'
 // Material ui
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -23,7 +22,6 @@ import Smoker from './Pages/Smoker';
 import Congrats from './Pages/Congrats';
 
 import { ProfileContext } from '../../providers/profile';
-import setUser from '../../db/setUser';
 
 const theme = createTheme();
 
@@ -43,8 +41,9 @@ export default function Questions() {
 
 
     useEffect(() => {
-        checkIfHasProfile()
+        checkIfHasProfile();
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionPosition])
     
     const checkIfHasProfile = () => {
@@ -52,10 +51,10 @@ export default function Questions() {
             setProfile({ ...profile, lifestyle: answers });
         } else {
             // eslint-disable-next-line no-unused-expressions
-            history.push('/'), [history];
+            history.push('/'),[history];
         }
     }
-    
+
     const returnLastPage = async () => {
         history.goBack();
     }

@@ -23,7 +23,7 @@ import google from '../../assets/images/google-icon.png'
 import facebook from '../../assets/images/facebook-icon.png'
 
 import userLogin from '../../db/userLogin';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const theme = createTheme();
 

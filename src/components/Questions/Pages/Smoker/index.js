@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 // Material ui
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';

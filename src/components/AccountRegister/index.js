@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ProfileContext } from '../../providers/profile';
-import { Link as LinkRouter, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import NumberFormat from 'react-number-format';
 
@@ -57,7 +57,7 @@ export default function AccountRegister() {
             left: 0,
             behavior: 'smooth'
         });
-        
+
     }, [])
 
     const handleFileRead = async (e) => {
@@ -91,14 +91,7 @@ export default function AccountRegister() {
 
         //saveCurrentUser(profileForm);
     };
-
-    const saveCurrentUser = async (formObj) => {
-        const confirm = await setUser(formObj);
-        if (confirm && confirm.statusText === "Created") {
-            console.log("Usuário criado.")
-        }
-    }
-
+    
     const currencyFormatter = (formatted_value) => {
         if (!Number(formatted_value)) return "R$ 0,00";
         const br = { style: "currency", currency: "BRL" };
@@ -140,7 +133,7 @@ export default function AccountRegister() {
 
     const returnLastPage = async () => {
         history.goBack();
-      }
+    }
 
     return (
         <>

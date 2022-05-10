@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import WindowsScroll from '../Functions/WindowsScroll'
-import { Link as LinkRouter } from 'react-router-dom'
 
 // Material ui
 import Button from '@mui/material/Button';
@@ -11,8 +10,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 
 import ClearSharpIcon from '@mui/icons-material/ClearSharp';
 import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
