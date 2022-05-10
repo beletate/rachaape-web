@@ -21,9 +21,15 @@ import Party from './Pages/Party';
 import Smoker from './Pages/Smoker';
 import Congrats from './Pages/Congrats';
 
+import { ProfileContext } from '../../providers/profile';
+import setUser from '../../db/setUser';
+
 const theme = createTheme();
 
 export default function Questions() {
+
+    const { profile, setProfile } = React.useContext(ProfileContext);
+
     const [questionPosition, setQuestionPosition] = useState(0);
     const [answers, setAnswers] = useState({
         song: null,
@@ -32,12 +38,11 @@ export default function Questions() {
         smoker: null
     });
 
+    
     useEffect(() => {
-        questionsPages()
+        setProfile({ ...profile, lifestyle: answers });
     }, [questionPosition])
 
-    const questionsPages = () => {
-    }
 
 
     return (
@@ -135,7 +140,7 @@ export default function Questions() {
                                             maxWidth: '50px',
                                             maxHeight: '50px'
                                         }}>
-                                            <img src={comment} alt="comment-icon"/>
+                                            <img src={comment} alt="comment-icon" />
                                         </Grid>
                                     </Box>
                                 </Box>
@@ -183,8 +188,8 @@ export default function Questions() {
             )}
 
             {questionPosition === 1 && <Song setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
-            {questionPosition === 2 && <Animal setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers}/>}
-            {questionPosition === 3 && <Party setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers}/>}
+            {questionPosition === 2 && <Animal setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
+            {questionPosition === 3 && <Party setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
             {questionPosition === 4 && <Smoker setQuestionPosition={setQuestionPosition} questionPosition={questionPosition} setAnswers={setAnswers} />}
             {questionPosition === 5 && <Congrats answers={answers} />}
 

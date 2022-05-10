@@ -21,17 +21,45 @@ import twitter from '../../assets/images/twitter-icon.png'
 import google from '../../assets/images/google-icon.png'
 import facebook from '../../assets/images/facebook-icon.png'
 
+import userLogin from '../../db/userLogin';
+import { useHistory } from 'react-router-dom';
+
 const theme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event) => {
+
+  const history = useHistory();
+
+  const [loginForm, setLoginForm] = React.useState({});
+
+  React.useEffect(() => {
+    if (loginForm?.email && loginForm?.password) {
+      executeLogin();
+    }
+  }, [loginForm])
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    await setLoginForm({
       email: data.get('email'),
       password: data.get('password'),
     });
   };
+
+  const executeLogin = async () => {
+    try {
+      const login = await userLogin(loginForm);
+      if(login && login?.data?.message){
+        localStorage.setItem("user", JSON.stringify(login.data.user));
+        localStorage.setItem("auth", true);
+        // eslint-disable-next-line no-unused-expressions
+        history.push('/home'), [history];
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -107,7 +135,6 @@ export default function Login() {
                   fontSize: 16,
                   backgroundColor: '#274293'
                 }}
-                component={LinkRouter} to="/"
               >
                 Entrar
               </Button>
@@ -157,7 +184,7 @@ export default function Login() {
                     maxWidth: '50px',
                     maxHeight: '50px'
                   }}>
-                    <img src={instagram} alt="instagram-logo"/>
+                    <img src={instagram} alt="instagram-logo" />
                   </Grid>
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
@@ -166,7 +193,7 @@ export default function Login() {
                     maxWidth: '50px',
                     maxHeight: '50px'
                   }}>
-                    <img src={twitter} alt="twitter-logo"/>
+                    <img src={twitter} alt="twitter-logo" />
                   </Grid>
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
@@ -175,7 +202,7 @@ export default function Login() {
                     maxWidth: '50px',
                     maxHeight: '50px',
                   }}>
-                    <img src={facebook} alt="facebook-logo"/>
+                    <img src={facebook} alt="facebook-logo" />
                   </Grid>
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
@@ -184,7 +211,7 @@ export default function Login() {
                     maxWidth: '50px',
                     maxHeight: '50px'
                   }}>
-                    <img src={google} alt="google-logo"/>
+                    <img src={google} alt="google-logo" />
                   </Grid>
                 </Box>
               </Grid>

@@ -31,6 +31,7 @@ import loginLeftSide from '../../assets/images/login-left-side.jpeg';
 
 import './style.css'
 import { Divider } from '@mui/material';
+import { ProfileContext } from '../../providers/profile';
 
 const theme = createTheme();
 
@@ -53,12 +54,14 @@ const style = {
 
 export default function Home() {
 
+    const [profile, setProfile] = useState({})
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
         WindowsScroll();
+        setProfile(JSON.parse(localStorage.getItem("user")));
     }, [])
 
     return (

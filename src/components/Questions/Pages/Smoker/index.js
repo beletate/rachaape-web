@@ -24,7 +24,7 @@ export default function Smoker({ setQuestionPosition, questionPosition, setAnswe
 
     const nextQuestion = (choice) => {
         setQuestionPosition(questionPosition + 1);
-        setAnswers(prevState => ({ ...prevState, animal: choice }));
+        setAnswers(prevState => ({ ...prevState, smoker: choice }));
     }
 
     return (

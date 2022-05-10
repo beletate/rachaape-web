@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Link as LinkRouter } from 'react-router-dom'
+import React, { useEffect, useState, useCallback } from 'react'
+import { ProfileContext } from '../../providers/profile';
+import { Link as LinkRouter, useHistory  } from 'react-router-dom'
 
 import NumberFormat from 'react-number-format';
 
@@ -25,11 +26,14 @@ import { IconButton } from '@mui/material';
 
 // Helpers
 import setUser from '../../db/setUser';
+import checkEmail from '../../db/checkEmail';
 
 const theme = createTheme();
 
 export default function AccountRegister() {
+    const history = useHistory();
 
+    const { profile, setProfile } = React.useContext(ProfileContext);
     const [showPassword, setShowPassword] = useState(false);
     const [handleFile, setHandleFile] = useState(undefined);
     const [imageToShow, setImageToShow] = useState(undefined);
@@ -66,7 +70,7 @@ export default function AccountRegister() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const tmpObj = {
+        const profileForm = {
             photo: handleFile,
             name: data.get('name'),
             age: Number(data.get('age')),
@@ -76,8 +80,14 @@ export default function AccountRegister() {
             password: data.get('password'),
             phone: data.get('phone')
         };
-        setForm(tmpObj);
-        saveCurrentUser(tmpObj);
+        const emailEnable =  await checkEmail(profileForm);
+        if(emailEnable?.data?.message){
+            await setProfile(profileForm);
+            // eslint-disable-next-line no-unused-expressions
+            history.push('/account/register/questions'), [history]
+        }
+
+        //saveCurrentUser(profileForm);
     };
 
     const saveCurrentUser = async (formObj) => {

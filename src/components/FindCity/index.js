@@ -21,16 +21,28 @@ import estados from '../__Mocks__/Estados';
 import getCities from '../../db/getCities';
 
 import './style.css'
+import setUser from '../../db/setUser';
+
+import { ProfileContext } from '../../providers/profile';
+import { useHistory } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function FindCity() {
 
+    const history = useHistory();
+
+    const { profile, setProfile } = React.useContext(ProfileContext);
+
     const [cities, setCities] = useState([]);
+    const [country, setCountry] = useState({
+        state: "",
+        city: ""
+    })
 
     useEffect(() => {
-
-    }, []);
+        setProfile({ ...profile, country })
+    }, [country]);
 
     const handleStatesChange = (e) => {
         searchCitiesOfState(e.sigla);
@@ -39,7 +51,20 @@ export default function FindCity() {
     const searchCitiesOfState = async (uf) => {
         const tmpCities = await getCities(uf);
         if (tmpCities && tmpCities.response && tmpCities.response.data.length) {
+            setCountry({ ...country, state: uf });
             setCities(tmpCities.response.data);
+        }
+    }
+
+    const saveCurrentUser = async () => {
+        const user = await setUser(profile);
+        if (user && user.statusText === "Created") {
+            setProfile(user);
+            delete user.password;
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("auth", true);
+            // eslint-disable-next-line no-unused-expressions
+            history.push('/home'), [history];
         }
     }
 
@@ -105,7 +130,7 @@ export default function FindCity() {
                                     disablePortal
                                     options={cities || ''}
                                     getOptionLabel={(option) => (option.nome ? option.nome : '')}
-                                    onChange={(e, newValue) => console.log(newValue)}
+                                    onChange={(e, newValue) => setCountry({ ...country, city: newValue?.nome })}
                                     sx={{
                                         width: 300,
                                         mb: 4
@@ -117,6 +142,7 @@ export default function FindCity() {
                             <Button
                                 fullWidth
                                 variant="contained"
+                                disabled={!country?.city}
                                 sx={{
                                     mb: 2,
                                     minHeight: '7vh',
@@ -124,7 +150,7 @@ export default function FindCity() {
                                     fontSize: 14,
                                     backgroundColor: '#274293'
                                 }}
-                                component={LinkRouter} to="/home"
+                                onClick={() => saveCurrentUser()}
                             >
                                 Me mostre os resultados
                             </Button>

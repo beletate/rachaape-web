@@ -117,7 +117,7 @@ export default function Congrats() {
                                         fontSize: 14,
                                         backgroundColor: '#274293'
                                     }}
-                                    component={LinkRouter} to="/"
+                                    component={LinkRouter} to="/account/register/city"
                                 >
                                     Selecionar a cidade
                                 </Button>

@@ -2,15 +2,14 @@ import axios from 'axios';
 import { URL } from './url';
 let url = URL;
 
-const setUser = async (obj) => {
-    console.log(obj)
+const userLogin = async (obj) => {
     try {
-        return await axios.post(`${url}/auth/register`, obj);
+        return await axios.post(`${url}/auth/register/login`, obj);
     } catch (e) {
         console.error('Ops, tivemos um erro!', e);
         return e;
-    } 
-    
+    }
+
 }
 
-export default setUser;
+export default userLogin;
