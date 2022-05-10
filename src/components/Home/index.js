@@ -31,7 +31,7 @@ import loginLeftSide from '../../assets/images/login-left-side.jpeg';
 
 import './style.css'
 import { Divider } from '@mui/material';
-import { ProfileContext } from '../../providers/profile';
+import NavBar from '../../NavBar';
 
 const theme = createTheme();
 
@@ -527,6 +527,7 @@ export default function Home() {
                     </Grid>
                 </Grid>
             </ThemeProvider>
+            <NavBar/>
         </>
     )
 }
