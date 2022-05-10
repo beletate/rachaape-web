@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
@@ -22,7 +23,7 @@ import google from '../../assets/images/google-icon.png'
 import facebook from '../../assets/images/facebook-icon.png'
 
 import userLogin from '../../db/userLogin';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -36,6 +37,8 @@ export default function Login() {
     if (loginForm?.email && loginForm?.password) {
       executeLogin();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    checkIfAlreadyContainAProfile();
   }, [loginForm])
 
   const handleSubmit = async (event) => {
@@ -47,10 +50,18 @@ export default function Login() {
     });
   };
 
+  const checkIfAlreadyContainAProfile = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(user && user?._id){
+      // eslint-disable-next-line no-unused-expressions
+      history.push('/home'), [history];
+    }
+  }
+ 
   const executeLogin = async () => {
     try {
       const login = await userLogin(loginForm);
-      if(login && login?.data?.message){
+      if (login && login?.data?.message) {
         localStorage.setItem("user", JSON.stringify(login.data.user));
         localStorage.setItem("auth", true);
         // eslint-disable-next-line no-unused-expressions
@@ -59,6 +70,10 @@ export default function Login() {
     } catch (e) {
       console.error(e)
     }
+  }
+
+  const returnLastPage = async () => {
+    history.goBack();
   }
 
   return (
@@ -82,7 +97,46 @@ export default function Login() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 4,
+              mx: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              textAlign: 'left'
+            }}
+          >
+            <Grid container sx={{ flexDirection: 'column' }}>
+              <Grid item xs>
+                <Box
+                  sx={{
+                    overflow: 'auto'
+                  }}
+                >
+                  <Grid sx={{
+                    float: 'left'
+                  }}>
+                    <ArrowBackIosNewRoundedIcon sx={{
+                      color: '#4892F1'
+                    }}
+                      onClick={returnLastPage}>
+                    </ArrowBackIosNewRoundedIcon>
+                  </Grid>
+                  <Grid sx={{
+                    float: 'right',
+                    backgroundColor: '#4892F1',
+                    color: 'white',
+                    fontWeight: 500,
+                    borderRadius: '25px',
+                    px: 1
+                  }}>
+                    1 de 4
+                  </Grid>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box
+            sx={{
+              mb: 4,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -233,6 +287,6 @@ export default function Login() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }

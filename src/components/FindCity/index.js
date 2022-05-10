@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg';
@@ -41,8 +42,18 @@ export default function FindCity() {
     })
 
     useEffect(() => {
-        setProfile({ ...profile, country })
+        checkIfHasProfile()
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [country]);
+
+    const checkIfHasProfile = () => {
+        if (profile && profile.answers && profile.email) {
+            setProfile({ ...profile, country });
+        } else {
+            // eslint-disable-next-line no-unused-expressions
+            history.push('/'), [history];
+        }
+    }
 
     const handleStatesChange = (e) => {
         searchCitiesOfState(e.sigla);
@@ -66,6 +77,10 @@ export default function FindCity() {
             // eslint-disable-next-line no-unused-expressions
             history.push('/home'), [history];
         }
+    }
+
+    const returnLastPage = async () => {
+        history.goBack();
     }
 
     return (
@@ -92,6 +107,45 @@ export default function FindCity() {
                         <Box
                             sx={{
                                 my: 4,
+                                mx: 3,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                textAlign: 'left'
+                            }}
+                        >
+                            <Grid container sx={{ flexDirection: 'column' }}>
+                                <Grid item xs>
+                                    <Box
+                                        sx={{
+                                            overflow: 'auto'
+                                        }}
+                                    >
+                                        <Grid sx={{
+                                            float: 'left'
+                                        }}>
+                                            <ArrowBackIosNewRoundedIcon sx={{
+                                                color: '#4892F1'
+                                            }}
+                                                onClick={returnLastPage}>
+                                            </ArrowBackIosNewRoundedIcon>
+                                        </Grid>
+                                        <Grid sx={{
+                                            float: 'right',
+                                            backgroundColor: '#4892F1',
+                                            color: 'white',
+                                            fontWeight: 500,
+                                            borderRadius: '25px',
+                                            px: 1
+                                        }}>
+                                            4 de 4
+                                        </Grid>
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Box
+                            sx={{
+                                my: 4,
                                 mx: 4,
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -103,7 +157,6 @@ export default function FindCity() {
                                 display: 'flex',
                                 justifyContent: 'center',
                                 textAlign: 'center',
-                                mt: 4
                             }}>
                                 <Typography sx={{
                                     mb: 12
@@ -119,7 +172,8 @@ export default function FindCity() {
                                     onChange={(e, newValue) => handleStatesChange(newValue)}
                                     sx={{
                                         width: 300,
-                                        mb: 6
+                                        mb: 6,
+                                        ml: 1.6
                                     }}
                                     renderInput={(params) => <TextField {...params} label="Estado" />}
                                 />
@@ -133,7 +187,8 @@ export default function FindCity() {
                                     onChange={(e, newValue) => setCountry({ ...country, city: newValue?.nome })}
                                     sx={{
                                         width: 300,
-                                        mb: 4
+                                        mb: 4,
+                                        ml: 1.6
                                     }}
                                     renderInput={(params) => <TextField {...params} label="Cidade" />}
                                 />

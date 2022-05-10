@@ -22,8 +22,8 @@ import './style.css'
 export default function PreviousLogin() {
 
     useEffect(() => {
-
-    },[])
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
 
     const theme = createTheme();
 
@@ -78,7 +78,7 @@ export default function PreviousLogin() {
                                     color: '#fff',
                                 }}
                             >
-                                <Typography component="h1" variant="h5">
+                                <Typography sx={{fontSize: '130%'}}>
                                     Encontrar colegas de quarto nunca foi tão fácil! Você está apenas a alguns passos do quarto perfeito!
                                 </Typography>
                             </Box>
@@ -94,7 +94,7 @@ export default function PreviousLogin() {
                                 sx={{
                                     my: 8,
                                     mx: 4,
-                                    mt: 50,
+                                    mt: '80%',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
@@ -105,26 +105,25 @@ export default function PreviousLogin() {
                                     fullWidth
                                     variant="contained"
                                     sx={{
-                                        mt: 3,
+                                        mt: '3vh',
                                         mb: 4,
                                         minHeight: '7vh',
-                                        fontSize: 16,
+                                        fontSize: '100%',
                                         color: '#274293',
                                         fontWeight: 600,
                                         backgroundColor: '#fff'
                                     }}
                                     component={LinkRouter} to="/login"
                                 >
-                                    ESTOU PROCURANDO UM QUARTO
+                                    VAMOS LÁ!
                                 </Button>
-                                <Button
+                                {/* <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     sx={{
-                                        mb: 2,
                                         minHeight: '7vh',
-                                        fontSize: 16,
+                                        fontSize: '100%',
                                         color: '#fff',
                                         fontWeight: 600,
                                         background: 'none',
@@ -133,7 +132,7 @@ export default function PreviousLogin() {
                                     component={LinkRouter} to="/login"
                                 >
                                     SOU DONO DE UM QUARTO
-                                </Button>
+                                </Button> */}
                             </Box>
                         </Grid>
                     </Grid>

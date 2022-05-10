@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { ProfileContext } from '../../providers/profile';
-import { Link as LinkRouter, useHistory  } from 'react-router-dom'
+import { Link as LinkRouter, useHistory } from 'react-router-dom'
 
 import NumberFormat from 'react-number-format';
 
@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
@@ -56,6 +57,7 @@ export default function AccountRegister() {
             left: 0,
             behavior: 'smooth'
         });
+        
     }, [])
 
     const handleFileRead = async (e) => {
@@ -80,8 +82,8 @@ export default function AccountRegister() {
             password: data.get('password'),
             phone: data.get('phone')
         };
-        const emailEnable =  await checkEmail(profileForm);
-        if(emailEnable?.data?.message){
+        const emailEnable = await checkEmail(profileForm);
+        if (emailEnable?.data?.message) {
             await setProfile(profileForm);
             // eslint-disable-next-line no-unused-expressions
             history.push('/account/register/questions'), [history]
@@ -136,6 +138,10 @@ export default function AccountRegister() {
         );
     });
 
+    const returnLastPage = async () => {
+        history.goBack();
+      }
+
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -159,7 +165,46 @@ export default function AccountRegister() {
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                         <Box
                             sx={{
-                                my: 8,
+                                my: 4,
+                                mx: 3,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                textAlign: 'left'
+                            }}
+                        >
+                            <Grid container sx={{ flexDirection: 'column' }}>
+                                <Grid item xs>
+                                    <Box
+                                        sx={{
+                                            overflow: 'auto'
+                                        }}
+                                    >
+                                        <Grid sx={{
+                                            float: 'left'
+                                        }}>
+                                            <ArrowBackIosNewRoundedIcon sx={{
+                                                color: '#4892F1'
+                                            }}
+                                                onClick={returnLastPage}>
+                                            </ArrowBackIosNewRoundedIcon>
+                                        </Grid>
+                                        <Grid sx={{
+                                            float: 'right',
+                                            backgroundColor: '#4892F1',
+                                            color: 'white',
+                                            fontWeight: 500,
+                                            borderRadius: '25px',
+                                            px: 1
+                                        }}>
+                                            2 de 4
+                                        </Grid>
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Box
+                            sx={{
+                                mb: 4,
                                 mx: 4,
                                 display: 'flex',
                                 flexDirection: 'column',

@@ -47,10 +47,9 @@ export default function Song({ setQuestionPosition, questionPosition, setAnswers
                             height: '100%'
                         }}
                     />
-                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Grid item xs={12} sm={8} md={5}  elevation={6} square>
                         <Box
                             sx={{
-                                my: 8,
                                 mx: 4,
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -60,7 +59,7 @@ export default function Song({ setQuestionPosition, questionPosition, setAnswers
                             <Box component="form"
                                 noValidate
                                 sx={{
-                                    mt: 18,
+                                    mt: 8,
                                     display: 'flex',
                                     justifyContent: 'center',
                                 }}>
