@@ -31,7 +31,7 @@ import loginLeftSide from '../../assets/images/login-left-side.jpeg';
 
 import './style.css'
 import { Divider } from '@mui/material';
-import NavBar from '../../NavBar';
+import NavBar from '../NavBar';
 
 const theme = createTheme();
 

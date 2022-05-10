@@ -32,12 +32,16 @@ export default function NavBar() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: "#274293" }}>
         <Toolbar>
-          <IconButton color="inherit" aria-label="chat">
-            <ChatBubbleOutlineOutlinedIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit" aria-label="home">
             <HomeOutlinedIcon />
+          </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit" aria-label="search">
+            <SearchIcon />
+          </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit" aria-label="chat">
+            <ChatBubbleOutlineOutlinedIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit" aria-label="profile">
