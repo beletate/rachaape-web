@@ -6,6 +6,8 @@ import AccountRegister from '../AccountRegister';
 import Questions from '../Questions';
 import FindCity from '../FindCity';
 import Home from '../Home';
+import NavBar from '../NavBar';
+import Profile from '../Profile';
 
 export default function Routes() {
     return (
@@ -17,6 +19,7 @@ export default function Routes() {
                 <Route exact path="/account/register/questions" component={Questions} />
                 <Route exact path="/account/register/city" component={FindCity} />
                 <Route exact path="/home" component={Home} />
+                <Route exact path="/profile" component={Profile} />
             </Switch>
         </Router>
     )
