@@ -20,7 +20,7 @@ import './style.css'
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
 import styled from '@emotion/styled';
 import { useHistory } from 'react-router-dom';
-import Rooms from '../Rooms/create';
+import Rooms from '../Rooms';
 
 const theme = createTheme();
 
@@ -299,7 +299,7 @@ export default function Profile() {
             }
             {
                 actualComponent === 'rooms' && 
-                <Rooms></Rooms>
+                <Rooms setActualComponent={setActualComponent} profile={profile}></Rooms>
             }
             <NavBar />
         </>

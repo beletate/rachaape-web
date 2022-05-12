@@ -1,14 +1,203 @@
+import { Box, Button, createTheme, CssBaseline, Fab, Grid, IconButton, ThemeProvider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import './style.css'
+import { useHistory } from 'react-router-dom';
 
-export default function Rooms() {
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import AddIcon from '@mui/icons-material/Add';
+
+// Images
+import loginLeftSide from '../../assets/images/login-left-side.jpeg'
+
+import mock from '../__Mocks__/Aps';
+
+import './style.css'
+import CreateRooms from './Create';
+
+const theme = createTheme();
+
+export default function Rooms({ setActualComponent, profile }) {
+
+    const history = useHistory();
+
+    const [page, setPage] = useState('getting');
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        checkIfAlreadyContainAProfile();
+    }, [])
 
-    },[])
+    const checkIfAlreadyContainAProfile = () => {
+        if (!profile && !profile?._id) {
+            // eslint-disable-next-line no-unused-expressions
+            history.push('/home'), [history];
+        }
+    }
+
+    const returnLastPage = async () => {
+        history.goBack();
+    }
 
     return (
         <>
+            {
+                page === 'getting' &&
+                <ThemeProvider theme={theme}>
+                    <Grid container component="main" sx={{ height: '100vh' }}>
+                        <CssBaseline />
+                        <Grid
+                            item
+                            xs={false}
+                            sm={4}
+                            md={7}
+                            sx={{
+                                backgroundImage: `url(${loginLeftSide})`,
+                                backgroundRepeat: 'no-repeat',
+                                backgroundColor: (t) =>
+                                    t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                            }}
+                        />
+                        <Grid item xs={12} sm={8} md={5} elevation={6} square
+                            sx={{
+                                backgroundColor: '#FCFDFE'
+                            }}>
+
+                            <Box
+                                sx={{
+                                    my: 4,
+                                    mx: 3,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    textAlign: 'left',
+                                }}
+                            >
+                                <Grid container sx={{ flexDirection: 'column' }}>
+                                    <Grid item xs>
+                                        <Box
+                                            sx={{
+                                                overflow: 'auto'
+                                            }}
+                                        >
+                                            <Grid sx={{
+                                                float: 'left'
+                                            }}>
+                                                <ArrowBackIosNewRoundedIcon sx={{
+                                                    color: '#4892F1'
+                                                }}
+                                                    onClick={() => setActualComponent(undefined)}>
+                                                </ArrowBackIosNewRoundedIcon>
+                                            </Grid>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                            <Box
+                                sx={{
+                                    mb: 4,
+                                    mx: 4,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    textAlign: 'left'
+                                }}
+                            >
+                                <Typography component="h1" variant="h4" sx={{
+                                    fontWeight: 800
+                                }}>
+                                    Meus quartos 🏠
+                                </Typography>
+                            </Box>
+                            <Grid item container sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                textAlign: 'center',
+                                mt: 2,
+                                padding: 2,
+                                width: '94%',
+                                ml: 1.4,
+                                backgroundColor: '#fff',
+                                borderRadius: '5px',
+                                boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
+                            }}>
+                                <Grid container sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    textAlign: 'center'
+                                }}>
+                                    <Grid xs={4} item={true} container sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        textAlign: 'center',
+                                        maxHeight: '10vh'
+                                    }}>
+                                        <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={mock[0].img} alt="room"></img>
+                                    </Grid>
+                                    <Grid xs={8} item={true} container sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        textAlign: 'center',
+                                        paddingLeft: '1vh',
+                                    }}>
+                                        <Grid xs={8} item={true} container sx={{
+                                            display: 'flex',
+                                            textAlign: 'left',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                        }}>
+                                            <Typography sx={{
+                                                fontWeight: '600'
+                                            }}>
+                                                R${mock[0].value} /mês
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={4} item={true} container sx={{
+                                            display: 'flex',
+                                            justifyContent: 'right',
+                                            textAlign: 'center',
+                                            verticalAlign: 'middle'
+                                        }}>
+                                            <IconButton color="inherit" aria-label="trash"
+                                                sx={{ color: 'red' }}
+                                            >
+                                                <DeleteForeverIcon sx={{ height: 40 }} />
+                                            </IconButton>
+
+                                        </Grid>
+                                        <Grid xs={12} item={true} container sx={{
+                                            display: 'flex',
+                                            textAlign: 'left'
+                                        }}>
+                                            <Typography sx={{
+                                                fontWeight: '600',
+                                                pt: 1,
+                                                fontSize: 14
+                                            }}>
+                                                {mock[0].street}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Fab size="medium" color="primary" aria-label="add"
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 80,
+                                    right: 16,
+                                }}
+                                onClick={() => {
+                                    setPage('creating')
+                                }}>
+                                <AddIcon />
+                            </Fab>
+                        </Grid>
+                    </Grid>
+                </ThemeProvider >
+            }
+            {
+                page === 'creating' &&
+                <CreateRooms setPage={setPage} />
+            }
         </>
     )
 }
