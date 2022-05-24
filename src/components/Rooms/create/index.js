@@ -30,7 +30,7 @@ export default function CreateRooms({ setPage }) {
     const [creatingPhase, setCreatingPhase] = useState('first');
     const [file, setFile] = useState([]);
     const [searching, setSearching] = useState(false);
-    const [type, setType] = useState(null);
+    const [type, setType] = useState();
     const [price, setPrice] = useState(null);
     const [cep, setCep] = useState(null);
     const [city, setCity] = useState(null);
@@ -42,6 +42,7 @@ export default function CreateRooms({ setPage }) {
     const [roomForm, setRoomForm] = useState({});
 
     const uploadMultipleFiles = (e) => {
+        e.preventDefault();
         fileObj.push(e.target.files)
         for (let i = 0; i < fileObj[0].length; i++) {
             imagesToUpload.push(fileObj[0][i])
@@ -66,6 +67,7 @@ export default function CreateRooms({ setPage }) {
     }
 
     const findCEP = async (e) => {
+        e.preventDefault();
         if (e.target.value.length === 8) {
             const cepData = await getCep(e.target.value);
             if (cepData.data) {
@@ -195,8 +197,10 @@ export default function CreateRooms({ setPage }) {
                                         select
                                         label="Tipo"
                                         name="type"
+                                        defaultValue="apartament"
                                         autoComplete="type"
                                         variant='outlined'
+                                        onChange={(e) => setType(e.target.value)}
                                         InputProps={{
                                             inputComponent: NumberFormatCustom,
                                         }}
@@ -268,7 +272,8 @@ export default function CreateRooms({ setPage }) {
                                     name="cep"
                                     autoComplete="cep"
                                     variant='outlined'
-                                    inputProps={{ maxLength: 8 }}
+                                    keyboardType='numeric'
+                                    inputProps={{ maxLength: 8, min: 0 }}
                                     onChange={(e) => findCEP(e)}
                                 />
                             </Grid>
@@ -343,6 +348,7 @@ export default function CreateRooms({ setPage }) {
                                         type="number"
                                         autoComplete="number"
                                         variant='outlined'
+                                        onChange={(e) => setNumber(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>
@@ -357,7 +363,7 @@ export default function CreateRooms({ setPage }) {
                                     variant='outlined'
                                 />
                             </Grid>
-                            <Grid>
+                            {/* <Grid>
                                 <Grid xs={6}>
                                     <TextField
                                         margin="normal"
@@ -372,16 +378,16 @@ export default function CreateRooms({ setPage }) {
                                         }}
                                     />
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                             <Grid xs={12}>
                                 <Button sx={{
                                     textAlign: 'right',
                                     float: 'right',
                                     mr: 2,
                                     backgroundColor: '#274293',
-                                    mt: 4
+                                    my: 4
                                 }}
-                                    disabled={!cep && !neighborhood && !street && !number && !city && !state && !type && !price}
+                                    disabled={!cep && !file.length && !street && !city && !state && !neighborhood && !number}
                                     type='submit'
                                     variant="contained" endIcon={<SendIcon />}
                                 >
