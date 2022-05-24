@@ -57,6 +57,12 @@ export default function Profile() {
         margin: '0 auto',
     });
 
+    const getOut = async () => {
+        setProfile(null);
+        localStorage.removeItem('user');
+        checkIfAlreadyContainAProfile()
+    }
+
     return (
         <>
             {!actualComponent &&
@@ -125,6 +131,7 @@ export default function Profile() {
                                     </StyledFab>
                                     <Box sx={{ flexGrow: 1 }} />
                                     <IconButton color="inherit" aria-label="chat"
+                                        onClick={() => getOut()}
                                     >
                                         <LogoutIcon />
                                     </IconButton>
@@ -298,7 +305,7 @@ export default function Profile() {
                 </ThemeProvider >
             }
             {
-                actualComponent === 'rooms' && 
+                actualComponent === 'rooms' &&
                 <Rooms setActualComponent={setActualComponent} profile={profile}></Rooms>
             }
             <NavBar />

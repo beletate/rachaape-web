@@ -43,15 +43,15 @@ export default function Questions() {
     useEffect(() => {
         checkIfHasProfile();
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionPosition])
-    
+
     const checkIfHasProfile = () => {
-        if(profile && profile.email){
+        if (profile && profile.email) {
             setProfile({ ...profile, lifestyle: answers });
         } else {
             // eslint-disable-next-line no-unused-expressions
-            history.push('/'),[history];
+            history.push('/'), [history];
         }
     }
 
@@ -219,7 +219,6 @@ export default function Questions() {
                                             Começar o quiz!
                                         </Button>
                                         <Button
-                                            type="submit"
                                             fullWidth
                                             variant="contained"
                                             sx={{

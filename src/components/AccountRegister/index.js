@@ -91,7 +91,7 @@ export default function AccountRegister() {
 
         //saveCurrentUser(profileForm);
     };
-    
+
     const currencyFormatter = (formatted_value) => {
         if (!Number(formatted_value)) return "R$ 0,00";
         const br = { style: "currency", currency: "BRL" };

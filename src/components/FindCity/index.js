@@ -46,7 +46,7 @@ export default function FindCity() {
     }, [country]);
 
     const checkIfHasProfile = () => {
-        if (profile && profile.answers && profile.email) {
+        if (profile && profile.lifestyle && profile.email) {
             setProfile({ ...profile, country });
         } else {
             // eslint-disable-next-line no-unused-expressions
@@ -67,11 +67,11 @@ export default function FindCity() {
     }
 
     const saveCurrentUser = async () => {
-        const user = await setUser(profile);
-        if (user && user.statusText === "Created") {
-            setProfile(user);
-            delete user.password;
-            localStorage.setItem("user", JSON.stringify(user));
+        const tmpReturn = await setUser(profile);
+        if (tmpReturn && tmpReturn.statusText === "Created" && tmpReturn.data.user) {
+            delete tmpReturn.data.user.password;
+            setProfile(tmpReturn.data.user);
+            localStorage.setItem("user", JSON.stringify(tmpReturn.data.user));
             localStorage.setItem("auth", true);
             // eslint-disable-next-line no-unused-expressions
             history.push('/home'), [history];

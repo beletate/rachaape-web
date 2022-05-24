@@ -29,6 +29,7 @@ import loginLeftSide from '../../assets/images/login-left-side.jpeg';
 import './style.css'
 import { Divider } from '@mui/material';
 import NavBar from '../NavBar';
+import { useHistory } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -51,6 +52,8 @@ const style = {
 
 export default function Home() {
 
+    const history = useHistory();
+
     const [profile, setProfile] = useState({})
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -58,8 +61,19 @@ export default function Home() {
 
     useEffect(() => {
         WindowsScroll();
-        setProfile(JSON.parse(localStorage.getItem("user")));
+        checkIfHasProfile();
     }, [])
+
+    const checkIfHasProfile = () => {
+        const tmpProfile = JSON.parse(localStorage.getItem("user"));
+        if (tmpProfile) {
+            setProfile(profile);
+        } else {
+            // eslint-disable-next-line no-unused-expressions
+            history.push('/'), [history];
+        }
+
+    }
 
     return (
         <>
@@ -524,7 +538,7 @@ export default function Home() {
                     </Grid>
                 </Grid>
             </ThemeProvider>
-            <NavBar/>
+            <NavBar />
         </>
     )
 }
