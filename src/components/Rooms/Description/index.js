@@ -286,7 +286,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                         {
                             error &&
                             <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
-                                <Alert severity="error" onClose={() => { }}> Ocorreu um erro. — <strong>Tente novamente!</strong></Alert>
+                                <Alert severity="error" onClose={() => { setError(false)}}> Ocorreu um erro. — <strong>Tente novamente!</strong></Alert>
                             </Stack>
                         }
                     </Box>

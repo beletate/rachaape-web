@@ -8,11 +8,14 @@ import AddIcon from '@mui/icons-material/Add';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
+import noImage from '../../assets/images/no-image.png'
 
 import mock from '../__Mocks__/Aps';
 
 import './style.css'
 import CreateRooms from './Create';
+import getRoomsById from '../../db/getRoomsById';
+import deleteRoom from '../../db/deleteRoom';
 
 const theme = createTheme();
 
@@ -21,6 +24,7 @@ export default function Rooms({ setActualComponent, profile }) {
     const history = useHistory();
 
     const [page, setPage] = useState('getting');
+    const [myRooms, setMyRooms] = useState([]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -31,11 +35,28 @@ export default function Rooms({ setActualComponent, profile }) {
         if (!profile && !profile?._id) {
             // eslint-disable-next-line no-unused-expressions
             history.push('/home'), [history];
+        } else {
+            getAllRooms();
+        }
+
+    }
+
+    const getAllRooms = async () => {
+        const rooms = await getRoomsById(profile);
+        if (rooms && rooms.data.length) {
+            setMyRooms(rooms.data)
         }
     }
 
     const returnLastPage = async () => {
         history.goBack();
+    }
+
+    const deleteRooms = async (id) => {
+        const deleted = await deleteRoom(id);
+        if (deleted && deleted?.data?.message === 'Quarto removido com sucesso.') {
+            getAllRooms();
+        }
     }
 
     return (
@@ -108,77 +129,85 @@ export default function Rooms({ setActualComponent, profile }) {
                                     Meus quartos 🏠
                                 </Typography>
                             </Box>
-                            <Grid item container sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                mt: 2,
-                                padding: 2,
-                                width: '94%',
-                                ml: 1.4,
-                                backgroundColor: '#fff',
-                                borderRadius: '5px',
-                                boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
-                            }}>
-                                <Grid container sx={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    textAlign: 'center'
-                                }}>
-                                    <Grid xs={4} item={true} container sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        textAlign: 'center',
-                                        maxHeight: '10vh'
-                                    }}>
-                                        <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={mock[0].img} alt="room"></img>
-                                    </Grid>
-                                    <Grid xs={8} item={true} container sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        textAlign: 'center',
-                                        paddingLeft: '1vh',
-                                    }}>
-                                        <Grid xs={8} item={true} container sx={{
+                            {
+                                !!myRooms && !!myRooms.length && myRooms.map((room) => (
+                                    <>
+                                        <Grid item container sx={{
                                             display: 'flex',
-                                            textAlign: 'left',
-                                            flexDirection: 'column',
                                             justifyContent: 'center',
-                                        }}>
-                                            <Typography sx={{
-                                                fontWeight: '600'
-                                            }}>
-                                                R${mock[0].value} /mês
-                                            </Typography>
-                                        </Grid>
-                                        <Grid xs={4} item={true} container sx={{
-                                            display: 'flex',
-                                            justifyContent: 'right',
                                             textAlign: 'center',
-                                            verticalAlign: 'middle'
+                                            mt: 2,
+                                            padding: 2,
+                                            width: '94%',
+                                            ml: 1.4,
+                                            backgroundColor: '#fff',
+                                            borderRadius: '5px',
+                                            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
                                         }}>
-                                            <IconButton color="inherit" aria-label="trash"
-                                                sx={{ color: 'red' }}
-                                            >
-                                                <DeleteForeverIcon sx={{ height: 40 }} />
-                                            </IconButton>
-
-                                        </Grid>
-                                        <Grid xs={12} item={true} container sx={{
-                                            display: 'flex',
-                                            textAlign: 'left'
-                                        }}>
-                                            <Typography sx={{
-                                                fontWeight: '600',
-                                                pt: 1,
-                                                fontSize: 14
+                                            <Grid container sx={{
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                textAlign: 'center'
                                             }}>
-                                                {mock[0].street}
-                                            </Typography>
+                                                <Grid xs={4} item={true} container sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    textAlign: 'center',
+                                                    maxHeight: '10vh'
+                                                }}>
+                                                    <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
+                                                </Grid>
+                                                <Grid xs={8} item={true} container sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    textAlign: 'center',
+                                                    paddingLeft: '1vh',
+                                                }}>
+                                                    <Grid xs={8} item={true} container sx={{
+                                                        display: 'flex',
+                                                        textAlign: 'left',
+                                                        flexDirection: 'column',
+                                                        justifyContent: 'center',
+                                                    }}>
+                                                        <Typography sx={{
+                                                            fontWeight: '600'
+                                                        }}>
+                                                            {room.price} /mês
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid xs={4} item={true} container sx={{
+                                                        display: 'flex',
+                                                        justifyContent: 'right',
+                                                        textAlign: 'center',
+                                                        verticalAlign: 'middle'
+                                                    }}>
+                                                        <IconButton color="inherit" aria-label="trash"
+                                                            sx={{ color: 'red' }}
+                                                            onClick={() => deleteRooms(room._id)}
+                                                        >
+                                                            <DeleteForeverIcon sx={{ height: 40 }} />
+                                                        </IconButton>
+
+                                                    </Grid>
+                                                    <Grid xs={12} item={true} container sx={{
+                                                        display: 'flex',
+                                                        textAlign: 'left'
+                                                    }}>
+                                                        <Typography sx={{
+                                                            fontWeight: '600',
+                                                            pt: 1,
+                                                            fontSize: 14
+                                                        }}>
+                                                            {room.street}
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+                                    </>
+                                ))
+                            }
+
                             <Fab size="medium" color="primary" aria-label="add"
                                 sx={{
                                     position: 'absolute',
