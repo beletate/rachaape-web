@@ -172,7 +172,7 @@ export default function Rooms({ setActualComponent, profile }) {
                                                         <Typography sx={{
                                                             fontWeight: '600'
                                                         }}>
-                                                            {room.price} /mês
+                                                            {room.price || 'R$0,00'} /mês
                                                         </Typography>
                                                     </Grid>
                                                     <Grid xs={4} item={true} container sx={{

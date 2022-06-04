@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 
 // Material ui
 import Button from '@mui/material/Button';
@@ -11,6 +13,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+
+// Firebase
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg';
@@ -67,6 +71,19 @@ export default function FindCity() {
     }
 
     const saveCurrentUser = async () => {
+        const storage = getStorage();
+        const storageRef = ref(storage, profile.name + '_' + Math.random() * 10000);
+        let photoUrl;
+        await uploadBytes(storageRef, profile.photo).then(async (snapshot) => {
+            if (snapshot) {
+                await getDownloadURL(ref(storage, snapshot.metadata.name))
+                    .then((url) => {
+                        console.log(url)
+                        photoUrl = url;
+                    })
+            }
+        });
+        profile['photo'] = photoUrl;
         const tmpReturn = await setUser(profile);
         if (tmpReturn && tmpReturn.statusText === "Created" && tmpReturn.data.user) {
             delete tmpReturn.data.user.password;

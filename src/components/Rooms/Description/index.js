@@ -1,5 +1,7 @@
 import { Box, Button, createTheme, CssBaseline, FormControlLabel, FormGroup, Grid, Switch, TextField, ThemeProvider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 import { useHistory } from 'react-router-dom';
 
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
@@ -37,12 +39,26 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
-        checkIfAlreadyContainAProfile();
-        console.log(roomForm)
+        uploadImages()
     }, [])
 
-    const checkIfAlreadyContainAProfile = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
+    const uploadImages = async () => {
+        const storage = getStorage();
+        let photoUrl = [];
+        if (roomForm && roomForm.photos.length) {
+            for (let i = 0; i < roomForm.photos.length; i++) {
+                const storageRef = ref(storage, roomForm.photos[i].name + '_' + Math.random() * 10000);
+                await uploadBytes(storageRef, roomForm.photos[i]).then(async (snapshot) => {
+                    if (snapshot) {
+                        await getDownloadURL(ref(storage, snapshot.metadata.name))
+                            .then((url) => {
+                                photoUrl.push(url);
+                            })
+                    }
+                });
+            }
+        }
+        roomForm.photos = photoUrl;
     }
 
 
@@ -68,9 +84,9 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
         const user = JSON.parse(localStorage.getItem("user"));
         const finalForm = { ...roomForm, details, owner: user._id, price: data.get('price') }
         const insertedForm = await createRoom(finalForm);
-        if(insertedForm?.data?.message === "Ok!"){
+        if (insertedForm?.data?.message === "Ok!") {
             document.location.reload(true);
-        }else{  
+        } else {
             setError(true);
         }
 
@@ -286,7 +302,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                         {
                             error &&
                             <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
-                                <Alert severity="error" onClose={() => { setError(false)}}> Ocorreu um erro. — <strong>Tente novamente!</strong></Alert>
+                                <Alert severity="error" onClose={() => { setError(false) }}> Ocorreu um erro. — <strong>Tente novamente!</strong></Alert>
                             </Stack>
                         }
                     </Box>

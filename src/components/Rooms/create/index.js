@@ -90,6 +90,7 @@ export default function CreateRooms({ setPage }) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const roomForm = {
+            photos: imagesToUpload,
             type: data.get('type'),
             price: data.get('price'),
             cep: Number(data.get('cep')),
