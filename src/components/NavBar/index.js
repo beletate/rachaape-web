@@ -32,11 +32,11 @@ export default function NavBar() {
           onClick={() => changeRoute('search')}>
             <SearchIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit" aria-label="chat"
+          <Box  />
+          {/* <IconButton color="inherit" aria-label="chat"
           onClick={() => changeRoute('chat')}>
             <ChatBubbleOutlineOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit" aria-label="profile"
           onClick={() => changeRoute('profile')}>

@@ -33,6 +33,7 @@ import { Divider } from '@mui/material';
 import NavBar from '../NavBar';
 import { useHistory } from 'react-router-dom';
 import getAllRooms from '../../db/getAllRooms';
+import getUserByRoom from '../../db/getUserByRoom';
 
 const theme = createTheme();
 
@@ -88,10 +89,28 @@ export default function Home() {
         }
     }
 
-    const selectRoom = (room) => {
-        setActualRoom(room)
-        console.log(room)
-        setOpen(true);
+    const selectRoom = async (room) => {
+        try {
+            const roomUser = await getUserByRoom(room.owner);
+            console.log(roomUser)
+            if (roomUser.data && roomUser.data._id) {
+                room.user = roomUser.data;
+                setActualRoom(room);
+                setOpen(true);
+                console.log(room)
+            }
+        } catch (e) {
+
+        }
+    }
+
+    const openWhatsappChat = (data) => {
+        let userNumber = data.user.phone.replaceAll(/[^a-zA-Z0-9]/g, "");
+        console.log(userNumber)
+        let message = `Olá, tenho interesse em rachar o imóvel localizado na ${data.street}, ${data.number}!`;
+        console.log(message)
+        console.log(`https://wa.me/${userNumber}?text=${message}`)
+        window.open(`https://wa.me/${userNumber}?text=${message}`);
     }
 
     return (
@@ -266,312 +285,329 @@ export default function Home() {
                                 ))
                             }
 
-                            <Modal
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                                sx={{
-                                    overflow: 'scroll',
-                                }}
-                            >
-                                <Box sx={style}>
-                                    <Grid sx={{
-                                        maxWidth: '100%',
-                                    }}>
-                                        <Box
-                                            sx={{
-                                                display: 'flex',
-                                            }}>
-                                            <ClearSharpIcon
-                                                onClick={handleClose}
-                                                sx={{
-                                                    fontSize: '2.4rem',
-                                                    color: '#fff',
-                                                    display: 'block',
-                                                    position: 'absolute',
-                                                    backgroundColor: 'rgb(151, 151, 151, 0.5)',
-                                                    borderRadius: '50px',
-                                                    p: 0.6,
-                                                    m: 2
-                                                }}>
-                                            </ClearSharpIcon>
-                                        </Box>
-                                        <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={mock[0].img} alt="room"></img>
-                                    </Grid>
-                                    <Grid sx={{
-                                        p: 4
-                                    }}>
-                                        <Typography >
-                                            {mock[0].city}, {mock[0].state}
-                                        </Typography>
-                                        <Typography variant="h6" component="h3"
-                                            sx={{
-                                                fontWeight: 600
-                                            }}>
-                                            {mock[0].street} #{mock[0].number}
-                                        </Typography>
 
-                                        <Grid container sx={{
-                                            display: 'flex',
-                                            textAlign: 'left',
-                                            alignItems: 'center',
-                                            verticalAlign: 'middle',
-                                            mt: 1,
+
+
+
+
+
+
+
+
+
+
+                            {
+                                !!actualRoom &&
+
+                                <Modal
+                                    open={open}
+                                    onClose={handleClose}
+                                    aria-labelledby="modal-modal-title"
+                                    aria-describedby="modal-modal-description"
+                                    sx={{
+                                        overflow: 'scroll',
+                                    }}
+                                >
+                                    <Box sx={style}>
+                                        <Grid sx={{
+                                            maxWidth: '100%',
                                         }}>
-                                            <Grid xs={4}>
-                                                <Typography sx={{
-                                                    fontSize: 11,
-                                                    mt: 0.4
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
                                                 }}>
-                                                    <HotelOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                    </HotelOutlinedIcon>
-                                                    <span>{mock[0].rooms} quarto(s) </span>
-                                                </Typography>
-                                            </Grid>
-                                            <Grid xs={4}>
-                                                <Typography sx={{
-                                                    fontSize: 11,
-                                                    mt: 0.4
-                                                }}>
-                                                    <ShowerOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                    </ShowerOutlinedIcon>
-                                                    <span>{mock[0].baths} banheiro(s)</span>
-                                                </Typography>
-                                            </Grid>
-                                            <Grid xs={4}>
-                                                <Typography sx={{
-                                                    fontSize: 11,
-                                                    mt: 0.4
-                                                }}>
-                                                    <DirectionsCarFilledOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                    </DirectionsCarFilledOutlinedIcon>
-                                                    <span>{mock[0].garage} vaga(s)</span>
-                                                </Typography></Grid>
+                                                <ClearSharpIcon
+                                                    onClick={handleClose}
+                                                    sx={{
+                                                        fontSize: '2.4rem',
+                                                        color: '#fff',
+                                                        display: 'block',
+                                                        position: 'absolute',
+                                                        backgroundColor: 'rgb(151, 151, 151, 0.5)',
+                                                        borderRadius: '50px',
+                                                        p: 0.6,
+                                                        m: 2
+                                                    }}>
+                                                </ClearSharpIcon>
+                                            </Box>
+                                            <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={mock[0].img} alt="room"></img>
                                         </Grid>
-                                        <Divider sx={{ my: 2 }} />
-                                        <Typography sx={{ fontWeight: 600 }}>
-                                            Descrição
-                                        </Typography>
-
-                                        <Typography sx={{ mt: 1, fontSize: 14, color: '#767984' }}>
-                                            {mock[0].description}
-                                        </Typography>
-
-                                    </Grid>
-
-                                    <Grid container sx={{
-                                        display: 'flex',
-                                        textAlign: 'left',
-                                        backgroundColor: '#F5F6F9',
-                                        height: '8rem',
-                                        px: 4
-                                    }}>
-                                        <Grid xs={12}>
-                                            <Typography sx={{
-                                                fontSize: 14,
-                                                pt: 2,
-                                                fontWeight: 600
-                                            }}>
-                                                Facilidades
+                                        <Grid sx={{
+                                            p: 4
+                                        }}>
+                                            <Typography >
+                                                {actualRoom.city}, {actualRoom.state}
                                             </Typography>
-                                        </Grid>
-                                        <Grid xs={12} sx={{
-                                            display: 'flex'
-                                        }}>
-                                            <Box
+                                            <Typography variant="h6" component="h3"
                                                 sx={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-
-                                                }}>
-                                                <NetworkWifiIcon
-                                                    sx={{
-                                                        fontSize: '3.4rem',
-                                                        color: '#274293',
-                                                        display: 'block',
-                                                        backgroundColor: '#fff',
-                                                        borderRadius: '50px',
-                                                        p: 1.8,
-                                                        mr: 3,
-                                                    }}>
-                                                </NetworkWifiIcon>
-                                                <Typography sx={{
-                                                    fontSize: 12,
-                                                    color: '#767984',
-                                                    ml: 2,
-                                                    pt: 1
-                                                }}>
-                                                    WiFi
-                                                </Typography>
-                                            </Box>
-
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                }}>
-                                                <PetsIcon
-                                                    sx={{
-                                                        fontSize: '3.4rem',
-                                                        color: '#274293',
-                                                        display: 'block',
-                                                        backgroundColor: '#fff',
-                                                        borderRadius: '50px',
-                                                        p: 1.8,
-                                                        mx: 0.6,
-                                                        mr: 3,
-                                                    }}>
-                                                </PetsIcon>
-                                                <Typography sx={{
-                                                    fontSize: 12,
-                                                    color: '#767984',
-                                                    ml: 2.4,
-                                                    pt: 1
-                                                }}>
-                                                    Pets
-                                                </Typography>
-                                            </Box>
-
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                }}>
-                                                <SmokingRoomsIcon
-                                                    sx={{
-                                                        fontSize: '3.4rem',
-                                                        color: '#274293',
-                                                        display: 'block',
-                                                        backgroundColor: '#fff',
-                                                        borderRadius: '50px',
-                                                        p: 1.8,
-                                                        mx: 0.6,
-                                                        mr: 3,
-                                                    }}>
-                                                </SmokingRoomsIcon>
-                                                <Typography sx={{
-                                                    fontSize: 12,
-                                                    color: '#767984',
-                                                    ml: 1.4,
-                                                    pt: 1,
-                                                    lineBreak: 1
-                                                }}>
-                                                    Permitido
-                                                </Typography>
-                                            </Box>
-
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                }}>
-                                                <TvIcon
-                                                    sx={{
-                                                        fontSize: '3.4rem',
-                                                        color: '#274293',
-                                                        display: 'block',
-                                                        backgroundColor: '#fff',
-                                                        borderRadius: '50px',
-                                                        p: 1.8,
-                                                        mx: 0.6,
-                                                    }}>
-                                                </TvIcon>
-                                                <Typography sx={{
-                                                    fontSize: 12,
-                                                    color: '#767984',
-                                                    ml: 3,
-                                                    pt: 1,
-                                                    lineBreak: 1
-                                                }}>
-                                                    Tv
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
-
-                                    </Grid>
-                                    <Grid sx={{
-                                        p: 4
-                                    }}>
-                                        <Typography sx={{ fontWeight: 600 }}>
-                                            Mais fotos
-                                        </Typography>
-                                        <Grid>
-                                            <Box sx={{ my: 3 }}>
-                                                <img src={mock[0].img} alt="room" style={{
-                                                    width: '10rem',
-                                                    borderRadius: '10px'
-                                                }} />
-                                            </Box>
-                                        </Grid>
-
-                                        <Typography sx={{ fontWeight: 600 }}>
-                                            Colega de quarto
-                                        </Typography>
-                                        <Grid container sx={{
-                                            display: 'flex',
-                                            textAlign: 'left',
-                                            height: '8rem',
-                                        }}>
-                                            <Grid xs={3} item={true} container sx={{
-                                                display: 'flex',
-                                                justifyContent: 'left',
-                                                textAlign: 'center',
-                                                verticalAlign: 'middle'
-                                            }}>
-                                                <img style={{ maxHeight: '64px', maxWidth: '64px', borderRadius: '50%', marginTop: '40%' }} src={mock[0].owner}></img>
-                                            </Grid>
-                                            <Grid xs={8} item={true} container sx={{
-                                                display: 'table',
-                                                height: '100%'
-                                            }}>
-                                                <Typography sx={{
-                                                    position: 'relative',
-                                                    top: '40%',
-                                                    transform: 'translateY(-50%)',
                                                     fontWeight: 600
                                                 }}>
-                                                    {mock[0].name}, {mock[0].age}
-                                                </Typography>
-                                                <Typography sx={{
-                                                    position: 'relative',
-                                                    top: '40%',
-                                                    transform: 'translateY(-50%)',
-                                                    fontSize: 14,
-                                                    color: '#767984'
-                                                }}>
-                                                    {mock[0].job}
-                                                </Typography>
+                                                {actualRoom.street} #{actualRoom.number}
+                                            </Typography>
+
+                                            <Grid container sx={{
+                                                display: 'flex',
+                                                textAlign: 'left',
+                                                alignItems: 'center',
+                                                verticalAlign: 'middle',
+                                                mt: 1,
+                                            }}>
+                                                <Grid xs={4}>
+                                                    <Typography sx={{
+                                                        fontSize: 11,
+                                                        mt: 0.4
+                                                    }}>
+                                                        <HotelOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
+                                                        </HotelOutlinedIcon>
+                                                        <span>{mock[0].rooms} quarto(s) </span>
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid xs={4}>
+                                                    <Typography sx={{
+                                                        fontSize: 11,
+                                                        mt: 0.4
+                                                    }}>
+                                                        <ShowerOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
+                                                        </ShowerOutlinedIcon>
+                                                        <span>{mock[0].baths} banheiro(s)</span>
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid xs={4}>
+                                                    <Typography sx={{
+                                                        fontSize: 11,
+                                                        mt: 0.4
+                                                    }}>
+                                                        <DirectionsCarFilledOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
+                                                        </DirectionsCarFilledOutlinedIcon>
+                                                        <span>{mock[0].garage} vaga(s)</span>
+                                                    </Typography></Grid>
                                             </Grid>
+                                            <Divider sx={{ my: 2 }} />
+                                            <Typography sx={{ fontWeight: 600 }}>
+                                                Descrição
+                                            </Typography>
+
+                                            <Typography sx={{ mt: 1, fontSize: 14, color: '#767984' }}>
+                                                {actualRoom.details.description}
+                                            </Typography>
+
                                         </Grid>
-                                        <Typography sx={{ fontSize: 14, color: '#767984' }}>
-                                            Comigo não tem essa de pisar em ovos ou de ter receio de falar a verdade. Sou verdadeiro, sincero e transparente, doa a quem doer. Se eu não posso ser eu mesmo e dizer o que eu quiser dizer para você, é melhor mantermos distância. Não troco minha personalidade e minha honestidade por nada.
-                                        </Typography>
 
                                         <Grid container sx={{
                                             display: 'flex',
-                                            textAlign: 'left'
+                                            textAlign: 'left',
+                                            backgroundColor: '#F5F6F9',
+                                            height: '8rem',
+                                            px: 4
                                         }}>
-                                            <Button
-                                                type="submit"
-                                                fullWidth
-                                                variant="contained"
-                                                sx={{
-                                                    mt: 3,
-                                                    mb: 2,
-                                                    minHeight: '7vh',
-                                                    fontWeight: 500,
-                                                    fontSize: 16,
-                                                    backgroundColor: '#274293'
-                                                }}
-                                            >
-                                                Chat com {mock[0].name.split(' ')[0]}
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
+                                            <Grid xs={12}>
+                                                <Typography sx={{
+                                                    fontSize: 14,
+                                                    pt: 2,
+                                                    fontWeight: 600
+                                                }}>
+                                                    Facilidades
+                                                </Typography>
+                                            </Grid>
+                                            <Grid xs={12} sx={{
+                                                display: 'flex'
+                                            }}>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
 
-                                </Box>
-                            </Modal>
+                                                    }}>
+                                                    <NetworkWifiIcon
+                                                        sx={{
+                                                            fontSize: '3.4rem',
+                                                            color: '#274293',
+                                                            display: 'block',
+                                                            backgroundColor: '#fff',
+                                                            borderRadius: '50px',
+                                                            p: 1.8,
+                                                            mr: 3,
+                                                        }}>
+                                                    </NetworkWifiIcon>
+                                                    <Typography sx={{
+                                                        fontSize: 12,
+                                                        color: '#767984',
+                                                        ml: 2,
+                                                        pt: 1
+                                                    }}>
+                                                        WiFi
+                                                    </Typography>
+                                                </Box>
+
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                    }}>
+                                                    <PetsIcon
+                                                        sx={{
+                                                            fontSize: '3.4rem',
+                                                            color: '#274293',
+                                                            display: 'block',
+                                                            backgroundColor: '#fff',
+                                                            borderRadius: '50px',
+                                                            p: 1.8,
+                                                            mx: 0.6,
+                                                            mr: 3,
+                                                        }}>
+                                                    </PetsIcon>
+                                                    <Typography sx={{
+                                                        fontSize: 12,
+                                                        color: '#767984',
+                                                        ml: 2.4,
+                                                        pt: 1
+                                                    }}>
+                                                        Pets
+                                                    </Typography>
+                                                </Box>
+
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                    }}>
+                                                    <SmokingRoomsIcon
+                                                        sx={{
+                                                            fontSize: '3.4rem',
+                                                            color: '#274293',
+                                                            display: 'block',
+                                                            backgroundColor: '#fff',
+                                                            borderRadius: '50px',
+                                                            p: 1.8,
+                                                            mx: 0.6,
+                                                            mr: 3,
+                                                        }}>
+                                                    </SmokingRoomsIcon>
+                                                    <Typography sx={{
+                                                        fontSize: 12,
+                                                        color: '#767984',
+                                                        ml: 1.4,
+                                                        pt: 1,
+                                                        lineBreak: 1
+                                                    }}>
+                                                        Permitido
+                                                    </Typography>
+                                                </Box>
+
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                    }}>
+                                                    <TvIcon
+                                                        sx={{
+                                                            fontSize: '3.4rem',
+                                                            color: '#274293',
+                                                            display: 'block',
+                                                            backgroundColor: '#fff',
+                                                            borderRadius: '50px',
+                                                            p: 1.8,
+                                                            mx: 0.6,
+                                                        }}>
+                                                    </TvIcon>
+                                                    <Typography sx={{
+                                                        fontSize: 12,
+                                                        color: '#767984',
+                                                        ml: 3,
+                                                        pt: 1,
+                                                        lineBreak: 1
+                                                    }}>
+                                                        Tv
+                                                    </Typography>
+                                                </Box>
+                                            </Grid>
+
+                                        </Grid>
+                                        <Grid sx={{
+                                            p: 4
+                                        }}>
+                                            <Typography sx={{ fontWeight: 600 }}>
+                                                Mais fotos
+                                            </Typography>
+                                            <Grid>
+                                                <Box sx={{ my: 3 }}>
+                                                    <img src={mock[0].img} alt="room" style={{
+                                                        width: '10rem',
+                                                        borderRadius: '10px'
+                                                    }} />
+                                                </Box>
+                                            </Grid>
+
+                                            <Typography sx={{ fontWeight: 600 }}>
+                                                Colega de quarto
+                                            </Typography>
+                                            <Grid container sx={{
+                                                display: 'flex',
+                                                textAlign: 'left',
+                                                height: '8rem',
+                                            }}>
+                                                <Grid xs={3} item={true} container sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'left',
+                                                    textAlign: 'center',
+                                                    verticalAlign: 'middle'
+                                                }}>
+                                                    <img style={{ maxHeight: '64px', maxWidth: '64px', borderRadius: '50%', marginTop: '40%' }} src={mock[0].owner}></img>
+                                                </Grid>
+                                                <Grid xs={8} item={true} container sx={{
+                                                    display: 'table',
+                                                    height: '100%'
+                                                }}>
+                                                    <Typography sx={{
+                                                        position: 'relative',
+                                                        top: '40%',
+                                                        transform: 'translateY(-50%)',
+                                                        fontWeight: 600
+                                                    }}>
+                                                        {actualRoom.user.name}, {actualRoom.user.age}
+                                                    </Typography>
+                                                    <Typography sx={{
+                                                        position: 'relative',
+                                                        top: '40%',
+                                                        transform: 'translateY(-50%)',
+                                                        fontSize: 14,
+                                                        color: '#767984'
+                                                    }}>
+                                                        {mock[0].job}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            {/* <Typography sx={{ fontSize: 14, color: '#767984' }}>
+                                                Comigo não tem essa de pisar em ovos ou de ter receio de falar a verdade. Sou verdadeiro, sincero e transparente, doa a quem doer. Se eu não posso ser eu mesmo e dizer o que eu quiser dizer para você, é melhor mantermos distância. Não troco minha personalidade e minha honestidade por nada.
+                                            </Typography> */}
+
+                                            <Grid container sx={{
+                                                display: 'flex',
+                                                textAlign: 'left'
+                                            }}>
+                                                <Button
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="contained"
+                                                    sx={{
+                                                        mt: 3,
+                                                        mb: 2,
+                                                        minHeight: '7vh',
+                                                        fontWeight: 500,
+                                                        fontSize: 16,
+                                                        backgroundColor: '#274293'
+                                                    }}
+                                                    onClick={() => openWhatsappChat(actualRoom)}
+                                                >
+                                                    Chat com {actualRoom.user.name.split(' ')[0]}
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+
+                                    </Box>
+                                </Modal>
+                            }
+
                         </Box>
                     </Grid>
                 </Grid>
