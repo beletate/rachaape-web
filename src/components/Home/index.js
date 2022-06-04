@@ -92,8 +92,8 @@ export default function Home() {
     const selectRoom = async (room) => {
         try {
             const roomUser = await getUserByRoom(room.owner);
-            console.log(roomUser)
             if (roomUser.data && roomUser.data._id) {
+                console.log(room)
                 room.user = roomUser.data;
                 setActualRoom(room);
                 setOpen(true);
@@ -330,7 +330,7 @@ export default function Home() {
                                                     }}>
                                                 </ClearSharpIcon>
                                             </Box>
-                                            <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={mock[0].img} alt="room"></img>
+                                            <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={actualRoom.photos[0]} alt="room"></img>
                                         </Grid>
                                         <Grid sx={{
                                             p: 4
@@ -345,7 +345,7 @@ export default function Home() {
                                                 {actualRoom.street} #{actualRoom.number}
                                             </Typography>
 
-                                            <Grid container sx={{
+                                            {/* <Grid container sx={{
                                                 display: 'flex',
                                                 textAlign: 'left',
                                                 alignItems: 'center',
@@ -380,8 +380,9 @@ export default function Home() {
                                                         <DirectionsCarFilledOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
                                                         </DirectionsCarFilledOutlinedIcon>
                                                         <span>{mock[0].garage} vaga(s)</span>
-                                                    </Typography></Grid>
-                                            </Grid>
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid> */}
                                             <Divider sx={{ my: 2 }} />
                                             <Typography sx={{ fontWeight: 600 }}>
                                                 Descrição
@@ -552,7 +553,7 @@ export default function Home() {
                                                     textAlign: 'center',
                                                     verticalAlign: 'middle'
                                                 }}>
-                                                    <img style={{ maxHeight: '64px', maxWidth: '64px', borderRadius: '50%', marginTop: '40%' }} src={mock[0].owner}></img>
+                                                    <img style={{ maxHeight: '64px', maxWidth: '64px', borderRadius: '50%', marginTop: '40%' }} src={actualRoom.user.photo}></img>
                                                 </Grid>
                                                 <Grid xs={8} item={true} container sx={{
                                                     display: 'table',
