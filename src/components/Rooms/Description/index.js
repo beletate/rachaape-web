@@ -52,12 +52,14 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                     if (snapshot) {
                         await getDownloadURL(ref(storage, snapshot.metadata.name))
                             .then((url) => {
+                                console.log(url)
                                 photoUrl.push(url);
                             })
                     }
                 });
             }
         }
+        console.log(photoUrl)
         roomForm.photos = photoUrl;
     }
 

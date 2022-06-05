@@ -532,10 +532,14 @@ export default function Home() {
                                             </Typography>
                                             <Grid>
                                                 <Box sx={{ my: 3 }}>
-                                                    <img src={mock[0].img} alt="room" style={{
-                                                        width: '10rem',
-                                                        borderRadius: '10px'
-                                                    }} />
+                                                    {actualRoom.photos.map(photo => (
+
+                                                        <img src={photo} alt="room" style={{
+                                                            width: '10rem',
+                                                            borderRadius: '10px'
+                                                        }} />
+                                                    ))}
+
                                                 </Box>
                                             </Grid>
 
@@ -574,7 +578,7 @@ export default function Home() {
                                                         fontSize: 14,
                                                         color: '#767984'
                                                     }}>
-                                                        {mock[0].job}
+                                                        Estudante
                                                     </Typography>
                                                 </Grid>
                                             </Grid>

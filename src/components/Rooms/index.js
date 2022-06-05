@@ -54,7 +54,7 @@ export default function Rooms({ setActualComponent, profile }) {
 
     const deleteRooms = async (id) => {
         const deleted = await deleteRoom(id);
-        if (deleted && deleted?.data?.message === 'Quarto removido com sucesso.') {
+        if (deleted && deleted?.data?.message == 'Quarto removido com sucesso.') {
             getAllRooms();
         }
     }
