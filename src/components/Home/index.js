@@ -12,8 +12,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 
 import ClearSharpIcon from '@mui/icons-material/ClearSharp';
+import ChairIcon from '@mui/icons-material/Chair';
 import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
 import ShowerOutlinedIcon from '@mui/icons-material/ShowerOutlined';
+import CelebrationIcon from '@mui/icons-material/Celebration';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
 import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
 import PetsIcon from '@mui/icons-material/Pets';
@@ -27,6 +30,7 @@ import mock from '../__Mocks__/Aps';
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg';
 import noImage from '../../assets/images/no-image.png'
+import bar from '../../assets/images/line.png'
 
 import './style.css'
 import { Divider } from '@mui/material';
@@ -35,7 +39,16 @@ import { useHistory } from 'react-router-dom';
 import getAllRooms from '../../db/getAllRooms';
 import getUserByRoom from '../../db/getUserByRoom';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 const header = createTheme({
     typography: {
@@ -398,7 +411,7 @@ export default function Home() {
                                             display: 'flex',
                                             textAlign: 'left',
                                             backgroundColor: '#F5F6F9',
-                                            height: '8rem',
+                                            height: '12rem',
                                             px: 4
                                         }}>
                                             <Grid xs={12}>
@@ -413,114 +426,258 @@ export default function Home() {
                                             <Grid xs={12} sx={{
                                                 display: 'flex'
                                             }}>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
 
-                                                    }}>
-                                                    <NetworkWifiIcon
-                                                        sx={{
-                                                            fontSize: '3.4rem',
-                                                            color: '#274293',
-                                                            display: 'block',
-                                                            backgroundColor: '#fff',
-                                                            borderRadius: '50px',
-                                                            p: 1.8,
-                                                            mr: 3,
-                                                        }}>
-                                                    </NetworkWifiIcon>
-                                                    <Typography sx={{
-                                                        fontSize: 12,
-                                                        color: '#767984',
-                                                        ml: 2,
-                                                        pt: 1
-                                                    }}>
-                                                        WiFi
-                                                    </Typography>
-                                                </Box>
+                                                {
+                                                    actualRoom.details.wifi ?
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
 
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                    }}>
-                                                    <PetsIcon
-                                                        sx={{
-                                                            fontSize: '3.4rem',
-                                                            color: '#274293',
-                                                            display: 'block',
-                                                            backgroundColor: '#fff',
-                                                            borderRadius: '50px',
-                                                            p: 1.8,
-                                                            mx: 0.6,
-                                                            mr: 3,
-                                                        }}>
-                                                    </PetsIcon>
-                                                    <Typography sx={{
-                                                        fontSize: 12,
-                                                        color: '#767984',
-                                                        ml: 2.4,
-                                                        pt: 1
-                                                    }}>
-                                                        Pets
-                                                    </Typography>
-                                                </Box>
+                                                            }}>
+                                                            <NetworkWifiIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </NetworkWifiIcon>
+                                                        </Box>
+                                                        :
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                opacity: '10%'
+                                                            }}>
+                                                            <NetworkWifiIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </NetworkWifiIcon>
+                                                        </Box>
+                                                }
+                                                {
+                                                    actualRoom.details.pets ?
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                opacity: '10%'
+                                                            }}>
+                                                            <PetsIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mx: 0.6,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </PetsIcon>
+                                                        </Box>
+                                                        :
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                            }}>
+                                                            <PetsIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mx: 0.6,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </PetsIcon>
+                                                        </Box>
+                                                }
+                                                {
+                                                    actualRoom.details.smoker ?
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                            }}>
+                                                            <SmokingRoomsIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mx: 0.6,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </SmokingRoomsIcon>
+                                                        </Box>
+                                                        :
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                opacity: '10%'
+                                                            }}>
+                                                            <SmokingRoomsIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mx: 0.6,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </SmokingRoomsIcon>
+                                                        </Box>
+                                                }
 
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                    }}>
-                                                    <SmokingRoomsIcon
-                                                        sx={{
-                                                            fontSize: '3.4rem',
-                                                            color: '#274293',
-                                                            display: 'block',
-                                                            backgroundColor: '#fff',
-                                                            borderRadius: '50px',
-                                                            p: 1.8,
-                                                            mx: 0.6,
-                                                            mr: 3,
-                                                        }}>
-                                                    </SmokingRoomsIcon>
-                                                    <Typography sx={{
-                                                        fontSize: 12,
-                                                        color: '#767984',
-                                                        ml: 1.4,
-                                                        pt: 1,
-                                                        lineBreak: 1
-                                                    }}>
-                                                        Permitido
-                                                    </Typography>
-                                                </Box>
+                                                {
+                                                    actualRoom.details.furniture ?
 
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                    }}>
-                                                    <TvIcon
-                                                        sx={{
-                                                            fontSize: '3.4rem',
-                                                            color: '#274293',
-                                                            display: 'block',
-                                                            backgroundColor: '#fff',
-                                                            borderRadius: '50px',
-                                                            p: 1.8,
-                                                            mx: 0.6,
-                                                        }}>
-                                                    </TvIcon>
-                                                    <Typography sx={{
-                                                        fontSize: 12,
-                                                        color: '#767984',
-                                                        ml: 3,
-                                                        pt: 1,
-                                                        lineBreak: 1
-                                                    }}>
-                                                        Tv
-                                                    </Typography>
-                                                </Box>
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+
+                                                            }}>
+                                                            <ChairIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </ChairIcon>
+                                                        </Box>
+                                                        :
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                opacity: '10%'
+                                                            }}>
+                                                            < ChairIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </ ChairIcon>
+                                                        </Box>
+
+                                                }
+                                            </Grid>
+                                            <Grid xs={12} sx={{
+                                                display: 'flex'
+                                            }}>
+                                                {
+                                                    actualRoom.details.party ?
+
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                            }}>
+                                                            <CelebrationIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3.6,
+                                                                }}>
+                                                            </ CelebrationIcon>
+                                                        </Box>
+                                                        :
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                opacity: '10%'
+                                                            }}>
+                                                            <CelebrationIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </ CelebrationIcon>
+                                                        </Box>
+
+                                                }
+                                                {
+                                                    actualRoom.details.garage ?
+
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                            }}>
+                                                            <DirectionsCarIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </ DirectionsCarIcon>
+                                                        </Box>
+                                                        :
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                opacity: '10%'
+                                                            }}>
+                                                            <DirectionsCarIcon
+                                                                sx={{
+                                                                    fontSize: '3.4rem',
+                                                                    color: '#274293',
+                                                                    display: 'block',
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '50px',
+                                                                    p: 1.8,
+                                                                    mr: 3,
+                                                                }}>
+                                                            </ DirectionsCarIcon>
+                                                        </Box>
+
+                                                }
                                             </Grid>
 
                                         </Grid>

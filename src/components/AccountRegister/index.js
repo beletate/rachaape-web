@@ -29,7 +29,16 @@ import { IconButton } from '@mui/material';
 import setUser from '../../db/setUser';
 import checkEmail from '../../db/checkEmail';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 export default function AccountRegister() {
     const history = useHistory();

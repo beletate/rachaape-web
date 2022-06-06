@@ -13,7 +13,16 @@ import loginLeftSide from '../../../../assets/images/login-left-side.jpeg'
 
 import './style.css'
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 export default function Smoker({ setQuestionPosition, questionPosition, setAnswers }) {
 

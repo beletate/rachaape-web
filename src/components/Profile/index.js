@@ -22,7 +22,16 @@ import styled from '@emotion/styled';
 import { useHistory } from 'react-router-dom';
 import Rooms from '../Rooms';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 
 export default function Profile() {
@@ -64,7 +73,7 @@ export default function Profile() {
     }
 
     return (
-        <>
+        <React.Fragment>
             {!actualComponent &&
                 <ThemeProvider theme={theme}>
                     <Grid container component="main" sx={{ height: '100vh' }}>
@@ -100,7 +109,7 @@ export default function Profile() {
                                     borderRadius: '0px 0px 20px 80px'
                                 }}
                             >
-                                <Typography component="h2" variant="h5" sx={{
+                                <Typography className="teste" component="h2" variant="h5" sx={{
                                     fontWeight: 800
                                 }}>
                                     Perfil
@@ -174,11 +183,12 @@ export default function Profile() {
                                         sx={{
                                             overflow: 'auto'
                                         }}
-                                        onClick={() => setActualComponent('rooms')}
+                                        
                                     >
                                         <Grid item xs mt={4} sx={{
                                             float: 'left'
-                                        }}>
+                                        }}
+                                        onClick={() => setActualComponent('rooms')}>
                                             <Typography sx={{
                                                 fontSize: 18,
                                                 fontWeight: 600,
@@ -196,7 +206,8 @@ export default function Profile() {
                                         <Grid item xs mt={4} sx={{
                                             float: 'right',
                                             color: "#7C7F84"
-                                        }}>
+                                        }}
+                                        onClick={() => setActualComponent('rooms')}>
                                             <IconButton color="inherit" aria-label="chat" >
                                                 <ArrowForwardIosIcon />
                                             </IconButton>
@@ -205,11 +216,13 @@ export default function Profile() {
                                     <Box
                                         sx={{
                                             overflow: 'auto',
-                                            borderBottom: '1px solid #7C7F84"'
+                                            borderBottom: '1px solid #7C7F84"',
+                                            
                                         }}
                                     >
                                         <Grid item xs mt={2} sx={{
-                                            float: 'left'
+                                            float: 'left',
+                                            opacity: '10%'
                                         }}>
                                             <Typography sx={{
                                                 fontSize: 18,
@@ -227,7 +240,8 @@ export default function Profile() {
                                         </Grid>
                                         <Grid item xs mt={2} sx={{
                                             float: 'right',
-                                            color: "#7C7F84"
+                                            color: "#7C7F84",
+                                            opacity: '10%'
                                         }}>
                                             <IconButton color="inherit" aria-label="chat" >
                                                 <ArrowForwardIosIcon />
@@ -241,7 +255,8 @@ export default function Profile() {
                                         }}
                                     >
                                         <Grid item xs mt={2} sx={{
-                                            float: 'left'
+                                            float: 'left',
+                                            opacity: '10%'
                                         }}>
                                             <Typography sx={{
                                                 fontSize: 18,
@@ -259,7 +274,8 @@ export default function Profile() {
                                         </Grid>
                                         <Grid item xs mt={2} sx={{
                                             float: 'right',
-                                            color: "#7C7F84"
+                                            color: "#7C7F84",
+                                            opacity: '10%'
                                         }}>
                                             <IconButton color="inherit" aria-label="chat" >
                                                 <ArrowForwardIosIcon />
@@ -273,7 +289,8 @@ export default function Profile() {
                                         }}
                                     >
                                         <Grid item xs mt={2} sx={{
-                                            float: 'left'
+                                            float: 'left',
+                                            opacity: '10%'
                                         }}>
                                             <Typography sx={{
                                                 fontSize: 18,
@@ -291,7 +308,8 @@ export default function Profile() {
                                         </Grid>
                                         <Grid item xs mt={2} sx={{
                                             float: 'right',
-                                            color: "#7C7F84"
+                                            color: "#7C7F84",
+                                            opacity: '10%'
                                         }}>
                                             <IconButton color="inherit" aria-label="chat" >
                                                 <ArrowForwardIosIcon />
@@ -309,6 +327,7 @@ export default function Profile() {
                 <Rooms setActualComponent={setActualComponent} profile={profile}></Rooms>
             }
             <NavBar />
-        </>
+        </React.Fragment >
+        
     )
 }

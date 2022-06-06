@@ -18,7 +18,16 @@ import NumberFormat from 'react-number-format';
 import getCep from '../../../db/getCep';
 import Description from '../Description';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 let fileObj = [];
 let fileArray = [];
 let imagesToUpload = [];

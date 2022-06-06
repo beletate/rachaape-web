@@ -19,7 +19,16 @@ import styled from '@emotion/styled';
 import createRoom from '../../../db/createRoom';
 import NumberFormat from 'react-number-format';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
@@ -52,14 +61,12 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                     if (snapshot) {
                         await getDownloadURL(ref(storage, snapshot.metadata.name))
                             .then((url) => {
-                                console.log(url)
                                 photoUrl.push(url);
                             })
                     }
                 });
             }
         }
-        console.log(photoUrl)
         roomForm.photos = photoUrl;
     }
 

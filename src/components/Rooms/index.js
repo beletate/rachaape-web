@@ -17,7 +17,16 @@ import CreateRooms from './Create';
 import getRoomsById from '../../db/getRoomsById';
 import deleteRoom from '../../db/deleteRoom';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 export default function Rooms({ setActualComponent, profile }) {
 

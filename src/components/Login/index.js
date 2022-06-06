@@ -25,7 +25,16 @@ import facebook from '../../assets/images/facebook-icon.png'
 import userLogin from '../../db/userLogin';
 import { useHistory } from 'react-router-dom';
 
-const theme = createTheme();
+const theme = createTheme(
+  {
+    typography: {
+      fontFamily: [
+        '"SF Pro Display"',
+        'sans-serif',
+      ].join(','),
+    },
+  }
+);
 
 export default function Login() {
 
@@ -52,12 +61,12 @@ export default function Login() {
 
   const checkIfAlreadyContainAProfile = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if(user && user?._id){
+    if (user && user?._id) {
       // eslint-disable-next-line no-unused-expressions
       history.push('/home'), [history];
     }
   }
- 
+
   const executeLogin = async () => {
     try {
       const login = await userLogin(loginForm);
@@ -101,7 +110,7 @@ export default function Login() {
               mx: 3,
               display: 'flex',
               flexDirection: 'column',
-              textAlign: 'left'
+              textAlign: 'left',
             }}
           >
             <Grid container sx={{ flexDirection: 'column' }}>
@@ -140,11 +149,13 @@ export default function Login() {
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
-              textAlign: 'left'
+              textAlign: 'left',
+
             }}
           >
             <Typography component="h1" variant="h4" sx={{
-              fontWeight: 800
+              fontWeight: 800,
+              fontFamily: "'SF Pro Display', sans-serif",
             }}>
               Login 👋
             </Typography>
@@ -214,7 +225,7 @@ export default function Login() {
                   fontSize: 20,
                   fontWeight: 600,
                   color: "#70747F",
-                  textDecoration: 'none'
+                  textDecoration: 'none',
                 }}>
 
                   OU ENTRE COM

@@ -23,7 +23,16 @@ import Congrats from './Pages/Congrats';
 
 import { ProfileContext } from '../../providers/profile';
 
-const theme = createTheme();
+const theme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          '"SF Pro Display"',
+          'sans-serif',
+        ].join(','),
+      },
+    }
+  );
 
 export default function Questions() {
 

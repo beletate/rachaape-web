@@ -10,7 +10,8 @@ ReactDOM.render(
     <ProfileProvider>
       <App />
     </ProfileProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
+  ,
   document.getElementById('root')
 );
 
