@@ -12,12 +12,13 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 
 // Images
-import loginLeftSide from '../../../assets/images/login-left-side.jpeg'
+import loginLeftSide from '../../../../assets/images/login-left-side.jpeg'
 
 import './style.css'
 import styled from '@emotion/styled';
-import createRoom from '../../../db/createRoom';
+import createRoom from '../../../../db/createRoom';
 import NumberFormat from 'react-number-format';
+import editRoom from '../../../../db/editRoom';
 
 const theme = createTheme(
     {
@@ -30,47 +31,27 @@ const theme = createTheme(
     }
 );
 
-export default function Description({ setPage, roomForm, setCreatingPhase }) {
+export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, completeRoom }) {
 
     const history = useHistory();
 
-    const [people, setPeople] = useState(false);
+    const [people, setPeople] = useState(completeRoom.details.people);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const [visit, setVisit] = useState(false);
-    const [furniture, setFurniture] = useState(false);
-    const [wifi, setWifi] = useState(false);
-    const [garage, setGarage] = useState(false);
-    const [pets, setPets] = useState(false);
-    const [party, setParty] = useState(false);
-    const [smoker, setSmoker] = useState(false);
-    const [song, setSong] = useState(false);
-    const [description, setDescription] = useState("");
+    const [visit, setVisit] = useState(completeRoom.details.visit);
+    const [furniture, setFurniture] = useState(completeRoom.details.furniture);
+    const [wifi, setWifi] = useState(completeRoom.details.wifi);
+    const [garage, setGarage] = useState(completeRoom.details.garage);
+    const [pets, setPets] = useState(completeRoom.details.pets);
+    const [price, setPrice] = useState();
+    const [party, setParty] = useState(completeRoom.details.party);
+    const [smoker, setSmoker] = useState(completeRoom.details.smoker);
+    const [song, setSong] = useState(completeRoom.details.song);
+    const [description, setDescription] = useState(completeRoom.details.description || '');
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
-        uploadImages()
     }, [])
-
-    const uploadImages = async () => {
-        const storage = getStorage();
-        let photoUrl = [];
-        if (roomForm && roomForm.photos.length) {
-            for (let i = 0; i < roomForm.photos.length; i++) {
-                const storageRef = ref(storage, roomForm.photos[i].name + '_' + Math.random() * 10000);
-                await uploadBytes(storageRef, roomForm.photos[i]).then(async (snapshot) => {
-                    if (snapshot) {
-                        await getDownloadURL(ref(storage, snapshot.metadata.name))
-                            .then((url) => {
-                                photoUrl.push(url);
-                            })
-                    }
-                });
-            }
-        }
-        roomForm.photos = photoUrl;
-    }
-
 
     const returnLastPage = async () => {
         setCreatingPhase('first');
@@ -79,6 +60,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        setPrice(data.get('price'))
         const details = {
             description: data.get('description'),
             people: people,
@@ -93,12 +75,13 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
         };
         const user = JSON.parse(localStorage.getItem("user"));
         const finalForm = { ...roomForm, details, owner: user._id, price: data.get('price') }
-        const insertedForm = await createRoom(finalForm);
-        if (insertedForm?.data?.message === "Ok!") {
+        const insertedForm = await editRoom(completeRoom._id, finalForm)
+        if (insertedForm?.data === "Quarto atualizado!") {
             setSuccess(true);
-            setTimeout(() => {
-                document.location.reload(true);
-            }, 3000)
+            await setTimeout(() => {
+                // eslint-disable-next-line no-unused-expressions
+                history.push('/profile')
+            }, 2000)
         } else {
             setError(true);
         }
@@ -118,11 +101,11 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                 {...other}
                 getInputRef={ref}
                 format={currencyFormatter}
-                onValueChange={(values) => {
+                onValueChange={(e) => {
                     onChange({
                         target: {
                             name: props.name,
-                            value: values.value,
+                            value: e.value,
                         },
                     });
                 }}
@@ -207,7 +190,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                         <FormGroup>
 
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={people} onChange={(e) =>
                                     setPeople(e.target.checked)
                                 } />}
                                 label="Há outros moradores?"
@@ -215,21 +198,21 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={visit} onChange={(e) =>
                                     setVisit(e.target.checked)
                                 } />}
                                 label="Visitas são permitidas?"
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={song} onChange={(e) =>
                                     setSong(e.target.checked)
                                 } />}
                                 label="Pode som alto?"
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={furniture} onChange={(e) =>
                                     setFurniture(e.target.checked)
                                 } />}
                                 label="Quarto mobiliado?"
@@ -237,7 +220,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={wifi} onChange={(e) =>
                                     setWifi(e.target.checked)
                                 } />}
                                 label="Possui Wifi?"
@@ -245,7 +228,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={garage} onChange={(e) =>
                                     setGarage(e.target.checked)
                                 } />}
                                 label="Possui garagem?"
@@ -253,7 +236,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={pets} onChange={(e) =>
                                     setPets(e.target.checked)
                                 } />}
                                 label="Permitido pets?"
@@ -261,7 +244,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={party} onChange={(e) =>
                                     setParty(e.target.checked)
                                 } />}
                                 label="Festas são permitidas?"
@@ -269,7 +252,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
 
                             />
                             <FormControlLabel sx={{ my: 1 }}
-                                control={<Switch onChange={(e) =>
+                                control={<Switch checked={smoker} onChange={(e) =>
                                     setSmoker(e.target.checked)
                                 } />}
                                 label="Permitido fumantes?"
@@ -288,6 +271,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                 name="description"
                                 autoComplete="description"
                                 variant='outlined'
+                                defaultValue={description}
                             />
                         </Grid>
                         <Grid>
@@ -298,6 +282,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                     id="price"
                                     label="Preço (R$)"
                                     name="price"
+                                    defaultValue={price || completeRoom.price.replaceAll(/\D/g, '')}
                                     autoComplete="price"
                                     variant='outlined'
                                     InputProps={{
@@ -306,6 +291,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                 />
                             </Grid>
                         </Grid>
+
                         {
                             error &&
                             <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
@@ -315,10 +301,9 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                         {
                             success &&
                             <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
-                                <Alert severity="success" onClose={() => { setSuccess(false) }}> Sucesso! — <strong>Quarto criado com sucesso!</strong></Alert>
+                                <Alert severity="success" onClose={() => { setSuccess(false) }}> Sucesso! — <strong>Quarto atualizado com sucesso!</strong></Alert>
                             </Stack>
                         }
-
                         <Grid xs={6}>
                             <Button sx={{
                                 mr: 2,
@@ -327,7 +312,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                 type='submit'
                                 variant="outlined" endIcon={<CheckBoxRoundedIcon />}
                             >
-                                Finalizar
+                                Editar
                             </Button>
                         </Grid>
 

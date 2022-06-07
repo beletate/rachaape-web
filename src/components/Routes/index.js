@@ -12,6 +12,7 @@ import {
     CSSTransition,
     TransitionGroup,
 } from 'react-transition-group';
+import EditRoom from '../Rooms/Edit';
 
 export default function Routes() {
     return (
@@ -30,6 +31,7 @@ export default function Routes() {
                             <Route exact path="/account/register/city" component={FindCity} />
                             <Route exact path="/home" component={Home} />
                             <Route exact path="/profile" component={Profile} />
+                            <Route exact path="/profile/room/:id" component={EditRoom} />
                         </Switch>
                     </CSSTransition>
                 </TransitionGroup>

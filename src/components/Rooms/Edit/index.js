@@ -17,37 +17,39 @@ import { PhotoCamera } from '@mui/icons-material';
 import NumberFormat from 'react-number-format';
 import getCep from '../../../db/getCep';
 import Description from '../Description';
+import EditDetailsRoom from './Details';
 
 const theme = createTheme(
     {
-      typography: {
-        fontFamily: [
-          '"SF Pro Display"',
-          'sans-serif',
-        ].join(','),
-      },
+        typography: {
+            fontFamily: [
+                '"SF Pro Display"',
+                'sans-serif',
+            ].join(','),
+        },
     }
-  );
+);
 let fileObj = [];
 let fileArray = [];
 let imagesToUpload = [];
 
-export default function CreateRooms({ setPage }) {
+export default function EditRoom(props, { setPage }) {
 
+    let completeRoom  = props?.location?.state?.room;
     const history = useHistory();
 
-    const [creatingPhase, setCreatingPhase] = useState('first');
+    const [creatingPhase, setEditingPhase] = useState('first');
     const [file, setFile] = useState([]);
     const [searching, setSearching] = useState(false);
-    const [type, setType] = useState();
-    const [price, setPrice] = useState(null);
-    const [cep, setCep] = useState(null);
-    const [city, setCity] = useState(null);
-    const [state, setState] = useState(null);
-    const [neighborhood, setNeighborhood] = useState(null);
-    const [number, setNumber] = useState(null);
-    const [additional, setAdditional] = useState(null);
-    const [street, setStreet] = useState(null);
+    const [type, setType] = useState(completeRoom.type);
+    const [price, setPrice] = useState(completeRoom.price);
+    const [cep, setCep] = useState(completeRoom.cep);
+    const [city, setCity] = useState(completeRoom.city);
+    const [state, setState] = useState(completeRoom.state);
+    const [neighborhood, setNeighborhood] = useState(completeRoom.neighborhood);
+    const [number, setNumber] = useState(completeRoom.number);
+    const [additional, setAdditional] = useState(completeRoom.additional);
+    const [street, setStreet] = useState(completeRoom.street);
     const [roomForm, setRoomForm] = useState({});
 
     const uploadMultipleFiles = (e) => {
@@ -99,7 +101,6 @@ export default function CreateRooms({ setPage }) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const roomForm = {
-            photos: imagesToUpload,
             type: data.get('type'),
             price: data.get('price'),
             cep: Number(data.get('cep')),
@@ -111,7 +112,7 @@ export default function CreateRooms({ setPage }) {
             street: street
         };
         await setRoomForm(roomForm);
-        setCreatingPhase('second');
+        setEditingPhase('second');
 
         //saveCurrentUser(profileForm);
     };
@@ -207,7 +208,7 @@ export default function CreateRooms({ setPage }) {
                                         select
                                         label="Tipo"
                                         name="type"
-                                        defaultValue="apartament"
+                                        defaultValue={type || 'apartament'}
                                         autoComplete="type"
                                         variant='outlined'
                                         onChange={(e) => setType(e.target.value)}
@@ -227,7 +228,7 @@ export default function CreateRooms({ setPage }) {
 
                             <Box>
                                 <Box >
-                                    <Box sx={{
+                                    {/* <Box sx={{
 
                                     }} className="card">
                                         <Box className="card-body" sx={{
@@ -267,7 +268,7 @@ export default function CreateRooms({ setPage }) {
 
                                             </form >
                                         </Box>
-                                    </Box>
+                                    </Box> */}
                                 </Box>
                             </Box>
 
@@ -281,6 +282,7 @@ export default function CreateRooms({ setPage }) {
                                     type="number"
                                     name="cep"
                                     autoComplete="cep"
+                                    value={cep || ''}
                                     variant='outlined'
                                     keyboardType='numeric'
                                     inputProps={{ maxLength: 8, min: 0 }}
@@ -358,6 +360,7 @@ export default function CreateRooms({ setPage }) {
                                         type="number"
                                         autoComplete="number"
                                         variant='outlined'
+                                        value={number || ''}
                                         onChange={(e) => setNumber(e.target.value)}
                                     />
                                 </Grid>
@@ -370,6 +373,7 @@ export default function CreateRooms({ setPage }) {
                                     label="Complemento"
                                     name="additional"
                                     autoComplete="additional"
+                                    value={additional || ''}
                                     variant='outlined'
                                 />
                             </Grid>
@@ -397,7 +401,7 @@ export default function CreateRooms({ setPage }) {
         }
         {
             creatingPhase === 'second' &&
-            <Description setPage={setPage} setCreatingPhase={setCreatingPhase} roomForm={roomForm} />
+            <EditDetailsRoom setPage={setPage} setEditingPhase={setEditingPhase} roomForm={roomForm}  completeRoom={completeRoom} />
         }
     </>
     )

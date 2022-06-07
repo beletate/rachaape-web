@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 
 // Images
@@ -19,14 +20,14 @@ import deleteRoom from '../../db/deleteRoom';
 
 const theme = createTheme(
     {
-      typography: {
-        fontFamily: [
-          '"SF Pro Display"',
-          'sans-serif',
-        ].join(','),
-      },
+        typography: {
+            fontFamily: [
+                '"SF Pro Display"',
+                'sans-serif',
+            ].join(','),
+        },
     }
-  );
+);
 
 export default function Rooms({ setActualComponent, profile }) {
 
@@ -59,6 +60,11 @@ export default function Rooms({ setActualComponent, profile }) {
 
     const returnLastPage = async () => {
         history.goBack();
+    }
+
+    const editRoom = (room) => {
+        // eslint-disable-next-line no-unused-expressions
+        history.push('/profile/room/' + room._id, { room: room })
     }
 
     const deleteRooms = async (id) => {
@@ -190,12 +196,6 @@ export default function Rooms({ setActualComponent, profile }) {
                                                         textAlign: 'center',
                                                         verticalAlign: 'middle'
                                                     }}>
-                                                        <IconButton color="inherit" aria-label="trash"
-                                                            sx={{ color: 'red' }}
-                                                            onClick={() => deleteRooms(room._id)}
-                                                        >
-                                                            <DeleteForeverIcon sx={{ height: 40 }} />
-                                                        </IconButton>
 
                                                     </Grid>
                                                     <Grid xs={12} item={true} container sx={{
@@ -209,6 +209,37 @@ export default function Rooms({ setActualComponent, profile }) {
                                                         }}>
                                                             {room.street}
                                                         </Typography>
+                                                    </Grid>
+                                                    <Grid xs={12} item={true} container sx={{
+                                                        display: 'flex',
+                                                        textAlign: 'right',
+                                                        justifyContent: 'end',
+                                                    }}>
+
+                                                        <IconButton color="inherit" aria-label="trash"
+                                                            sx={{
+                                                                backgroundColor: 'green',
+                                                                borderRadius: 1,
+                                                                maxHeight: 40,
+                                                                color: 'white',
+                                                                mr: 1
+                                                            }}
+                                                            onClick={() => editRoom(room)}
+                                                        >
+                                                            <EditIcon sx={{ height: 40 }} />
+                                                        </IconButton>
+                                                        <IconButton color="inherit" aria-label="trash"
+                                                            sx={{
+                                                                backgroundColor: 'red',
+                                                                borderRadius: 1,
+                                                                maxHeight: 40,
+                                                                color: 'white',
+                                                                ml: 1
+                                                            }}
+                                                            onClick={() => deleteRooms(room._id)}
+                                                        >
+                                                            <DeleteForeverIcon sx={{ height: 40 }} />
+                                                        </IconButton>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>

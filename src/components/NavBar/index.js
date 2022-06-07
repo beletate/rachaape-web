@@ -23,21 +23,21 @@ export default function NavBar() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: "#274293" }}>
         <Toolbar>
+        <Box  sx={{ flexGrow: 0.3 }}/>
           <IconButton color="inherit" aria-label="home"
             onClick={() => changeRoute('home')}>
             <HomeOutlinedIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit" aria-label="search"
+          {/* <IconButton color="inherit" aria-label="search"
           onClick={() => changeRoute('search')}>
             <SearchIcon />
           </IconButton>
-          <Box  />
+          <Box  /> */}
           {/* <IconButton color="inherit" aria-label="chat"
           onClick={() => changeRoute('chat')}>
             <ChatBubbleOutlineOutlinedIcon />
           </IconButton> */}
-          <Box sx={{ flexGrow: 1 }} />
+          <Box  sx={{ flexGrow: 0.4 }}/>
           <IconButton color="inherit" aria-label="profile"
           onClick={() => changeRoute('profile')}>
             <PermIdentityOutlinedIcon />
