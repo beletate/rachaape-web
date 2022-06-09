@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import RefreshIcon from '@mui/icons-material/Refresh';
 import ClearSharpIcon from '@mui/icons-material/ClearSharp';
 import ChairIcon from '@mui/icons-material/Chair';
 import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
@@ -34,11 +35,13 @@ import noImage from '../../assets/images/no-image.png'
 import bar from '../../assets/images/line.png'
 
 import './style.css'
-import { Divider } from '@mui/material';
+import { Autocomplete, Divider, TextField } from '@mui/material';
 import NavBar from '../NavBar';
 import { useHistory } from 'react-router-dom';
 import getAllRooms from '../../db/getAllRooms';
 import getUserByRoom from '../../db/getUserByRoom';
+import estados from '../__Mocks__/Estados';
+import getCities from '../../db/getCities';
 
 const theme = createTheme(
     {
@@ -74,6 +77,9 @@ export default function Home() {
 
     const [notFound, setNotFound] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [state, setState] = useState('');
+    const [cities, setCities] = useState(null);
+    const [city, setCity] = useState(null);
     const [profile, setProfile] = useState({})
     const [open, setOpen] = useState(false);
     const [rooms, setRooms] = useState([])
@@ -90,7 +96,7 @@ export default function Home() {
         const tmpProfile = JSON.parse(localStorage.getItem("user"));
         if (tmpProfile) {
             await setProfile(tmpProfile);
-            getRooms(tmpProfile)
+            getRooms(tmpProfile.country)
         } else {
             // eslint-disable-next-line no-unused-expressions
             history.push('/'), [history];
@@ -98,15 +104,28 @@ export default function Home() {
 
     }
 
-    const getRooms = async (tmpProfile) => {
+    const getRooms = async (cityName) => {
         setLoading(true);
-        const tmpRooms = await getAllRooms(tmpProfile);
+        let cityToSearch = cityName.city ? cityName : profile.country;
+        const tmpRooms = await getAllRooms(cityToSearch);
         if (tmpRooms?.data?.length) {
             setRooms(tmpRooms.data);
             setLoading(false);
         } else {
             setNotFound(true);
             setLoading(false);
+        }
+    }
+
+    const handleStatesChange = (e) => {
+        searchCitiesOfState(e.sigla);
+    }
+
+    const searchCitiesOfState = async (uf) => {
+        setState(uf);
+        const tmpCities = await getCities(uf);
+        if (tmpCities && tmpCities.response && tmpCities.response.data.length) {
+            setCities(tmpCities.response.data);
         }
     }
 
@@ -123,6 +142,9 @@ export default function Home() {
         } catch (e) {
 
         }
+    }
+
+    const searchRooms = async() => {
     }
 
     const openWhatsappChat = (data) => {
@@ -180,6 +202,39 @@ export default function Home() {
                                 textAlign: 'left'
                             }}
                         >
+                            <Grid>
+                                <Grid item xs={12}>
+                                    <Box sx={{ display: 'flex' }}>
+
+                                        <Autocomplete
+                                            disablePortal
+                                            options={estados}
+                                            onChange={(e, newValue) => handleStatesChange(newValue)}
+                                            sx={{
+                                                width: 120,
+                                                mb: 6,
+                                                ml: 1.6
+                                            }}
+                                            size="small"
+                                            renderInput={(params) => <TextField  size="small" {...params} label="Estado" />}
+                                        />
+                                        <Autocomplete
+                                            disablePortal
+                                            options={cities || ''}
+                                            getOptionLabel={(option) => (option.nome ? option.nome : '')}
+                                            onChange={(e, newValue) => setCity(newValue?.nome)}
+                                            sx={{
+                                                width: 180,
+                                                mb: 4,
+                                                ml: 1.6
+                                            }}
+                                            size="small"
+                                            renderInput={(params) => <TextField size="small" {...params} label="Cidade" />}
+                                        />
+                                        <RefreshIcon onClick={() => getRooms({city: city, state: state})} color="inherit" sx={{color: '#274293', mt: 1, ml: 1}}></RefreshIcon>
+                                    </Box>
+                                </Grid>
+                            </Grid>
                             {
                                 !!loading ?
                                     <Grid
@@ -188,7 +243,7 @@ export default function Home() {
                                         direction="column"
                                         alignItems="center"
                                         justifyContent="center"
-                                        style={{ minHeight: '80vh' }}
+                                        style={{ minHeight: '60vh' }}
                                     >
 
                                         <Grid item xs={3}>
@@ -325,17 +380,17 @@ export default function Home() {
                                                         direction="column"
                                                         alignItems="center"
                                                         justifyContent="center"
-                                                        style={{ minHeight: '80vh' }}
+                                                        style={{ minHeight: '60vh' }}
                                                     >
 
                                                         <Grid item xs={3}>
                                                             <Box sx={{ display: 'flex' }}>
-                                                            <Typography sx={{textAlign: 'center'}}>Ops, parece que ainda não temos quartos cadastrados nessa região. 😕</Typography>
+                                                                <Typography sx={{ textAlign: 'center' }}>Ops, parece que ainda não temos quartos cadastrados nessa região. 😕</Typography>
                                                             </Box>
                                                         </Grid>
 
                                                     </Grid>
-                                                    
+
                                                 </>
                                         }
 
