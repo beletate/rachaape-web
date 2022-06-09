@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import ClearSharpIcon from '@mui/icons-material/ClearSharp';
 import ChairIcon from '@mui/icons-material/Chair';
@@ -41,14 +42,14 @@ import getUserByRoom from '../../db/getUserByRoom';
 
 const theme = createTheme(
     {
-      typography: {
-        fontFamily: [
-          '"SF Pro Display"',
-          'sans-serif',
-        ].join(','),
-      },
+        typography: {
+            fontFamily: [
+                '"SF Pro Display"',
+                'sans-serif',
+            ].join(','),
+        },
     }
-  );
+);
 
 const header = createTheme({
     typography: {
@@ -71,6 +72,8 @@ export default function Home() {
 
     const history = useHistory();
 
+    const [notFound, setNotFound] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [profile, setProfile] = useState({})
     const [open, setOpen] = useState(false);
     const [rooms, setRooms] = useState([])
@@ -87,7 +90,7 @@ export default function Home() {
         const tmpProfile = JSON.parse(localStorage.getItem("user"));
         if (tmpProfile) {
             await setProfile(tmpProfile);
-            getRooms()
+            getRooms(tmpProfile)
         } else {
             // eslint-disable-next-line no-unused-expressions
             history.push('/'), [history];
@@ -95,10 +98,15 @@ export default function Home() {
 
     }
 
-    const getRooms = async () => {
-        const tmpRooms = await getAllRooms(profile);
+    const getRooms = async (tmpProfile) => {
+        setLoading(true);
+        const tmpRooms = await getAllRooms(tmpProfile);
         if (tmpRooms?.data?.length) {
             setRooms(tmpRooms.data);
+            setLoading(false);
+        } else {
+            setNotFound(true);
+            setLoading(false);
         }
     }
 
@@ -119,10 +127,7 @@ export default function Home() {
 
     const openWhatsappChat = (data) => {
         let userNumber = data.user.phone.replaceAll(/[^a-zA-Z0-9]/g, "");
-        console.log(userNumber)
-        let message = `Olá, tenho interesse em rachar o imóvel localizado na ${data.street}, ${data.number}!`;
-        console.log(message)
-        console.log(`https://wa.me/${userNumber}?text=${message}`)
+        let message = `Olá, tenho interesse em rachar o imóvel localizado na ${data.street}!`;
         window.open(`https://wa.me/${userNumber}?text=${message}`);
     }
 
@@ -176,138 +181,167 @@ export default function Home() {
                             }}
                         >
                             {
-                                !!rooms.length &&
-                                rooms.map((room, index) => (
-                                    <>
-                                        <Grid onClick={() => selectRoom(room)} key={index} item container sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-                                            mt: 2,
-                                            padding: 2,
-                                            backgroundColor: '#fff',
-                                            borderRadius: '5px',
-                                            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
-                                        }}>
-                                            <Grid container sx={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                textAlign: 'center',
-                                            }}>
-                                                <Grid xs={4} item={true} container sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    textAlign: 'center',
-                                                    maxHeight: '10vh'
-                                                }}>
-                                                    <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
-                                                </Grid>
-                                                <Grid xs={8} item={true} container sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    textAlign: 'center',
-                                                    paddingLeft: '1vh'
-                                                }}>
-                                                    <Grid xs={8} item={true} container sx={{
-                                                        display: 'flex',
-                                                        textAlign: 'left',
-                                                        flexDirection: 'column',
-                                                        justifyContent: 'center'
-                                                    }}>
-                                                        <Typography sx={{
-                                                            fontWeight: '600'
-                                                        }}>
-                                                            {room.price} /mês
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid xs={4} item={true} container sx={{
-                                                        display: 'flex',
-                                                        justifyContent: 'center',
-                                                        textAlign: 'center',
-                                                        verticalAlign: 'middle'
-                                                    }}>
-                                                        <img style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={noImage}></img>
+                                !!loading ?
+                                    <Grid
+                                        container
+                                        spacing={0}
+                                        direction="column"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        style={{ minHeight: '80vh' }}
+                                    >
 
-                                                    </Grid>
-                                                    <Grid xs={12} item={true} container sx={{
-                                                        display: 'flex',
-                                                        textAlign: 'left'
-                                                    }}>
-                                                        <Typography sx={{
-                                                            fontWeight: '600',
-                                                            pt: 1,
-                                                            fontSize: 14
-                                                        }}>
-                                                            {room.street}
-                                                        </Typography>
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
-                                            <Grid container sx={{
-                                                display: 'flex',
-                                                textAlign: 'left',
-                                                alignItems: 'center',
-                                                verticalAlign: 'middle',
-                                                paddingLeft: 1,
-                                                mt: 1,
-                                            }}>
-                                                {
-                                                    room.details.people &&
-                                                    <>
-                                                        <Grid xs={4}>
-                                                            <Typography sx={{
-                                                                fontSize: 11,
-                                                                mt: 0.4
-                                                            }}>
-                                                                <BoyIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                                </BoyIcon>
-                                                                <span>1+ morador(s) </span>
-                                                            </Typography>
-                                                        </Grid>
-                                                    </>
-                                                }
-                                                {/* <Grid xs={4}>
-                                                    <Typography sx={{
-                                                        fontSize: 11,
-                                                        mt: 0.4
-                                                    }}>
-                                                        <ShowerOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                        </ShowerOutlinedIcon>
-                                                        <span>{mock[0].baths} banheiro(s)</span>
-                                                    </Typography>
-                                                </Grid> */}
-                                                {
-                                                    room.details.garage &&
-                                                    <>
-                                                        <Grid xs={4}>
-                                                            <Typography sx={{
-                                                                fontSize: 11,
-                                                                mt: 0.4
-                                                            }}>
-                                                                <DirectionsCarFilledOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                                </DirectionsCarFilledOutlinedIcon>
-                                                                <span>1+ vaga(s)</span>
-                                                            </Typography>
-                                                        </Grid>
-                                                    </>
-                                                }
-                                            </Grid>
-
+                                        <Grid item xs={3}>
+                                            <Box sx={{ display: 'flex' }}>
+                                                <CircularProgress />
+                                            </Box>
                                         </Grid>
+
+                                    </Grid>
+
+                                    :
+                                    <>
+                                        {
+                                            !notFound ?
+                                                <>
+                                                    {
+                                                        !!rooms.length &&
+                                                        rooms.map((room, index) => (
+                                                            <>
+                                                                <Grid onClick={() => selectRoom(room)} key={index} item container sx={{
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    textAlign: 'center',
+                                                                    mt: 2,
+                                                                    padding: 2,
+                                                                    backgroundColor: '#fff',
+                                                                    borderRadius: '5px',
+                                                                    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
+                                                                }}>
+                                                                    <Grid container sx={{
+                                                                        display: 'flex',
+                                                                        justifyContent: 'center',
+                                                                        textAlign: 'center',
+                                                                    }}>
+                                                                        <Grid xs={4} item={true} container sx={{
+                                                                            display: 'flex',
+                                                                            justifyContent: 'center',
+                                                                            textAlign: 'center',
+                                                                            maxHeight: '10vh'
+                                                                        }}>
+                                                                            <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
+                                                                        </Grid>
+                                                                        <Grid xs={8} item={true} container sx={{
+                                                                            display: 'flex',
+                                                                            justifyContent: 'center',
+                                                                            textAlign: 'center',
+                                                                            paddingLeft: '1vh'
+                                                                        }}>
+                                                                            <Grid xs={8} item={true} container sx={{
+                                                                                display: 'flex',
+                                                                                textAlign: 'left',
+                                                                                flexDirection: 'column',
+                                                                                justifyContent: 'center'
+                                                                            }}>
+                                                                                <Typography sx={{
+                                                                                    fontWeight: '600'
+                                                                                }}>
+                                                                                    {room.price} /mês
+                                                                                </Typography>
+                                                                            </Grid>
+                                                                            <Grid xs={4} item={true} container sx={{
+                                                                                display: 'flex',
+                                                                                justifyContent: 'center',
+                                                                                textAlign: 'center',
+                                                                                verticalAlign: 'middle'
+                                                                            }}>
+                                                                                <img style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={noImage}></img>
+
+                                                                            </Grid>
+                                                                            <Grid xs={12} item={true} container sx={{
+                                                                                display: 'flex',
+                                                                                textAlign: 'left'
+                                                                            }}>
+                                                                                <Typography sx={{
+                                                                                    fontWeight: '600',
+                                                                                    pt: 1,
+                                                                                    fontSize: 14
+                                                                                }}>
+                                                                                    {room.street}
+                                                                                </Typography>
+                                                                            </Grid>
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                    <Grid container sx={{
+                                                                        display: 'flex',
+                                                                        textAlign: 'left',
+                                                                        alignItems: 'center',
+                                                                        verticalAlign: 'middle',
+                                                                        paddingLeft: 1,
+                                                                        mt: 1,
+                                                                    }}>
+                                                                        {
+                                                                            room.details.people &&
+                                                                            <>
+                                                                                <Grid xs={4}>
+                                                                                    <Typography sx={{
+                                                                                        fontSize: 11,
+                                                                                        mt: 0.4
+                                                                                    }}>
+                                                                                        <BoyIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
+                                                                                        </BoyIcon>
+                                                                                        <span>1+ morador(s) </span>
+                                                                                    </Typography>
+                                                                                </Grid>
+                                                                            </>
+                                                                        }
+                                                                        {
+                                                                            room.details.garage &&
+                                                                            <>
+                                                                                <Grid xs={4}>
+                                                                                    <Typography sx={{
+                                                                                        fontSize: 11,
+                                                                                        mt: 0.4
+                                                                                    }}>
+                                                                                        <DirectionsCarFilledOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
+                                                                                        </DirectionsCarFilledOutlinedIcon>
+                                                                                        <span>1+ vaga(s)</span>
+                                                                                    </Typography>
+                                                                                </Grid>
+                                                                            </>
+                                                                        }
+                                                                    </Grid>
+
+                                                                </Grid>
+                                                            </>
+                                                        ))
+                                                    }
+                                                </>
+                                                :
+                                                <>
+                                                    <Grid
+                                                        container
+                                                        spacing={0}
+                                                        direction="column"
+                                                        alignItems="center"
+                                                        justifyContent="center"
+                                                        style={{ minHeight: '80vh' }}
+                                                    >
+
+                                                        <Grid item xs={3}>
+                                                            <Box sx={{ display: 'flex' }}>
+                                                            <Typography sx={{textAlign: 'center'}}>Ops, parece que ainda não temos quartos cadastrados nessa região. 😕</Typography>
+                                                            </Box>
+                                                        </Grid>
+
+                                                    </Grid>
+                                                    
+                                                </>
+                                        }
+
                                     </>
-                                ))
+
                             }
-
-
-
-
-
-
-
-
-
-
-
 
                             {
                                 !!actualRoom &&
@@ -357,45 +391,6 @@ export default function Home() {
                                                 }}>
                                                 {actualRoom.street} #{actualRoom.number}
                                             </Typography>
-
-                                            {/* <Grid container sx={{
-                                                display: 'flex',
-                                                textAlign: 'left',
-                                                alignItems: 'center',
-                                                verticalAlign: 'middle',
-                                                mt: 1,
-                                            }}>
-                                                <Grid xs={4}>
-                                                    <Typography sx={{
-                                                        fontSize: 11,
-                                                        mt: 0.4
-                                                    }}>
-                                                        <HotelOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                        </HotelOutlinedIcon>
-                                                        <span>{mock[0].rooms} quarto(s) </span>
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid xs={4}>
-                                                    <Typography sx={{
-                                                        fontSize: 11,
-                                                        mt: 0.4
-                                                    }}>
-                                                        <ShowerOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                        </ShowerOutlinedIcon>
-                                                        <span>{mock[0].baths} banheiro(s)</span>
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid xs={4}>
-                                                    <Typography sx={{
-                                                        fontSize: 11,
-                                                        mt: 0.4
-                                                    }}>
-                                                        <DirectionsCarFilledOutlinedIcon sx={{ width: 20, color: '#274293', verticalAlign: 'middle', mr: 0.2 }}>
-                                                        </DirectionsCarFilledOutlinedIcon>
-                                                        <span>{mock[0].garage} vaga(s)</span>
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid> */}
                                             <Divider sx={{ my: 2 }} />
                                             <Typography sx={{ fontWeight: 600 }}>
                                                 Descrição
