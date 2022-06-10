@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ProfileContext } from '../../providers/profile';
 import { useHistory } from 'react-router-dom'
+import InputMask from "react-input-mask";
 
 import NumberFormat from 'react-number-format';
 
@@ -17,6 +18,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
@@ -31,14 +33,14 @@ import checkEmail from '../../db/checkEmail';
 
 const theme = createTheme(
     {
-      typography: {
-        fontFamily: [
-          '"SF Pro Display"',
-          'sans-serif',
-        ].join(','),
-      },
+        typography: {
+            fontFamily: [
+                '"SF Pro Display"',
+                'sans-serif',
+            ].join(','),
+        },
     }
-  );
+);
 
 export default function AccountRegister() {
     const history = useHistory();
@@ -47,6 +49,16 @@ export default function AccountRegister() {
     const [showPassword, setShowPassword] = useState(false);
     const [handleFile, setHandleFile] = useState(undefined);
     const [imageToShow, setImageToShow] = useState(undefined);
+    const [loading, setLoading] = useState(false);
+    const [messageErro, setMessageErro] = useState(null);
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [emailValid, setEmailValid] = useState(false);
+    const [password, setPassword] = useState('');
     const [form, setForm] = useState({
         photo: "",
         name: "",
@@ -77,26 +89,32 @@ export default function AccountRegister() {
             setHandleFile(file);
         }
     }
-
     const handleSubmit = async (event) => {
+        setMessageErro(false);
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const profileForm = {
             photo: handleFile,
             name: data.get('name'),
             age: Number(data.get('age')),
-            minPrice: data.get('minPrice'),
-            maxPrice: data.get('maxPrice'),
+            minPrice: data.get('minPrice').replace(/[^a-zA-Z0-9]/g, "").substring(1),
+            maxPrice: data.get('maxPrice').replace(/[^a-zA-Z0-9]/g, "").substring(1),
             email: data.get('email'),
             password: data.get('password'),
-            phone: data.get('phone')
+            phone: data.get('phone').replace(/[^a-zA-Z0-9]/g, "")
         };
+        setLoading(true);
         const emailEnable = await checkEmail(profileForm);
         if (emailEnable?.data?.message) {
             await setProfile(profileForm);
+            setLoading(false);
             // eslint-disable-next-line no-unused-expressions
             history.push('/account/register/questions'), [history]
+        } else {
+            setMessageErro(true);
+            setLoading(false);
         }
+        setLoading(false);
 
         //saveCurrentUser(profileForm);
     };
@@ -106,6 +124,27 @@ export default function AccountRegister() {
         const br = { style: "currency", currency: "BRL" };
         return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
     };
+
+    const emailIsValid = (email) => {
+        setEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    }
+
+    const currency = (e) => {
+        const onlyDigits = e.target.value
+            .split("")
+            .filter(s => /\d/.test(s))
+            .join("")
+            .padStart(3, "0")
+        const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2)
+        e.target.value = maskCurrency(digitsFloat)
+    }
+
+    const maskCurrency = (valor, locale = 'pt-BR', currency = 'BRL') => {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency
+        }).format(valor)
+    }
 
     const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
         const { onChange, ...other } = props;
@@ -259,7 +298,7 @@ export default function AccountRegister() {
                                         {
                                             imageToShow ?
                                                 <>
-                                                    <img src={imageToShow} style={{ borderRadius: '50%', width: '9rem', height: '9rem', verticalAlign: 'middle' }} alt="profile" />
+                                                    <img loading="lazy" src={imageToShow} style={{ borderRadius: '50%', width: '9rem', height: '9rem', verticalAlign: 'middle' }} alt="profile" />
                                                 </>
                                                 :
                                                 <>
@@ -286,6 +325,7 @@ export default function AccountRegister() {
                                     name="name"
                                     autoComplete="name"
                                     variant='standard'
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                                 <TextField
                                     required
@@ -294,9 +334,22 @@ export default function AccountRegister() {
                                     id="age"
                                     label="Idade"
                                     name="age"
+                                    value={age}
+                                    InputProps={{
+                                        inputProps: { 
+                                            type: 'number',
+                                            maxLength: 3
+                                        }
+                                    }}
                                     autoComplete="age"
                                     type="number"
                                     variant='standard'
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (value < 100) {
+                                            setAge(value);
+                                        }
+                                      }}
                                 />
                                 <Grid container>
                                     <Grid xs={6} sx={{ paddingRight: 1 }}>
@@ -308,9 +361,11 @@ export default function AccountRegister() {
                                             name="minPrice"
                                             autoComplete="minPrice"
                                             variant='standard'
-                                            InputProps={{
-                                                inputComponent: NumberFormatCustom,
-                                            }}
+                                            onChange={(e) => setMinPrice(e.target.value)}
+                                            onInput={(e) => currency(e)}
+                                        /* InputProps={{
+                                            inputComponent: NumberFormatCustom,
+                                        }} */
                                         />
                                     </Grid>
                                     <Grid xs={6} sx={{ paddingLeft: 1 }}>
@@ -322,9 +377,11 @@ export default function AccountRegister() {
                                             name="maxPrice"
                                             autoComplete="maxPrice"
                                             variant='standard'
-                                            InputProps={{
-                                                inputComponent: NumberFormatCustom,
-                                            }}
+                                            onChange={(e) => setMaxPrice(e.target.value)}
+                                            onInput={(e) => currency(e)}
+                                        /* InputProps={{
+                                            inputComponent: NumberFormatCustom,
+                                        }} */
                                         />
                                     </Grid>
                                 </Grid>
@@ -337,30 +394,44 @@ export default function AccountRegister() {
                                     label="Email"
                                     name="email"
                                     autoComplete="email"
-                                    variant='standard'
-                                />
-                                <TextField
-                                    required
-                                    margin="normal"
-                                    fullWidth
-                                    id="phone"
-                                    name="phone"
-                                    autoComplete="phone"
-                                    variant='standard'
-                                    InputProps={{
-                                        inputComponent: NumberPhoneCustom,
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+                                        emailIsValid(e.target.value)
                                     }}
+                                    variant='standard'
                                 />
+                                {
+                                    !!messageErro && <>
+                                        <Typography sx={{ color: '#d40d1d' }}>Email indisponível para uso</Typography>
+                                    </>
+                                }
+
+                                <InputMask
+                                    mask="+55 (99) 99999-9999"
+                                    disabled={false}
+                                    maskChar=" "
+                                    onChange={(e) => setPhone(e.target.value)}
+                                >
+                                    {() => <TextField required
+                                        margin="normal"
+                                        fullWidth
+                                        id="phone"
+                                        name="phone"
+                                        label="Telefone"
+                                        autoComplete="phone"
+                                        variant='standard' />}
+                                </InputMask>
 
                                 <TextField
                                     required
                                     margin="normal"
                                     fullWidth
-                                    name="firstPassword"
+                                    name="password"
                                     label="Senha"
-                                    id="firstPassword"
+                                    id="password"
                                     variant='standard'
-                                    autoComplete="firstPassword"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    autoComplete="password"
                                     type={showPassword ? "text" : "password"}
                                     InputProps={{
                                         endAdornment: (
@@ -376,33 +447,45 @@ export default function AccountRegister() {
                                         )
                                     }}
                                 />
-                                <TextField
-                                    required
-                                    margin="normal"
-                                    fullWidth
-                                    name="password"
-                                    label="Repita a senha"
-                                    id="password"
-                                    variant='standard'
-                                    autoComplete="password"
-                                    type="password"
-                                />
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    sx={{
-                                        mt: 4,
-                                        mb: 2,
-                                        minHeight: '6vh',
-                                        fontWeight: 600,
-                                        fontSize: 16,
-                                        backgroundColor: '#274293'
-                                    }}
-                                //component={LinkRouter} to="/account/register/questions"
-                                >
-                                    Criar
-                                </Button>
+                                {
+                                    !loading ?
+                                        <>
+                                            <Button
+                                                type="submit"
+                                                fullWidth
+                                                variant="contained"
+                                                disabled={!name || !age || phone.replace(/[^a-zA-Z0-9]/g, "").length < 12 || !emailValid || !password}
+                                                sx={{
+                                                    mt: 4,
+                                                    mb: 2,
+                                                    minHeight: '6vh',
+                                                    fontWeight: 600,
+                                                    fontSize: 16,
+                                                    backgroundColor: '#274293'
+                                                }}
+                                            //component={LinkRouter} to="/account/register/questions"
+                                            >
+                                                Criar
+                                            </Button>
+                                        </>
+                                        :
+                                        <>
+                                            <Grid
+                                                container
+                                                spacing={0}
+                                                direction="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Grid item xs={3} sx={{ mt: 4, mb: 0.2 }}>
+                                                    <Box sx={{ display: 'flex' }}>
+                                                        <CircularProgress />
+                                                    </Box>
+                                                </Grid>
+
+                                            </Grid>
+                                        </>
+                                }
                             </Box>
                         </Box>
                     </Grid>

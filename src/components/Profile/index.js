@@ -136,7 +136,7 @@ export default function Profile() {
                                     </IconButton>
                                     <Box sx={{ flexGrow: 1 }} />
                                     <StyledFab>
-                                        <img className="logo-image-web" style={{ width: '100%', height: '100%', borderRadius: '50%', border: 'none !important' }} src={profile.photo || Avatar} alt="logo" />
+                                        <img loading="lazy" className="logo-image-web" style={{ width: '100%', height: '100%', borderRadius: '50%', border: 'none !important' }} src={profile.photo || Avatar} alt="logo" />
                                     </StyledFab>
                                     <Box sx={{ flexGrow: 1 }} />
                                     <IconButton color="inherit" aria-label="chat"

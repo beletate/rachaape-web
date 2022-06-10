@@ -237,7 +237,7 @@ export default function CreateRooms({ setPage }) {
                                                 <Box className="multi-preview" sx={{ border: '1px solid #274293', mb: 2, borderStyle: 'dashed' }}>
                                                     {(fileArray || []).map(url => (
                                                         <>
-                                                            <img src={url} alt="..." key={url} />
+                                                            <img loading="lazy" src={url} alt="..." key={url} />
                                                             <CancelRoundedIcon sx={{
                                                                 fontSize: '2.0rem',
                                                                 color: '#B20000',

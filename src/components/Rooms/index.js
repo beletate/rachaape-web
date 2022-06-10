@@ -170,7 +170,7 @@ export default function Rooms({ setActualComponent, profile }) {
                                                     textAlign: 'center',
                                                     maxHeight: '10vh'
                                                 }}>
-                                                    <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
+                                                    <img loading="lazy" style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
                                                 </Grid>
                                                 <Grid xs={8} item={true} container sx={{
                                                     display: 'flex',

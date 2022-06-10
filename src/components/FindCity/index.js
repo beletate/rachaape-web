@@ -87,7 +87,6 @@ export default function FindCity() {
             if (snapshot) {
                 await getDownloadURL(ref(storage, snapshot.metadata.name))
                     .then((url) => {
-                        console.log(url)
                         photoUrl = url;
                     })
             }

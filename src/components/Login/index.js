@@ -14,6 +14,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
@@ -40,6 +41,8 @@ export default function Login() {
 
   const history = useHistory();
 
+  const [loading, setLoading] = React.useState(false);
+  const [messageErro, setMessageErro] = React.useState(null);
   const [loginForm, setLoginForm] = React.useState({});
 
   React.useEffect(() => {
@@ -68,15 +71,22 @@ export default function Login() {
   }
 
   const executeLogin = async () => {
+    
     try {
+      setMessageErro(false);
+      setLoading(true);
       const login = await userLogin(loginForm);
       if (login && login?.data?.message) {
         localStorage.setItem("user", JSON.stringify(login.data.user));
         localStorage.setItem("auth", true);
         // eslint-disable-next-line no-unused-expressions
         history.push('/home'), [history];
+      } else {
+        setLoading(false);
+        setMessageErro(true);
       }
     } catch (e) {
+      setLoading(false);
       console.error(e)
     }
   }
@@ -184,36 +194,53 @@ export default function Login() {
                 variant='standard'
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {
+                !!messageErro && <>
+                  <Typography sx={{color: '#d40d1d'}}>Email ou senha inválidos.</Typography>
+                </>
+              }
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Lembrar"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  minHeight: '6vh',
-                  fontWeight: 600,
-                  fontSize: 16,
-                  backgroundColor: '#274293'
-                }}
-              >
-                Entrar
-              </Button>
+              /> */}
+              {
+                !loading ?
+                  <>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{
+                        mt: 3,
+                        minHeight: '6vh',
+                        fontWeight: 600,
+                        fontSize: 16,
+                        backgroundColor: '#274293'
+                      }}
+                    >
+                      Entrar
+                    </Button>
+                  </>
+                  :
+                  <>
+                    <Grid
+                      container
+                      spacing={0}
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Grid item xs={3} sx={{mt: 4, mb: 0.2}}>
+                        <Box sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
+                      </Grid>
+
+                    </Grid>
+                  </>
+              }
+
               <Grid container sx={{ flexDirection: 'column', alignItems: 'center' }}>
-                <Grid item xs>
-                  <Link href="#" variant="body2" sx={{
-                    fontSize: 20,
-                    fontWeight: 600,
-                    color: "#274293",
-                    textDecoration: 'none'
-                  }}>
-                    ESQUECEU A SENHA?
-                  </Link>
-                </Grid>
 
               </Grid>
             </Box>
@@ -239,44 +266,30 @@ export default function Login() {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    textAlign: 'center'
+                    textAlign: 'center',
                   }}
                 >
-                  <Grid mx={2} sx={{
-                    backgroundColor: 'white',
-                    padding: 2,
-                    borderRadius: 25,
-                    maxWidth: '50px',
-                    maxHeight: '50px'
-                  }}>
-                    <img src={instagram} alt="instagram-logo" />
-                  </Grid>
-                  <Grid mx={2} sx={{
-                    backgroundColor: 'white',
-                    padding: 2,
-                    borderRadius: 25,
-                    maxWidth: '50px',
-                    maxHeight: '50px'
-                  }}>
-                    <img src={twitter} alt="twitter-logo" />
-                  </Grid>
+
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
                     padding: 2,
                     borderRadius: 25,
                     maxWidth: '50px',
                     maxHeight: '50px',
+                    opacity: '30%'
                   }}>
-                    <img src={facebook} alt="facebook-logo" />
+                    <img loading="lazy" src={twitter} alt="twitter-logo" />
                   </Grid>
+
                   <Grid mx={2} sx={{
                     backgroundColor: 'white',
                     padding: 2,
                     borderRadius: 25,
                     maxWidth: '50px',
-                    maxHeight: '50px'
+                    maxHeight: '50px',
+                    opacity: '30%'
                   }}>
-                    <img src={google} alt="google-logo" />
+                    <img loading="lazy" src={google} alt="google-logo" />
                   </Grid>
                 </Box>
               </Grid>

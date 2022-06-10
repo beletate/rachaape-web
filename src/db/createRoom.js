@@ -3,7 +3,6 @@ import { URL } from './url';
 let url = URL;
 
 const createRoom = async (obj) => {
-    console.log(obj)
     try {
         return await axios.post(`${url}/room/register`, obj);
     } catch (e) {

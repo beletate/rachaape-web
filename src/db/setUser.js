@@ -3,7 +3,6 @@ import { URL } from './url';
 let url = URL;
 
 const setUser = async (obj) => {
-    console.log(obj)
     try {
         return await axios.post(`${url}/auth/register`, obj);
     } catch (e) {

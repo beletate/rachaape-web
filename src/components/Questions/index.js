@@ -204,7 +204,7 @@ export default function Questions() {
                                                 maxWidth: '50px',
                                                 maxHeight: '50px'
                                             }}>
-                                                <img src={comment} alt="comment-icon" />
+                                                <img loading="lazy" src={comment} alt="comment-icon" />
                                             </Grid>
                                         </Box>
                                     </Box>

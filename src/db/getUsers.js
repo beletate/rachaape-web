@@ -10,7 +10,7 @@ const getUser = async () => {
             }
         })
     } catch (e) {
-        console.log('Ops, tivemos um erro!', e);
+        console.error('Ops, tivemos um erro!', e);
         return e;
     } 
     

@@ -133,11 +133,9 @@ export default function Home() {
         try {
             const roomUser = await getUserByRoom(room.owner);
             if (roomUser.data && roomUser.data._id) {
-                console.log(room)
                 room.user = roomUser.data;
                 setActualRoom(room);
                 setOpen(true);
-                console.log(room)
             }
         } catch (e) {
 
@@ -284,7 +282,7 @@ export default function Home() {
                                                                             textAlign: 'center',
                                                                             maxHeight: '10vh'
                                                                         }}>
-                                                                            <img style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
+                                                                            <img loading="lazy" style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
                                                                         </Grid>
                                                                         <Grid xs={8} item={true} container sx={{
                                                                             display: 'flex',
@@ -310,7 +308,7 @@ export default function Home() {
                                                                                 textAlign: 'center',
                                                                                 verticalAlign: 'middle'
                                                                             }}>
-                                                                                <img style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={noImage}></img>
+                                                                                <img loading="lazy" style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={noImage}></img>
 
                                                                             </Grid>
                                                                             <Grid xs={12} item={true} container sx={{
@@ -432,7 +430,7 @@ export default function Home() {
                                                     }}>
                                                 </ClearSharpIcon>
                                             </Box>
-                                            <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={actualRoom.photos[0]} alt="room"></img>
+                                            <img loading="lazy" style={{ maxHeight: '100%', maxWidth: '100%' }} src={actualRoom.photos[0]} alt="room"></img>
                                         </Grid>
                                         <Grid sx={{
                                             p: 4
@@ -741,7 +739,7 @@ export default function Home() {
                                                 <Box sx={{ my: 3 }}>
                                                     {actualRoom.photos.map(photo => (
 
-                                                        <img src={photo} alt="room" style={{
+                                                        <img loading="lazy" src={photo} alt="room" style={{
                                                             width: '10rem',
                                                             borderRadius: '10px'
                                                         }} />
@@ -764,7 +762,7 @@ export default function Home() {
                                                     textAlign: 'center',
                                                     verticalAlign: 'middle'
                                                 }}>
-                                                    <img style={{ maxHeight: '64px', maxWidth: '64px', borderRadius: '50%', marginTop: '40%' }} src={actualRoom.user.photo}></img>
+                                                    <img loading="lazy" style={{ maxHeight: '64px', maxWidth: '64px', borderRadius: '50%', marginTop: '40%' }} src={actualRoom.user.photo}></img>
                                                 </Grid>
                                                 <Grid xs={8} item={true} container sx={{
                                                     display: 'table',

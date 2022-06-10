@@ -49,7 +49,7 @@ export default function Header() {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        <img className="logo-image-web" src={Logo} alt="logo" />
+                        <img loading="lazy" className="logo-image-web" src={Logo} alt="logo" />
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -94,7 +94,7 @@ export default function Header() {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                     >
-                        <img className="logo-image-responsive" src={Logo} alt="logo" />
+                        <img loading="lazy" className="logo-image-responsive" src={Logo} alt="logo" />
                     </Typography>
                     <Box
                         alignItems="center"

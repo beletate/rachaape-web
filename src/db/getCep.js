@@ -7,7 +7,7 @@ const getCep = async (cepNumber) => {
         let newURL = URL.replace("CEP", cepNumber);
         return await axios.get(newURL);
     } catch (e) {
-        console.log('Ops, tivemos um erro!', e);
+        console.error('Ops, tivemos um erro!', e);
         return e;
     }
 
