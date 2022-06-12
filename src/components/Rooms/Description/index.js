@@ -92,7 +92,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
             song: song,
         };
         const user = JSON.parse(localStorage.getItem("user"));
-        const finalForm = { ...roomForm, details, owner: user._id, price: data.get('price') }
+        const finalForm = { ...roomForm, details, ownerPhoto: user.photo, owner: user._id, price: data.get('price') }
         const insertedForm = await createRoom(finalForm);
         if (insertedForm?.data?.message === "Ok!") {
             setSuccess(true);

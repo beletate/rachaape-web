@@ -2,10 +2,9 @@ import axios from 'axios';
 import { URL } from './url';
 let url = URL;
 
-const getAllRooms = async (obj) => {
-
+const updatedUserCity = async (id, city) => {
     try {
-        return await axios.post(`${url}/room/all/${obj.city}`, obj);
+        return await axios.patch(`${url}/auth/city/${id}`, city);
     } catch (e) {
         console.error('Ops, tivemos um erro!', e);
         return e;
@@ -13,4 +12,4 @@ const getAllRooms = async (obj) => {
 
 }
 
-export default getAllRooms;
+export default updatedUserCity;

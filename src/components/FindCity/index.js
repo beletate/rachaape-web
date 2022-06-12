@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // Firebase
 
@@ -32,14 +33,14 @@ import { useHistory } from 'react-router-dom';
 
 const theme = createTheme(
     {
-      typography: {
-        fontFamily: [
-          '"SF Pro Display"',
-          'sans-serif',
-        ].join(','),
-      },
+        typography: {
+            fontFamily: [
+                '"SF Pro Display"',
+                'sans-serif',
+            ].join(','),
+        },
     }
-  );
+);
 
 export default function FindCity() {
 
@@ -48,6 +49,8 @@ export default function FindCity() {
     const { profile, setProfile } = React.useContext(ProfileContext);
 
     const [cities, setCities] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [messageErro, setMessageErro] = useState(false);
     const [country, setCountry] = useState({
         state: "",
         city: ""
@@ -80,6 +83,7 @@ export default function FindCity() {
     }
 
     const saveCurrentUser = async () => {
+        setLoading(true);
         const storage = getStorage();
         const storageRef = ref(storage, profile.name + '_' + Math.random() * 10000);
         let photoUrl;
@@ -95,11 +99,18 @@ export default function FindCity() {
         const tmpReturn = await setUser(profile);
         if (tmpReturn && tmpReturn.statusText === "Created" && tmpReturn.data.user) {
             delete tmpReturn.data.user.password;
+            setLoading(false)
             setProfile(tmpReturn.data.user);
             localStorage.setItem("user", JSON.stringify(tmpReturn.data.user));
             localStorage.setItem("auth", true);
             // eslint-disable-next-line no-unused-expressions
             history.push('/home'), [history];
+        } else {
+            setLoading(false);
+            setMessageErro(true);
+            setTimeout(() => {
+                setMessageErro(false)
+            }, 4000)
         }
     }
 
@@ -218,21 +229,50 @@ export default function FindCity() {
                                 />
                             </Box>
 
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                disabled={!country?.city}
-                                sx={{
-                                    mb: 2,
-                                    minHeight: '7vh',
-                                    fontWeight: 500,
-                                    fontSize: 14,
-                                    backgroundColor: '#274293'
-                                }}
-                                onClick={() => saveCurrentUser()}
-                            >
-                                Me mostre os resultados
-                            </Button>
+                            {
+                                !loading ?
+                                    <>
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            disabled={!country?.city}
+                                            sx={{
+                                                mb: 2,
+                                                minHeight: '7vh',
+                                                fontWeight: 500,
+                                                fontSize: 14,
+                                                backgroundColor: '#274293'
+                                            }}
+                                            onClick={() => saveCurrentUser()}
+                                        >
+                                            Me mostre os resultados
+                                        </Button>
+                                        {
+                                            !!messageErro && <>
+                                                <Typography sx={{ color: '#d40d1d', ml: 3 }}>Ocorreu um erro em finalizar seu cadastro...</Typography>
+                                            </>
+                                        }
+                                    </>
+                                    :
+                                    <>
+                                        <>
+                                            <Grid
+                                                container
+                                                spacing={0}
+                                                direction="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <Grid item xs={3} sx={{ mt: 4, mb: 0.2 }}>
+                                                    <Box sx={{ display: 'flex' }}>
+                                                        <CircularProgress />
+                                                    </Box>
+                                                </Grid>
+
+                                            </Grid>
+                                        </>
+                                    </>
+                            }
 
                         </Box>
                     </Grid>

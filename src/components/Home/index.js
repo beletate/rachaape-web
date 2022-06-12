@@ -42,6 +42,7 @@ import getAllRooms from '../../db/getAllRooms';
 import getUserByRoom from '../../db/getUserByRoom';
 import estados from '../__Mocks__/Estados';
 import getCities from '../../db/getCities';
+import updatedUserCity from '../../db/updatedUserCity';
 
 const theme = createTheme(
     {
@@ -78,6 +79,8 @@ export default function Home() {
     const [notFound, setNotFound] = useState(true);
     const [loading, setLoading] = useState(false);
     const [state, setState] = useState('');
+    const [showedCity, setShowedCity] = useState(null)
+    const [showerState, setShowedState] = useState(null);
     const [cities, setCities] = useState(null);
     const [city, setCity] = useState(null);
     const [profile, setProfile] = useState({})
@@ -96,7 +99,18 @@ export default function Home() {
         const tmpProfile = JSON.parse(localStorage.getItem("user"));
         if (tmpProfile) {
             await setProfile(tmpProfile);
+            updateVariablesState(tmpProfile.country);
             getRooms(tmpProfile.country)
+            setLoading(true);
+            const tmpRooms = await getAllRooms(tmpProfile.country);
+            if (tmpRooms?.data?.length) {
+                setRooms(tmpRooms.data);
+                setNotFound(false);
+                setLoading(false);
+            } else {
+                setNotFound(true);
+                setLoading(false);
+            }
         } else {
             // eslint-disable-next-line no-unused-expressions
             history.push('/'), [history];
@@ -109,12 +123,46 @@ export default function Home() {
         let cityToSearch = cityName.city ? cityName : profile.country;
         const tmpRooms = await getAllRooms(cityToSearch);
         if (tmpRooms?.data?.length) {
+            setNotFound(false);
             setRooms(tmpRooms.data);
             setLoading(false);
         } else {
             setNotFound(true);
             setLoading(false);
         }
+    }
+
+    const getRoomsAfterFilter = async (cityName) => {
+        setLoading(true);
+        const tmpRooms = await getAllRooms(cityName);
+        if (tmpRooms?.data?.length) {
+            setNotFound(false);
+            setRooms(tmpRooms.data);
+            setLoading(false);
+        } else {
+            setNotFound(true);
+            setLoading(false);
+        }
+        await updateDatabaseProfile(cityName);
+        updateLocalStorageProfie(cityName);
+        updateVariablesState(cityName);
+    }
+
+
+    const updateDatabaseProfile = async (cityName) => {
+        await updatedUserCity(profile._id, cityName);
+    }
+
+    const updateLocalStorageProfie = async (cityName) => {
+        const tmpProfile = JSON.parse(localStorage.getItem("user"));
+        tmpProfile.country = cityName;
+        await setProfile(tmpProfile);
+        localStorage.setItem("user", JSON.stringify(tmpProfile));
+    }
+
+    const updateVariablesState = async (cityName) => {
+        setShowedCity(cityName.city);
+        setShowedState(cityName.state);
     }
 
     const handleStatesChange = (e) => {
@@ -140,9 +188,6 @@ export default function Home() {
         } catch (e) {
 
         }
-    }
-
-    const searchRooms = async() => {
     }
 
     const openWhatsappChat = (data) => {
@@ -214,11 +259,12 @@ export default function Home() {
                                                 ml: 1.6
                                             }}
                                             size="small"
-                                            renderInput={(params) => <TextField  size="small" {...params} label="Estado" />}
+                                            renderInput={(params) => <TextField size="small" {...params} label="Estado" />}
                                         />
                                         <Autocomplete
                                             disablePortal
                                             options={cities || ''}
+                                            disabled={!cities}
                                             getOptionLabel={(option) => (option.nome ? option.nome : '')}
                                             onChange={(e, newValue) => setCity(newValue?.nome)}
                                             sx={{
@@ -229,7 +275,10 @@ export default function Home() {
                                             size="small"
                                             renderInput={(params) => <TextField size="small" {...params} label="Cidade" />}
                                         />
-                                        <RefreshIcon onClick={() => getRooms({city: city, state: state})} color="inherit" sx={{color: '#274293', mt: 1, ml: 1}}></RefreshIcon>
+                                        <RefreshIcon onClick={() => getRoomsAfterFilter({ city: city, state: state })} color="inherit" sx={{ color: '#274293', mt: 1, ml: 1 }}></RefreshIcon>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', ml: 2, mt: -4 }}>
+                                        <Typography>Quartos em <b>{showedCity}/{showerState}</b></Typography>
                                     </Box>
                                 </Grid>
                             </Grid>
@@ -308,7 +357,7 @@ export default function Home() {
                                                                                 textAlign: 'center',
                                                                                 verticalAlign: 'middle'
                                                                             }}>
-                                                                                <img loading="lazy" style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={noImage}></img>
+                                                                                <img loading="lazy" style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={room.ownerPhoto || noImage}></img>
 
                                                                             </Grid>
                                                                             <Grid xs={12} item={true} container sx={{
