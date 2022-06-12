@@ -14,7 +14,7 @@ import noImage from '../../assets/images/no-image.png'
 import mock from '../__Mocks__/Aps';
 
 import './style.css'
-import CreateRooms from './Create';
+import CreateRooms from './CreateRoom';
 import getRoomsById from '../../db/getRoomsById';
 import deleteRoom from '../../db/deleteRoom';
 
