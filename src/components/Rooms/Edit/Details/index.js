@@ -74,7 +74,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
             song: song,
         };
         const user = JSON.parse(localStorage.getItem("user"));
-        const finalForm = { ...roomForm, details, owner: user._id, price: data.get('price') }
+        const finalForm = { ...roomForm, details, owner: user._id, price: data.get('price').replace(/[^a-zA-Z0-9]/g, "").substring(1) }
         const insertedForm = await editRoom(completeRoom._id, finalForm)
         if (insertedForm?.data === "Quarto atualizado!") {
             setSuccess(true);
@@ -85,7 +85,23 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
         } else {
             setError(true);
         }
+    }
 
+    const currency = (e) => {
+        const onlyDigits = e.target.value
+            .split("")
+            .filter(s => /\d/.test(s))
+            .join("")
+            .padStart(3, "0")
+        const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2)
+        e.target.value = maskCurrency(digitsFloat)
+    }
+
+    const maskCurrency = (valor, locale = 'pt-BR', currency = 'BRL') => {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency
+        }).format(valor)
     }
 
     const currencyFormatter = (formatted_value) => {
@@ -282,12 +298,14 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
                                     id="price"
                                     label="Preço (R$)"
                                     name="price"
-                                    defaultValue={price || completeRoom.price.replaceAll(/\D/g, '')}
+                                    defaultValue={price || completeRoom.price}
                                     autoComplete="price"
                                     variant='outlined'
-                                    InputProps={{
-                                        inputComponent: NumberFormatCustom,
-                                    }}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    onInput={(e) => currency(e)}
+                                /* InputProps={{
+                                    inputComponent: NumberFormatCustom,
+                                }} */
                                 />
                             </Grid>
                         </Grid>
@@ -310,6 +328,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
                                 mt: 4
                             }}
                                 type='submit'
+                                disabled={success}
                                 variant="outlined" endIcon={<CheckBoxRoundedIcon />}
                             >
                                 Editar

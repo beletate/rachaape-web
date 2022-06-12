@@ -219,26 +219,26 @@ export default function Rooms({ setActualComponent, profile }) {
                                                         <IconButton color="inherit" aria-label="trash"
                                                             sx={{
                                                                 backgroundColor: 'green',
-                                                                borderRadius: 1,
-                                                                maxHeight: 40,
+                                                                borderRadius: 50,
+                                                                maxHeight: 30,
                                                                 color: 'white',
                                                                 mr: 1
                                                             }}
                                                             onClick={() => editRoom(room)}
                                                         >
-                                                            <EditIcon sx={{ height: 40 }} />
+                                                            <EditIcon sx={{ height: 30 }} />
                                                         </IconButton>
                                                         <IconButton color="inherit" aria-label="trash"
                                                             sx={{
                                                                 backgroundColor: 'red',
-                                                                borderRadius: 1,
-                                                                maxHeight: 40,
+                                                                borderRadius: 50,
+                                                                maxHeight: 30,
                                                                 color: 'white',
                                                                 ml: 1
                                                             }}
                                                             onClick={() => deleteRooms(room._id)}
                                                         >
-                                                            <DeleteForeverIcon sx={{ height: 40 }} />
+                                                            <DeleteForeverIcon sx={{ height: 30 }} />
                                                         </IconButton>
                                                     </Grid>
                                                 </Grid>
@@ -265,7 +265,7 @@ export default function Rooms({ setActualComponent, profile }) {
             }
             {
                 page === 'creating' &&
-                <CreateRooms setPage={setPage} />
+                <CreateRooms setPage={setPage} setActualComponent={setActualComponent}/>
             }
         </>
     )

@@ -33,7 +33,7 @@ let fileObj = [];
 let fileArray = [];
 let imagesToUpload = [];
 
-export default function EditRoom(props, { setPage }) {
+export default function EditRoom(props, { setPage, setActualComponent }) {
 
     let completeRoom  = props?.location?.state?.room;
     const history = useHistory();
@@ -182,7 +182,10 @@ export default function EditRoom(props, { setPage }) {
                                             <ArrowBackIosNewRoundedIcon sx={{
                                                 color: '#4892F1'
                                             }}
-                                                onClick={() => setPage('getting')}>
+                                                onClick={() => {
+                                                    // eslint-disable-next-line no-unused-expressions
+                                                    history.goBack();
+                                                    }}>
                                             </ArrowBackIosNewRoundedIcon>
                                         </Grid>
                                     </Box>
@@ -385,7 +388,7 @@ export default function EditRoom(props, { setPage }) {
                                     backgroundColor: '#274293',
                                     my: 4
                                 }}
-                                    disabled={!cep && !file.length && !street && !city && !state && !neighborhood && !number}
+                                    disabled={!cep || !street || !city || !state || !neighborhood || !number}
                                     type='submit'
                                     variant="contained" endIcon={<SendIcon />}
                                 >

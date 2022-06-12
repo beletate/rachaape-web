@@ -37,7 +37,7 @@ export default function CreateRooms({ setPage }) {
     const history = useHistory();
 
     const [creatingPhase, setCreatingPhase] = useState('first');
-    const [file, setFile] = useState([]);
+    const [file, setFile] = useState(null);
     const [searching, setSearching] = useState(false);
     const [type, setType] = useState();
     const [price, setPrice] = useState(null);
@@ -242,7 +242,6 @@ export default function CreateRooms({ setPage }) {
                                                                 fontSize: '2.0rem',
                                                                 color: '#B20000',
                                                                 marginBottom: '4.2rem',
-                                                                marginLeft: '-1.4rem'
                                                             }}
                                                                 onClick={() => deleteImage(url)}>
                                                             </CancelRoundedIcon>
@@ -357,6 +356,7 @@ export default function CreateRooms({ setPage }) {
                                         name="number"
                                         type="number"
                                         autoComplete="number"
+                                        required
                                         variant='outlined'
                                         onChange={(e) => setNumber(e.target.value)}
                                     />
@@ -381,7 +381,7 @@ export default function CreateRooms({ setPage }) {
                                     backgroundColor: '#274293',
                                     my: 4
                                 }}
-                                    disabled={!cep && !file.length && !street && !city && !state && !neighborhood && !number}
+                                    disabled={!cep || !file || !street || !city || !state || !neighborhood || !number}
                                     type='submit'
                                     variant="contained" endIcon={<SendIcon />}
                                 >

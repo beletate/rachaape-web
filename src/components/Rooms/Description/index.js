@@ -44,6 +44,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
     const [pets, setPets] = useState(false);
     const [party, setParty] = useState(false);
     const [smoker, setSmoker] = useState(false);
+    const [price, setPrice] = useState(null);
     const [song, setSong] = useState(false);
     const [description, setDescription] = useState("");
 
@@ -71,6 +72,23 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
         roomForm.photos = photoUrl;
     }
 
+    const currency = (e) => {
+        const onlyDigits = e.target.value
+            .split("")
+            .filter(s => /\d/.test(s))
+            .join("")
+            .padStart(3, "0")
+        const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2)
+        e.target.value = maskCurrency(digitsFloat)
+    }
+
+    const maskCurrency = (valor, locale = 'pt-BR', currency = 'BRL') => {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency
+        }).format(valor)
+    }
+
 
     const returnLastPage = async () => {
         setCreatingPhase('first');
@@ -92,7 +110,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
             song: song,
         };
         const user = JSON.parse(localStorage.getItem("user"));
-        const finalForm = { ...roomForm, details, ownerPhoto: user.photo, owner: user._id, price: data.get('price') }
+        const finalForm = { ...roomForm, details, ownerPhoto: user.photo, owner: user._id, price: data.get('price').replace(/[^a-zA-Z0-9]/g, "").substring(1) }
         const insertedForm = await createRoom(finalForm);
         if (insertedForm?.data?.message === "Ok!") {
             setSuccess(true);
@@ -300,9 +318,11 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                     name="price"
                                     autoComplete="price"
                                     variant='outlined'
-                                    InputProps={{
-                                        inputComponent: NumberFormatCustom,
-                                    }}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    onInput={(e) => currency(e)}
+                                /* InputProps={{
+                                    inputComponent: NumberFormatCustom,
+                                }} */
                                 />
                             </Grid>
                         </Grid>
@@ -322,9 +342,11 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                         <Grid xs={6}>
                             <Button sx={{
                                 mr: 2,
-                                mt: 4
+                                mt: 4,
+                                mb: 6
                             }}
                                 type='submit'
+                                disabled={success}
                                 variant="outlined" endIcon={<CheckBoxRoundedIcon />}
                             >
                                 Finalizar
