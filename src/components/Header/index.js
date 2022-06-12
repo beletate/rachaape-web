@@ -32,7 +32,6 @@ export default function Header() {
 
     const handleCloseNavMenu = (setting) => {
         setAnchorElNav(null);
-        console.log(setting);
     };
 
     const handleCloseUserMenu = () => {

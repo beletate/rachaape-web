@@ -304,8 +304,10 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                 id="description"
                                 label="Descreva o imóvel e sua redondeza"
                                 name="description"
+                                required
                                 autoComplete="description"
                                 variant='outlined'
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </Grid>
                         <Grid>
@@ -317,6 +319,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                     label="Preço (R$)"
                                     name="price"
                                     autoComplete="price"
+                                    required
                                     variant='outlined'
                                     onChange={(e) => setPrice(e.target.value)}
                                     onInput={(e) => currency(e)}
@@ -335,7 +338,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                         {
                             success &&
                             <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
-                                <Alert severity="success" onClose={() => { setSuccess(false) }}> Sucesso! — <strong>Quarto criado com sucesso!</strong></Alert>
+                                <Alert severity="success" onClose={() => { setSuccess(false) }}> Sucesso! — <strong>Quarto cadastrado com sucesso!</strong></Alert>
                             </Stack>
                         }
 
@@ -346,7 +349,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
                                 mb: 6
                             }}
                                 type='submit'
-                                disabled={success}
+                                disabled={!description || !price}
                                 variant="outlined" endIcon={<CheckBoxRoundedIcon />}
                             >
                                 Finalizar

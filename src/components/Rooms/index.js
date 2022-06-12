@@ -1,4 +1,4 @@
-import { Box, Button, createTheme, CssBaseline, Fab, Grid, IconButton, ThemeProvider, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, createTheme, CssBaseline, Fab, Grid, IconButton, ThemeProvider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
@@ -33,13 +33,15 @@ export default function Rooms({ setActualComponent, profile }) {
 
     const history = useHistory();
 
+    const [refresh, setRefresh] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [page, setPage] = useState('getting');
     const [myRooms, setMyRooms] = useState([]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
         checkIfAlreadyContainAProfile();
-    }, [])
+    }, [refresh])
 
     const checkIfAlreadyContainAProfile = () => {
         if (!profile && !profile?._id) {
@@ -52,11 +54,21 @@ export default function Rooms({ setActualComponent, profile }) {
     }
 
     const getAllRooms = async () => {
+        setLoading(true);
         const rooms = await getRoomsById(profile);
         if (rooms && rooms.data.length) {
+            setLoading(false);
             setMyRooms(rooms.data)
+        } else {
+            setLoading(false);
         }
     }
+
+    const currencyFormatter = (formatted_value) => {
+        if (!Number(formatted_value)) return "R$ 0,00";
+        const br = { style: "currency", currency: "BRL" };
+        return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
+    };
 
     const returnLastPage = async () => {
         history.goBack();
@@ -70,7 +82,8 @@ export default function Rooms({ setActualComponent, profile }) {
     const deleteRooms = async (id) => {
         const deleted = await deleteRoom(id);
         if (deleted && deleted?.data?.message == 'Quarto removido com sucesso.') {
-            getAllRooms();
+            setRefresh(!refresh)
+            window.parent.location = window.parent.location.href;
         }
     }
 
@@ -145,107 +158,150 @@ export default function Rooms({ setActualComponent, profile }) {
                                 </Typography>
                             </Box>
                             {
-                                !!myRooms && !!myRooms.length && myRooms.map((room) => (
-                                    <>
-                                        <Grid item container sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-                                            mt: 2,
-                                            padding: 2,
-                                            width: '94%',
-                                            ml: 1.4,
-                                            backgroundColor: '#fff',
-                                            borderRadius: '5px',
-                                            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
-                                        }}>
-                                            <Grid container sx={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                textAlign: 'center'
-                                            }}>
-                                                <Grid xs={4} item={true} container sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    textAlign: 'center',
-                                                    maxHeight: '10vh'
-                                                }}>
-                                                    <img loading="lazy" style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
-                                                </Grid>
-                                                <Grid xs={8} item={true} container sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    textAlign: 'center',
-                                                    paddingLeft: '1vh',
-                                                }}>
-                                                    <Grid xs={8} item={true} container sx={{
-                                                        display: 'flex',
-                                                        textAlign: 'left',
-                                                        flexDirection: 'column',
-                                                        justifyContent: 'center',
-                                                    }}>
-                                                        <Typography sx={{
-                                                            fontWeight: '600'
-                                                        }}>
-                                                            {room.price || 'R$0,00'} /mês
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid xs={4} item={true} container sx={{
-                                                        display: 'flex',
-                                                        justifyContent: 'right',
-                                                        textAlign: 'center',
-                                                        verticalAlign: 'middle'
-                                                    }}>
+                                !!loading ?
+                                    <Grid
+                                        container
+                                        spacing={0}
+                                        direction="column"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        style={{ minHeight: '60vh' }}
+                                    >
 
-                                                    </Grid>
-                                                    <Grid xs={12} item={true} container sx={{
-                                                        display: 'flex',
-                                                        textAlign: 'left'
-                                                    }}>
-                                                        <Typography sx={{
-                                                            fontWeight: '600',
-                                                            pt: 1,
-                                                            fontSize: 14
-                                                        }}>
-                                                            {room.street}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid xs={12} item={true} container sx={{
-                                                        display: 'flex',
-                                                        textAlign: 'right',
-                                                        justifyContent: 'end',
-                                                    }}>
-
-                                                        <IconButton color="inherit" aria-label="trash"
-                                                            sx={{
-                                                                backgroundColor: 'green',
-                                                                borderRadius: 50,
-                                                                maxHeight: 30,
-                                                                color: 'white',
-                                                                mr: 1
-                                                            }}
-                                                            onClick={() => editRoom(room)}
-                                                        >
-                                                            <EditIcon sx={{ height: 30 }} />
-                                                        </IconButton>
-                                                        <IconButton color="inherit" aria-label="trash"
-                                                            sx={{
-                                                                backgroundColor: 'red',
-                                                                borderRadius: 50,
-                                                                maxHeight: 30,
-                                                                color: 'white',
-                                                                ml: 1
-                                                            }}
-                                                            onClick={() => deleteRooms(room._id)}
-                                                        >
-                                                            <DeleteForeverIcon sx={{ height: 30 }} />
-                                                        </IconButton>
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
+                                        <Grid item xs={3}>
+                                            <Box sx={{ display: 'flex' }}>
+                                                <CircularProgress />
+                                            </Box>
                                         </Grid>
+
+                                    </Grid>
+                                    :
+                                    <>
+                                        {
+                                            !!myRooms && !!myRooms.length ?
+                                                myRooms.map((room) => (
+                                                    <>
+                                                        <Grid item container sx={{
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            textAlign: 'center',
+                                                            mt: 2,
+                                                            padding: 2,
+                                                            width: '94%',
+                                                            ml: 1.4,
+                                                            backgroundColor: '#fff',
+                                                            borderRadius: '5px',
+                                                            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.05)'
+                                                        }}>
+                                                            <Grid container sx={{
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                textAlign: 'center'
+                                                            }}>
+                                                                <Grid xs={4} item={true} container sx={{
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    textAlign: 'center',
+                                                                    maxHeight: '10vh'
+                                                                }}>
+                                                                    <img loading="lazy" style={{ maxHeight: '100%', minWidth: '100%', borderRadius: '5%' }} src={room.photos[0] || noImage} alt="room"></img>
+                                                                </Grid>
+                                                                <Grid xs={8} item={true} container sx={{
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    textAlign: 'center',
+                                                                    paddingLeft: '1vh',
+                                                                }}>
+                                                                    <Grid xs={8} item={true} container sx={{
+                                                                        display: 'flex',
+                                                                        textAlign: 'left',
+                                                                        flexDirection: 'column',
+                                                                        justifyContent: 'center',
+                                                                    }}>
+                                                                        <Typography sx={{
+                                                                            fontWeight: '600'
+                                                                        }}>
+                                                                            {currencyFormatter(room.price) || 'R$0,00'} /mês
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={4} item={true} container sx={{
+                                                                        display: 'flex',
+                                                                        justifyContent: 'right',
+                                                                        textAlign: 'center',
+                                                                        verticalAlign: 'middle'
+                                                                    }}>
+
+                                                                    </Grid>
+                                                                    <Grid xs={12} item={true} container sx={{
+                                                                        display: 'flex',
+                                                                        textAlign: 'left'
+                                                                    }}>
+                                                                        <Typography sx={{
+                                                                            fontWeight: '600',
+                                                                            pt: 1,
+                                                                            fontSize: 14
+                                                                        }}>
+                                                                            {room.street}
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={12} item={true} container sx={{
+                                                                        display: 'flex',
+                                                                        textAlign: 'right',
+                                                                        justifyContent: 'end',
+                                                                    }}>
+
+                                                                        <IconButton color="inherit" aria-label="trash"
+                                                                            sx={{
+                                                                                backgroundColor: 'green',
+                                                                                borderRadius: 50,
+                                                                                maxHeight: 30,
+                                                                                color: 'white',
+                                                                                mr: 1
+                                                                            }}
+                                                                            onClick={() => editRoom(room)}
+                                                                        >
+                                                                            <EditIcon sx={{ height: 30 }} />
+                                                                        </IconButton>
+                                                                        <IconButton color="inherit" aria-label="trash"
+                                                                            sx={{
+                                                                                backgroundColor: 'red',
+                                                                                borderRadius: 50,
+                                                                                maxHeight: 30,
+                                                                                color: 'white',
+                                                                                ml: 1
+                                                                            }}
+                                                                            onClick={() => deleteRooms(room._id)}
+                                                                        >
+                                                                            <DeleteForeverIcon sx={{ height: 30 }} />
+                                                                        </IconButton>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </>
+                                                ))
+                                                :
+                                                <>
+                                                    <Grid
+                                                        container
+                                                        spacing={0}
+                                                        direction="column"
+                                                        alignItems="center"
+                                                        justifyContent="center"
+                                                        style={{ minHeight: '60vh' }}
+                                                    >
+
+                                                        <Grid item xs={3}>
+                                                            <Box sx={{ display: 'flex' }}>
+                                                                <Typography sx={{ textAlign: 'center' }}>Que pena, parece que ainda não cadastrou nenhum quarto!</Typography>
+                                                            </Box>
+                                                        </Grid>
+
+                                                    </Grid>
+
+                                                </>
+                                        }
                                     </>
-                                ))
                             }
 
                             <Fab size="medium" color="primary" aria-label="add"
@@ -265,7 +321,7 @@ export default function Rooms({ setActualComponent, profile }) {
             }
             {
                 page === 'creating' &&
-                <CreateRooms setPage={setPage} setActualComponent={setActualComponent}/>
+                <CreateRooms setPage={setPage} setActualComponent={setActualComponent} />
             }
         </>
     )

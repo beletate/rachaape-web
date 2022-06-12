@@ -177,6 +177,12 @@ export default function Home() {
         }
     }
 
+    const currencyFormatter = (formatted_value) => {
+        if (!Number(formatted_value)) return "R$ 0,00";
+        const br = { style: "currency", currency: "BRL" };
+        return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
+    };
+
     const selectRoom = async (room) => {
         try {
             const roomUser = await getUserByRoom(room.owner);
@@ -348,7 +354,7 @@ export default function Home() {
                                                                                 <Typography sx={{
                                                                                     fontWeight: '600'
                                                                                 }}>
-                                                                                    {room.price} /mês
+                                                                                    {currencyFormatter(room.price)} /mês
                                                                                 </Typography>
                                                                             </Grid>
                                                                             <Grid xs={4} item={true} container sx={{
