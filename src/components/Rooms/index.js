@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, createTheme, CssBaseline, Fab, Grid, IconButton, ThemeProvider, Typography } from '@mui/material'
+import { Box, CircularProgress, createTheme, CssBaseline, Fab, Grid, IconButton, ThemeProvider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
@@ -10,8 +10,6 @@ import AddIcon from '@mui/icons-material/Add';
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
 import noImage from '../../assets/images/no-image.png'
-
-import mock from '../__Mocks__/Aps';
 
 import './style.css'
 import CreateRooms from './CreateRoom';
@@ -48,7 +46,7 @@ export default function Rooms({ setActualComponent, profile }) {
             // eslint-disable-next-line no-unused-expressions
             history.push('/home'), [history];
         } else {
-            getAllRooms();
+            getAllRooms()
         }
 
     }
@@ -70,10 +68,6 @@ export default function Rooms({ setActualComponent, profile }) {
         return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
     };
 
-    const returnLastPage = async () => {
-        history.goBack();
-    }
-
     const editRoom = (room) => {
         // eslint-disable-next-line no-unused-expressions
         history.push('/profile/room/' + room._id, { room: room })
@@ -81,7 +75,7 @@ export default function Rooms({ setActualComponent, profile }) {
 
     const deleteRooms = async (id) => {
         const deleted = await deleteRoom(id);
-        if (deleted && deleted?.data?.message == 'Quarto removido com sucesso.') {
+        if (deleted && deleted?.data?.message === 'Quarto removido com sucesso.') {
             setRefresh(...refresh, ['1'])
             setMyRooms([])
             //window.parent.location = window.parent.location.href;

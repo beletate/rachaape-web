@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 
 import { Box, createTheme, CssBaseline, Fab, Grid, IconButton, Menu, MenuItem, ThemeProvider, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import BedroomChildIcon from '@mui/icons-material/BedroomChild';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -161,9 +160,6 @@ export default function Profile() {
                                     >
                                         <MenuItem onClick={() => openProfileEditor()}>Editar perfil</MenuItem>
                                     </Menu>
-
-
-
 
                                     <Box sx={{ flexGrow: 1 }} />
                                     <StyledFab>

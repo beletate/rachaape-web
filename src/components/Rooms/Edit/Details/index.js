@@ -1,23 +1,17 @@
 import { Box, Button, createTheme, CssBaseline, FormControlLabel, FormGroup, Grid, Switch, TextField, ThemeProvider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 import { useHistory } from 'react-router-dom';
 
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import SendIcon from '@mui/icons-material/Send';
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded';
 import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 
 // Images
 import loginLeftSide from '../../../../assets/images/login-left-side.jpeg'
 
 import './style.css'
-import styled from '@emotion/styled';
-import createRoom from '../../../../db/createRoom';
-import NumberFormat from 'react-number-format';
 import editRoom from '../../../../db/editRoom';
 
 const theme = createTheme(
@@ -52,10 +46,6 @@ export default function EditDetailsRoom({ setPage, roomForm, setEditingPhase, co
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
-
-    const returnLastPage = async () => {
-        setEditingPhase('first');
-    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -109,27 +99,6 @@ export default function EditDetailsRoom({ setPage, roomForm, setEditingPhase, co
         const br = { style: "currency", currency: "BRL" };
         return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
     };
-    const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
-        const { onChange, ...other } = props;
-
-        return (
-            <NumberFormat
-                {...other}
-                getInputRef={ref}
-                format={currencyFormatter}
-                onValueChange={(e) => {
-                    onChange({
-                        target: {
-                            name: props.name,
-                            value: e.value,
-                        },
-                    });
-                }}
-                thousandSeparator
-                isNumericString
-            />
-        );
-    });
 
     return (
         <ThemeProvider theme={theme}>
@@ -286,6 +255,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setEditingPhase, co
                                 label="Descreva o imóvel e sua redondeza"
                                 name="description"
                                 autoComplete="description"
+                                onChange={(e) => setDescription(e.target.value)}
                                 variant='outlined'
                                 defaultValue={description}
                             />
@@ -303,9 +273,6 @@ export default function EditDetailsRoom({ setPage, roomForm, setEditingPhase, co
                                     variant='outlined'
                                     onChange={(e) => setPrice(e.target.value)}
                                     onInput={(e) => currency(e)}
-                                /* InputProps={{
-                                    inputComponent: NumberFormatCustom,
-                                }} */
                                 />
                             </Grid>
                         </Grid>

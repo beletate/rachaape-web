@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Box, Button, createTheme, CssBaseline, Grid, IconButton, Input, MenuItem, TextField, ThemeProvider, Typography } from '@mui/material'
+import { Box, Button, createTheme, CssBaseline, Grid, MenuItem, TextField, ThemeProvider } from '@mui/material'
 
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import SendIcon from '@mui/icons-material/Send';
 
 // Images
@@ -12,11 +10,8 @@ import loginLeftSide from '../../../assets/images/login-left-side.jpeg'
 
 import './style.css'
 
-import mock from '../../__Mocks__/Aps';
-import { PhotoCamera } from '@mui/icons-material';
 import NumberFormat from 'react-number-format';
 import getCep from '../../../db/getCep';
-import Description from '../Description';
 import EditDetailsRoom from './Details';
 
 const theme = createTheme(
@@ -29,20 +24,14 @@ const theme = createTheme(
         },
     }
 );
-let fileObj = [];
-let fileArray = [];
-let imagesToUpload = [];
 
-export default function EditRoom(props, { setPage, setActualComponent }) {
+export default function EditRoom(props, { setPage }) {
 
     let completeRoom  = props?.location?.state?.room;
     const history = useHistory();
 
     const [creatingPhase, setEditingPhase] = useState('first');
-    const [file, setFile] = useState([]);
-    const [searching, setSearching] = useState(false);
     const [type, setType] = useState(completeRoom.type);
-    const [price, setPrice] = useState(completeRoom.price);
     const [cep, setCep] = useState(completeRoom.cep);
     const [city, setCity] = useState(completeRoom.city);
     const [state, setState] = useState(completeRoom.state);
@@ -51,31 +40,6 @@ export default function EditRoom(props, { setPage, setActualComponent }) {
     const [additional, setAdditional] = useState(completeRoom.additional);
     const [street, setStreet] = useState(completeRoom.street);
     const [roomForm, setRoomForm] = useState({});
-
-    const uploadMultipleFiles = (e) => {
-        e.preventDefault();
-        fileObj.push(e.target.files)
-        for (let i = 0; i < fileObj[0].length; i++) {
-            imagesToUpload.push(fileObj[0][i])
-            fileArray.push(URL.createObjectURL(fileObj[0][i]))
-        }
-        fileObj = [];
-        setFile({ fileArray })
-    }
-
-    const uploadFiles = (e) => {
-        e.preventDefault()
-    }
-
-    const deleteImage = (url) => {
-        for (let i = 0; i < fileArray.length; i++) {
-            if (fileArray[i] === url) {
-                fileArray.splice(i, 1);
-                setFile({ fileArray })
-                imagesToUpload.splice(i, 1);
-            }
-        }
-    }
 
     const findCEP = async (e) => {
         e.preventDefault();
@@ -229,52 +193,6 @@ export default function EditRoom(props, { setPage, setActualComponent }) {
                                 </Grid>
                             </Grid>
 
-                            <Box>
-                                <Box >
-                                    {/* <Box sx={{
-
-                                    }} className="card">
-                                        <Box className="card-body" sx={{
-                                            display: 'flex',
-                                        }}>
-                                            <form>
-                                                <Box className="multi-preview" sx={{ border: '1px solid #274293', mb: 2, borderStyle: 'dashed' }}>
-                                                    {(fileArray || []).map(url => (
-                                                        <>
-                                                            <img loading="lazy" src={url} alt="..." key={url} />
-                                                            <CancelRoundedIcon sx={{
-                                                                fontSize: '2.0rem',
-                                                                color: '#B20000',
-                                                                marginBottom: '4.2rem',
-                                                                marginLeft: '-1.4rem'
-                                                            }}
-                                                                onClick={() => deleteImage(url)}>
-                                                            </CancelRoundedIcon>
-                                                        </>
-                                                    ))}
-                                                </Box>
-                                                <Button
-                                                    variant="outlined"
-                                                    component="label"
-                                                    sx={{
-                                                        fontWeight: '600',
-                                                    }}
-                                                >
-                                                    Fotos
-                                                    <PhotoCamera
-                                                        sx={{
-                                                            ml: 1,
-
-                                                        }} />
-                                                    <input type="file" hidden accept='image/*' onChange={uploadMultipleFiles} multiple />
-                                                </Button>
-
-                                            </form >
-                                        </Box>
-                                    </Box> */}
-                                </Box>
-                            </Box>
-
                             <Grid xs={6}>
                                 <TextField
                                     required
@@ -376,6 +294,7 @@ export default function EditRoom(props, { setPage, setActualComponent }) {
                                     label="Complemento"
                                     name="additional"
                                     autoComplete="additional"
+                                    onChange={(e) => setAdditional(e.target.value)}
                                     value={additional || ''}
                                     variant='outlined'
                                 />

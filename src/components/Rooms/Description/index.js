@@ -2,22 +2,17 @@ import { Box, Button, createTheme, CssBaseline, FormControlLabel, FormGroup, Gri
 import React, { useEffect, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
-import { useHistory } from 'react-router-dom';
 
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import SendIcon from '@mui/icons-material/Send';
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded';
 import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 
 // Images
 import loginLeftSide from '../../../assets/images/login-left-side.jpeg'
 
 import './style.css'
-import styled from '@emotion/styled';
 import createRoom from '../../../db/createRoom';
-import NumberFormat from 'react-number-format';
 
 const theme = createTheme(
     {
@@ -30,9 +25,8 @@ const theme = createTheme(
     }
 );
 
-export default function Description({ setPage, roomForm, setCreatingPhase }) {
+export default function Description({ roomForm, setCreatingPhase }) {
 
-    const history = useHistory();
 
     const [people, setPeople] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -89,11 +83,6 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
         }).format(valor)
     }
 
-
-    const returnLastPage = async () => {
-        setCreatingPhase('first');
-    }
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -122,33 +111,6 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
         }
 
     }
-
-    const currencyFormatter = (formatted_value) => {
-        if (!Number(formatted_value)) return "R$ 0,00";
-        const br = { style: "currency", currency: "BRL" };
-        return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
-    };
-    const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
-        const { onChange, ...other } = props;
-
-        return (
-            <NumberFormat
-                {...other}
-                getInputRef={ref}
-                format={currencyFormatter}
-                onValueChange={(values) => {
-                    onChange({
-                        target: {
-                            name: props.name,
-                            value: values.value,
-                        },
-                    });
-                }}
-                thousandSeparator
-                isNumericString
-            />
-        );
-    });
 
     return (
         <ThemeProvider theme={theme}>

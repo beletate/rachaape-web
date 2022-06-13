@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, createTheme, CssBaseline, Grid, TextField, ThemeProvider, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, createTheme, CssBaseline, Grid, TextField, ThemeProvider } from '@mui/material'
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
@@ -29,7 +29,6 @@ const theme = createTheme(
 export default function EditProfile(props) {
 
     const history = useHistory();
-    const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [handleFile, setHandleFile] = useState(undefined);
     const [name, setName] = useState('');
@@ -65,7 +64,6 @@ export default function EditProfile(props) {
     const handleFileRead = async (e) => {
         if (e.target.files[0]) {
             const file = e.target.files[0]
-            //const base64 = await convertBase64(file)
             setImageToShow(URL.createObjectURL(file));
             setHandleFile(file);
             setActualPhoto(null)
@@ -121,14 +119,13 @@ export default function EditProfile(props) {
             phone: data.get('phone').replace(/[^a-zA-Z0-9]/g, "")
         };
         let uploadedProfile = await uploadProfile(id, profileForm);
-        if (uploadedProfile.status == 200) {
+        if (uploadedProfile.status === 200) {
             let newUser = await getUserById(id)
             localStorage.setItem("user", JSON.stringify(newUser.data));
             history.goBack();
         }
         setSending(false);
 
-        //saveCurrentUser(profileForm);
     };
 
 

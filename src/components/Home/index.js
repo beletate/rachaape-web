@@ -15,24 +15,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ClearSharpIcon from '@mui/icons-material/ClearSharp';
 import ChairIcon from '@mui/icons-material/Chair';
-import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
-import ShowerOutlinedIcon from '@mui/icons-material/ShowerOutlined';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
 import NetworkWifiIcon from '@mui/icons-material/NetworkWifi';
 import PetsIcon from '@mui/icons-material/Pets';
 import SmokingRoomsIcon from '@mui/icons-material/SmokingRooms';
-import TvIcon from '@mui/icons-material/Tv';
 import BoyIcon from '@mui/icons-material/Boy';
-
-// Mock
-import mock from '../__Mocks__/Aps';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg';
 import noImage from '../../assets/images/no-image.png'
-import bar from '../../assets/images/line.png'
 
 import './style.css'
 import { Autocomplete, Divider, TextField } from '@mui/material';
@@ -87,7 +80,6 @@ export default function Home() {
     const [open, setOpen] = useState(false);
     const [rooms, setRooms] = useState([])
     const [actualRoom, setActualRoom] = useState(null);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
@@ -198,7 +190,7 @@ export default function Home() {
 
     const openWhatsappChat = (data) => {
         let userNumber = data.user.phone.replaceAll(/[^a-zA-Z0-9]/g, "");
-        let message = `Olá, tenho interesse em rachar o imóvel localizado na ${data.street}!`;
+        let message = `Olá, tenho interesse em rachar o imóvel localizado na ${data.street}, ${data.number}!`;
         window.open(`https://wa.me/${userNumber}?text=${message}`);
     }
 
@@ -576,7 +568,6 @@ export default function Home() {
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
-                                                                opacity: '10%'
                                                             }}>
                                                             <PetsIcon
                                                                 sx={{
@@ -596,6 +587,7 @@ export default function Home() {
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
+                                                                opacity: '10%'
                                                             }}>
                                                             <PetsIcon
                                                                 sx={{

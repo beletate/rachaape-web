@@ -5,8 +5,6 @@ import { Link as LinkRouter } from 'react-router-dom'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -18,10 +16,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 // Images
 import loginLeftSide from '../../assets/images/login-left-side.jpeg'
-import instagram from '../../assets/images/instagram-icon.png'
 import twitter from '../../assets/images/twitter-icon.png'
 import google from '../../assets/images/google-icon.png'
-import facebook from '../../assets/images/facebook-icon.png'
 
 import userLogin from '../../db/userLogin';
 import { useHistory } from 'react-router-dom';
@@ -199,10 +195,7 @@ export default function Login() {
                   <Typography sx={{color: '#d40d1d'}}>Email ou senha inválidos.</Typography>
                 </>
               }
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Lembrar"
-              /> */}
+
               {
                 !loading ?
                   <>

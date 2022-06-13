@@ -3,8 +3,6 @@ import { ProfileContext } from '../../providers/profile';
 import { useHistory } from 'react-router-dom'
 import InputMask from "react-input-mask";
 
-import NumberFormat from 'react-number-format';
-
 // Material ui
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,7 +26,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
 
 // Helpers
-import setUser from '../../db/setUser';
 import checkEmail from '../../db/checkEmail';
 
 const theme = createTheme(
@@ -60,16 +57,7 @@ export default function AccountRegister() {
     const [term, setTerm] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [password, setPassword] = useState('');
-    const [form, setForm] = useState({
-        photo: "",
-        name: "",
-        age: "",
-        minPrice: "",
-        maxPrice: "",
-        phone: "",
-        email: "",
-        password: ""
-    });
+
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
@@ -85,7 +73,6 @@ export default function AccountRegister() {
     const handleFileRead = async (e) => {
         if (e.target.files[0]) {
             const file = e.target.files[0]
-            //const base64 = await convertBase64(file)
             setImageToShow(URL.createObjectURL(file));
             setHandleFile(file);
         }
@@ -117,13 +104,6 @@ export default function AccountRegister() {
         }
         setLoading(false);
 
-        //saveCurrentUser(profileForm);
-    };
-
-    const currencyFormatter = (formatted_value) => {
-        if (!Number(formatted_value)) return "R$ 0,00";
-        const br = { style: "currency", currency: "BRL" };
-        return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
     };
 
     const emailIsValid = (email) => {
@@ -146,47 +126,13 @@ export default function AccountRegister() {
             currency
         }).format(valor)
     }
-
-    const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
-        const { onChange, ...other } = props;
-
-        return (
-            <NumberFormat
-                {...other}
-                getInputRef={ref}
-                format={currencyFormatter}
-                onValueChange={(values) => {
-                    onChange({
-                        target: {
-                            name: props.name,
-                            value: values.value,
-                        },
-                    });
-                }}
-                thousandSeparator
-                isNumericString
-            />
-        );
-    });
-
     const acceptTerm = () => {
         return (
             <>
-            Eu li e concordo com o <a href="https://drive.google.com/file/d/1ssdxJme8llgq5Parr23PD9JLORR5DFXv/view?usp=sharing" target="_blank" rel="noreferrer">termo de aceite</a>.
+                Eu li e concordo com o <a href="https://drive.google.com/file/d/1ssdxJme8llgq5Parr23PD9JLORR5DFXv/view?usp=sharing" target="_blank" rel="noreferrer">termo de aceite</a>.
             </>
         )
     }
-
-    const NumberPhoneCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
-        const { onChange, ...other } = props;
-
-        return (
-            <NumberFormat {...other}
-                format="+55 (##) #####-####"
-                allowEmptyFormatting
-                mask="_" />
-        );
-    });
 
     const returnLastPage = async () => {
         history.goBack();
@@ -372,9 +318,6 @@ export default function AccountRegister() {
                                             variant='standard'
                                             onChange={(e) => setMinPrice(e.target.value)}
                                             onInput={(e) => currency(e)}
-                                        /* InputProps={{
-                                            inputComponent: NumberFormatCustom,
-                                        }} */
                                         />
                                     </Grid>
                                     <Grid xs={6} sx={{ paddingLeft: 1 }}>
@@ -388,9 +331,7 @@ export default function AccountRegister() {
                                             variant='standard'
                                             onChange={(e) => setMaxPrice(e.target.value)}
                                             onInput={(e) => currency(e)}
-                                        /* InputProps={{
-                                            inputComponent: NumberFormatCustom,
-                                        }} */
+
                                         />
                                     </Grid>
                                 </Grid>
@@ -459,7 +400,7 @@ export default function AccountRegister() {
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" onChange={(e) => {
                                         setTerm(e.target.checked);
-                                    }}/>}
+                                    }} />}
                                     label={acceptTerm()}
                                 />
                                 {
@@ -478,7 +419,6 @@ export default function AccountRegister() {
                                                     fontSize: 16,
                                                     backgroundColor: '#274293'
                                                 }}
-                                            //component={LinkRouter} to="/account/register/questions"
                                             >
                                                 Criar
                                             </Button>

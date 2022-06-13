@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom';
-import { Box, Button, createTheme, CssBaseline, Grid, IconButton, Input, MenuItem, TextField, ThemeProvider, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Box, Button, createTheme, CssBaseline, Grid, MenuItem, TextField, ThemeProvider } from '@mui/material'
 
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -12,9 +10,7 @@ import loginLeftSide from '../../../assets/images/login-left-side.jpeg'
 
 import './style.css'
 
-import mock from '../../__Mocks__/Aps';
 import { PhotoCamera } from '@mui/icons-material';
-import NumberFormat from 'react-number-format';
 import getCep from '../../../db/getCep';
 import Description from '../Description';
 
@@ -34,19 +30,15 @@ let imagesToUpload = [];
 
 export default function CreateRooms({ setPage }) {
 
-    const history = useHistory();
 
     const [creatingPhase, setCreatingPhase] = useState('first');
     const [file, setFile] = useState(null);
-    const [searching, setSearching] = useState(false);
     const [type, setType] = useState();
-    const [price, setPrice] = useState(null);
     const [cep, setCep] = useState(null);
     const [city, setCity] = useState(null);
     const [state, setState] = useState(null);
     const [neighborhood, setNeighborhood] = useState(null);
     const [number, setNumber] = useState(null);
-    const [additional, setAdditional] = useState(null);
     const [street, setStreet] = useState(null);
     const [roomForm, setRoomForm] = useState({});
 
@@ -59,10 +51,6 @@ export default function CreateRooms({ setPage }) {
         }
         fileObj = [];
         setFile({ fileArray })
-    }
-
-    const uploadFiles = (e) => {
-        e.preventDefault()
     }
 
     const deleteImage = (url) => {
@@ -89,12 +77,6 @@ export default function CreateRooms({ setPage }) {
         }
     }
 
-    const currencyFormatter = (formatted_value) => {
-        if (!Number(formatted_value)) return "R$ 0,00";
-        const br = { style: "currency", currency: "BRL" };
-        return new Intl.NumberFormat("pt-BR", br).format(formatted_value / 100);
-    };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -113,30 +95,7 @@ export default function CreateRooms({ setPage }) {
         await setRoomForm(roomForm);
         setCreatingPhase('second');
 
-        //saveCurrentUser(profileForm);
     };
-
-    const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
-        const { onChange, ...other } = props;
-
-        return (
-            <NumberFormat
-                {...other}
-                getInputRef={ref}
-                format={currencyFormatter}
-                onValueChange={(values) => {
-                    onChange({
-                        target: {
-                            name: props.name,
-                            value: values.value,
-                        },
-                    });
-                }}
-                thousandSeparator
-                isNumericString
-            />
-        );
-    });
 
     return (<>
         {
@@ -211,9 +170,6 @@ export default function CreateRooms({ setPage }) {
                                         autoComplete="type"
                                         variant='outlined'
                                         onChange={(e) => setType(e.target.value)}
-                                        InputProps={{
-                                            inputComponent: NumberFormatCustom,
-                                        }}
                                     >
                                         <MenuItem key={1} value={'apartament'}>
                                             Apartamento

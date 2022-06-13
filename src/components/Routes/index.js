@@ -6,7 +6,6 @@ import AccountRegister from '../AccountRegister';
 import Questions from '../Questions';
 import FindCity from '../FindCity';
 import Home from '../Home';
-import NavBar from '../NavBar';
 import Profile from '../Profile';
 import {
     CSSTransition,
