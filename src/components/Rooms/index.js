@@ -105,7 +105,8 @@ export default function Rooms({ setActualComponent, profile }) {
                         />
                         <Grid item xs={12} sm={8} md={5} elevation={6} square
                             sx={{
-                                backgroundColor: '#FCFDFE'
+                                backgroundColor: '#FCFDFE',
+
                             }}>
 
                             <Box
@@ -117,7 +118,7 @@ export default function Rooms({ setActualComponent, profile }) {
                                     textAlign: 'left',
                                 }}
                             >
-                                <Grid container sx={{ flexDirection: 'column' }}>
+                                <Grid container sx={{ flexDirection: 'column'}}>
                                     <Grid item xs>
                                         <Box
                                             sx={{
@@ -181,6 +182,7 @@ export default function Rooms({ setActualComponent, profile }) {
                                                             justifyContent: 'center',
                                                             textAlign: 'center',
                                                             mt: 2,
+                                                            
                                                             padding: 2,
                                                             width: '94%',
                                                             ml: 1.4,
@@ -191,7 +193,7 @@ export default function Rooms({ setActualComponent, profile }) {
                                                             <Grid container sx={{
                                                                 display: 'flex',
                                                                 justifyContent: 'center',
-                                                                textAlign: 'center'
+                                                                textAlign: 'center',
                                                             }}>
                                                                 <Grid xs={4} item={true} container sx={{
                                                                     display: 'flex',
@@ -236,7 +238,7 @@ export default function Rooms({ setActualComponent, profile }) {
                                                                             pt: 1,
                                                                             fontSize: 14
                                                                         }}>
-                                                                            {room.street}
+                                                                            {room.street} - {room.city}/{room.state}
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={12} item={true} container sx={{
@@ -301,7 +303,7 @@ export default function Rooms({ setActualComponent, profile }) {
 
                             <Fab size="medium" color="primary" aria-label="add"
                                 sx={{
-                                    position: 'absolute',
+                                    position: 'fixed',
                                     bottom: 80,
                                     right: 16,
                                 }}
@@ -312,6 +314,7 @@ export default function Rooms({ setActualComponent, profile }) {
                             </Fab>
                         </Grid>
                     </Grid>
+                    <Grid sx={{mb: 10, mt: 10}}>&nbsp;</Grid>
                 </ThemeProvider >
             }
             {

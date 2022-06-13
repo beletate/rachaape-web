@@ -355,7 +355,7 @@ export default function Home() {
                                                                                 textAlign: 'center',
                                                                                 verticalAlign: 'middle'
                                                                             }}>
-                                                                                <img loading="lazy" style={{ position: 'absolute', maxHeight: '10%', maxWidth: '10%', borderRadius: '50%' }} src={room.ownerPhoto || noImage}></img>
+                                                                                
 
                                                                             </Grid>
                                                                             <Grid xs={12} item={true} container sx={{
@@ -442,6 +442,7 @@ export default function Home() {
                                     </>
 
                             }
+                            <Grid sx={{mb: 10, mt: 10}}>&nbsp;</Grid>
 
                             {
                                 !!actualRoom &&

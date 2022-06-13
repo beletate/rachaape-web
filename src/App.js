@@ -1,5 +1,6 @@
 import './App.css';
 import Routes from './components/Routes';
+import firebase from './firebase';
 
 function App() {
   return (

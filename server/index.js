@@ -31,7 +31,7 @@ const DB_PASSWORD = encodeURIComponent(process.env.DB_PASSWORD)
 
 mongoose.connect(`mongodb+srv://rachape:rachape@rachape-app.jdlad.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`)
 .then(() => {
-    console.log('Conectamos ao MongoDB!')
+    console.log('Conectamos ao MongoDB! Porta ' + PORT)
     app.listen(PORT)
 })
 .catch((err) => console.log(err))
