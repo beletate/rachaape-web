@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 
-import { Box, createTheme, CssBaseline, Fab, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
+import { Box, createTheme, CssBaseline, Fab, Grid, IconButton, Menu, MenuItem, ThemeProvider, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import BedroomChildIcon from '@mui/icons-material/BedroomChild';
@@ -24,14 +24,14 @@ import Rooms from '../Rooms';
 
 const theme = createTheme(
     {
-      typography: {
-        fontFamily: [
-          '"SF Pro Display"',
-          'sans-serif',
-        ].join(','),
-      },
+        typography: {
+            fontFamily: [
+                '"SF Pro Display"',
+                'sans-serif',
+            ].join(','),
+        },
     }
-  );
+);
 
 
 export default function Profile() {
@@ -40,6 +40,14 @@ export default function Profile() {
 
     const [profile, setProfile] = useState({});
     const [actualComponent, setActualComponent] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         checkIfAlreadyContainAProfile()
@@ -65,6 +73,10 @@ export default function Profile() {
         width: "35%",
         margin: '0 auto',
     });
+
+    const openProfileEditor = () => {
+        history.push('/profile/edit/' + profile._id, { profile: profile })
+    }
 
     const getOut = async () => {
         setProfile(null);
@@ -131,9 +143,28 @@ export default function Profile() {
                                     }}>
 
                                     <IconButton color="inherit" aria-label="chat"
+                                        aria-controls={open ? 'basic-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleClick}
                                     >
                                         <SettingsIcon />
                                     </IconButton>
+                                    <Menu
+                                        id="basic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                        <MenuItem onClick={() => openProfileEditor()}>Editar perfil</MenuItem>
+                                    </Menu>
+
+
+
+
                                     <Box sx={{ flexGrow: 1 }} />
                                     <StyledFab>
                                         <img loading="lazy" className="logo-image-web" style={{ width: '100%', height: '100%', borderRadius: '50%', border: 'none !important' }} src={profile.photo || Avatar} alt="logo" />
@@ -183,12 +214,12 @@ export default function Profile() {
                                         sx={{
                                             overflow: 'auto'
                                         }}
-                                        
+
                                     >
                                         <Grid item xs mt={4} sx={{
                                             float: 'left'
                                         }}
-                                        onClick={() => setActualComponent('rooms')}>
+                                            onClick={() => setActualComponent('rooms')}>
                                             <Typography sx={{
                                                 fontSize: 18,
                                                 fontWeight: 600,
@@ -207,7 +238,7 @@ export default function Profile() {
                                             float: 'right',
                                             color: "#7C7F84"
                                         }}
-                                        onClick={() => setActualComponent('rooms')}>
+                                            onClick={() => setActualComponent('rooms')}>
                                             <IconButton color="inherit" aria-label="chat" >
                                                 <ArrowForwardIosIcon />
                                             </IconButton>
@@ -217,7 +248,7 @@ export default function Profile() {
                                         sx={{
                                             overflow: 'auto',
                                             borderBottom: '1px solid #7C7F84"',
-                                            
+
                                         }}
                                     >
                                         <Grid item xs mt={2} sx={{
@@ -328,6 +359,6 @@ export default function Profile() {
             }
             <NavBar />
         </React.Fragment >
-        
+
     )
 }
