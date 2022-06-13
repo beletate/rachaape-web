@@ -25,7 +25,7 @@ import loginLeftSide from '../../assets/images/login-left-side.jpeg'
 
 import './style.css'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
 
 // Helpers
 import setUser from '../../db/setUser';
@@ -57,6 +57,7 @@ export default function AccountRegister() {
     const [maxPrice, setMaxPrice] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [term, setTerm] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [password, setPassword] = useState('');
     const [form, setForm] = useState({
@@ -167,6 +168,14 @@ export default function AccountRegister() {
             />
         );
     });
+
+    const acceptTerm = () => {
+        return (
+            <>
+            Eu li e concordo com o <a href="https://drive.google.com/file/d/1ssdxJme8llgq5Parr23PD9JLORR5DFXv/view?usp=sharing" target="_blank" rel="noreferrer">termo de aceite</a>.
+            </>
+        )
+    }
 
     const NumberPhoneCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
         const { onChange, ...other } = props;
@@ -336,7 +345,7 @@ export default function AccountRegister() {
                                     name="age"
                                     value={age}
                                     InputProps={{
-                                        inputProps: { 
+                                        inputProps: {
                                             type: 'number',
                                             maxLength: 3
                                         }
@@ -349,7 +358,7 @@ export default function AccountRegister() {
                                         if (value < 100) {
                                             setAge(value);
                                         }
-                                      }}
+                                    }}
                                 />
                                 <Grid container>
                                     <Grid xs={6} sx={{ paddingRight: 1 }}>
@@ -447,6 +456,12 @@ export default function AccountRegister() {
                                         )
                                     }}
                                 />
+                                <FormControlLabel
+                                    control={<Checkbox value="remember" color="primary" onChange={(e) => {
+                                        setTerm(e.target.checked);
+                                    }}/>}
+                                    label={acceptTerm()}
+                                />
                                 {
                                     !loading ?
                                         <>
@@ -454,7 +469,7 @@ export default function AccountRegister() {
                                                 type="submit"
                                                 fullWidth
                                                 variant="contained"
-                                                disabled={!name || !age || phone.replace(/[^a-zA-Z0-9]/g, "").length < 12 || !emailValid || !password}
+                                                disabled={!name || !age || phone.replace(/[^a-zA-Z0-9]/g, "").length < 12 || !emailValid || !password || !term}
                                                 sx={{
                                                     mt: 4,
                                                     mb: 2,

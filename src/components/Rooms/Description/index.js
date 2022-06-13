@@ -116,7 +116,7 @@ export default function Description({ setPage, roomForm, setCreatingPhase }) {
             setSuccess(true);
             setTimeout(() => {
                 document.location.reload(true);
-            }, 3000)
+            }, 1000)
         } else {
             setError(true);
         }

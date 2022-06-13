@@ -31,7 +31,7 @@ const theme = createTheme(
     }
 );
 
-export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, completeRoom }) {
+export default function EditDetailsRoom({ setPage, roomForm, setEditingPhase, completeRoom }) {
 
     const history = useHistory();
 
@@ -54,7 +54,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
     }, [])
 
     const returnLastPage = async () => {
-        setCreatingPhase('first');
+        setEditingPhase('first');
     }
 
     const handleSubmit = async (event) => {
@@ -81,7 +81,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
             await setTimeout(() => {
                 // eslint-disable-next-line no-unused-expressions
                 history.push('/profile')
-            }, 2000)
+            }, 1000)
         } else {
             setError(true);
         }
@@ -172,7 +172,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
                                         <ArrowBackIosNewRoundedIcon sx={{
                                             color: '#4892F1'
                                         }}
-                                            onClick={() => setCreatingPhase('first')}>
+                                            onClick={() => setEditingPhase('first')}>
                                         </ArrowBackIosNewRoundedIcon>
                                     </Grid>
                                 </Box>
@@ -298,7 +298,7 @@ export default function EditDetailsRoom({ setPage, roomForm, setCreatingPhase, c
                                     id="price"
                                     label="Preço (R$)"
                                     name="price"
-                                    defaultValue={price || completeRoom.price}
+                                    defaultValue={price || currencyFormatter(completeRoom.price)}
                                     autoComplete="price"
                                     variant='outlined'
                                     onChange={(e) => setPrice(e.target.value)}
